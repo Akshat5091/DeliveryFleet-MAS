@@ -1,0 +1,29 @@
+# Pinned Dependencies for Multi-Agent Delivery Fleet Coordination System
+# Dual Frameworks
+google-adk>=2.13.0
+crewai>=1.15.28
+google-genai>=2.34.0
+
+# Protocol & Tooling
+fastmcp>=3.4.8
+mcp>=1.28.1
+chromadb>=1.5.9
+
+# Data & Typing
+pydantic>=2.12.5
+pydantic-settings>=2.14.0
+scikit-learn>=1.9.1
+numpy>=2.0.0
+pandas>=2.2.0
+
+# Observability & Visualization
+matplotlib>=3.10.0
+seaborn>=0.13.2
+opentelemetry-api>=1.44.0
+opentelemetry-sdk>=1.44.0
+
+# Web & Presentation
+fastapi>=0.133.0
+uvicorn>=0.34.0
+python-pptx>=1.0.2
+pytest>=8.4.1

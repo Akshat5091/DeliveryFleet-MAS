@@ -1,0 +1,490 @@
+{
+  "aggregate_summary": {
+    "mean_query_sensitivity": 1.0,
+    "mean_query_specificity": 1.0,
+    "mean_decision_entropy": 0.917,
+    "mean_agent_accuracy": 1.0
+  },
+  "run_metrics": [
+    {
+      "run_id": "RUN-001",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.0,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 0.0,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-002",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 1.0,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.0,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-003",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.585,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-004",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.8113,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-005",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.971,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5219,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-006",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.585,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-007",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.8631,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5567,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-008",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9544,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5613,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-009",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.585,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-010",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.571,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-011",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5726,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-012",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.585,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-013",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.8813,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5766,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-014",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9457,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5774,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-015",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.585,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-016",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.8905,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5794,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-017",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9403,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5799,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-018",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.585,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-019",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.896,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.581,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-020",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9367,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-021",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9367,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-022",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.896,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-023",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-024",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9403,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-025",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.8631,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-026",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9403,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-027",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9852,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-028",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9403,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-029",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9852,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-030",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9968,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-031",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9887,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-032",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9975,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-033",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9975,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-034",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 1.0,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-035",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9968,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-036",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9852,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-037",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 1.0,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-038",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9852,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-039",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9403,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-040",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9852,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-041",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9403,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-042",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-043",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9544,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-044",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9367,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-045",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.874,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-046",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.896,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-047",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.9183,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    },
+    {
+      "run_id": "RUN-048",
+      "query_sensitivity": 1.0,
+      "query_specificity": 1.0,
+      "decision_entropy": 0.8631,
+      "agent_accuracy_score": 1.0,
+      "route_entropy": 1.5813,
+      "dispatch_quality": 1.0,
+      "guardrail_integrity": 1.0
+    }
+  ]
+}

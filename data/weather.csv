@@ -1,0 +1,5 @@
+zone,condition,rainfall_mm,visibility_km,temperature_c
+Zone A,Clear,0.0,10.0,28.5
+Zone B,Light Rain,2.5,7.5,25.0
+Zone C,Clear,0.0,9.5,29.0
+Zone D,Heavy Rain,12.0,4.0,22.0

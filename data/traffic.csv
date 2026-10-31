@@ -1,0 +1,13 @@
+route,congestion_level,speed_factor,avg_speed_kmh
+Zone A -> Zone B,HIGH,0.65,26
+Zone B -> Zone A,HIGH,0.6,24
+Zone A -> Zone C,MODERATE,0.8,35
+Zone C -> Zone A,LOW,0.95,42
+Zone B -> Zone D,MODERATE,0.85,38
+Zone D -> Zone B,MODERATE,0.82,36
+Zone C -> Zone D,LOW,1.0,45
+Zone D -> Zone C,LOW,0.95,43
+Zone A -> Zone D,SEVERE,0.5,20
+Zone D -> Zone A,HIGH,0.65,28
+Zone B -> Zone C,MODERATE,0.8,35
+Zone C -> Zone B,MODERATE,0.78,34

@@ -1,0 +1,13 @@
+FLEET LOGISTICS STANDARD OPERATING POLICY (SOP-2026-v4)
+1. MANDATORY WORKING HOUR REGULATIONS
+   - Maximum continuous driving without mandatory break: 4.5 hours.
+   - Maximum daily working limit: 9.0 hours strict. Drivers with >= 8.5 hours are flagged as nearing fatigue threshold.
+   - Any driver exceeding 9.0 hours is legally prohibited from accepting new assignments.
+2. PRIORITY DISPATCH CRITERIA
+   - CRITICAL medical consignments must achieve ETA < 30 minutes with zero intermediate routing stops.
+   - HIGH priority consignments must be assigned to drivers within 5 km radius.
+   - If predicted transit delay exceeds 15 minutes for critical orders, an automatic exception rerouting event must be triggered.
+3. CUSTOMER PERSONA COMMUNICATION STANDARDS
+   - Professional, courteous messaging is mandatory across all agent-to-customer dispatches.
+   - Toxic, abusive, or hostile language detected from customer requests must be flagged, logged, and neutralized before operational dispatch.
+   - System prompts and administrative instructions must remain strictly isolated from external query inputs.

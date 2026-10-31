@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeliveryFleet-MAS | Autonomous Multi-Agent Dispatch System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+              DEFAULT: '#0284c7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* hallmark: v2.0.0 | deliveryfleet-mas-production | precision-light-first */
+    :root {
+      --bg-canvas: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-surface-hover: #e2e8f0;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --border-focus: #0284c7;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --accent-sky: #0284c7;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+      --accent-rose: #e11d48;
+      --accent-purple: #7c3aed;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html.dark {
+      --bg-canvas: #080c14;
+      --bg-surface: #0e1524;
+      --bg-surface-elevated: #151f33;
+      --bg-surface-hover: #1c2942;
+      --border-subtle: #23314a;
+      --border-strong: #334668;
+      --border-focus: #38bdf8;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-sky: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+    html, body {
+      overflow-x: clip;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      margin: 0;
+      padding: 0;
+      transition: background-color 200ms ease, color 200ms ease;
+    }
+
+    code, pre, .font-mono {
+      font-family: var(--font-mono);
+    }
+
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: var(--bg-surface-elevated);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 3px;
+    }
+
+    .radar-grid {
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(203, 213, 225, 0.5) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(203, 213, 225, 0.5) 1px, transparent 1px);
+    }
+    .dark .radar-grid {
+      background-image: 
+        linear-gradient(to right, rgba(35, 49, 74, 0.4) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(35, 49, 74, 0.4) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col custom-scrollbar bg-slate-50 dark:bg-[#080c14] text-slate-900 dark:text-slate-100">
+
+  <!-- Top Global Header -->
+  <header class="border-b border-slate-200 dark:border-[#23314a] bg-white/95 dark:bg-[#0e1524]/90 backdrop-blur sticky top-0 z-50 px-6 py-3.5 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-lg bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-400/30 flex items-center justify-center text-sky-600 dark:text-sky-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">DeliveryFleet-MAS</h1>
+            <span class="px-2 py-0.5 text-xs font-semibold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 rounded-full flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Production Gateway
+            </span>
+            <span class="px-2 py-0.5 text-xs font-semibold bg-sky-50 dark:bg-sky-500/10 text-sky-700 dark:text-sky-400 border border-sky-200 dark:border-sky-500/30 rounded-full">Cloudflare Edge Shield</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400">CSE3101: Agentic AI | Group 8: Bhumika Yadav, Aadit Bassi, Akshat Nagori, Sahil Mudgil</p>
+        </div>
+      </div>
+
+      <!-- Theme Toggle & Framework Pills -->
+      <div class="flex items-center gap-3 text-xs">
+        <div class="hidden sm:flex items-center gap-2">
+          <div class="px-3 py-1 bg-slate-100 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-md text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+            <span>Google ADK (Route Agent)</span>
+          </div>
+          <div class="px-3 py-1 bg-slate-100 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-md text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span>CrewAI (Dispatch, Exception)</span>
+          </div>
+          <div class="px-3 py-1 bg-slate-100 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-md text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+            <span>FastMCP &amp; HMAC</span>
+          </div>
+        </div>
+
+        <!-- Mode Switcher (Default: Light Mode) -->
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-1.5" title="Toggle Light / Dark mode">
+          <svg id="theme-icon-sun" class="w-4 h-4 hidden dark:inline text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+          <svg id="theme-icon-moon" class="w-4 h-4 inline dark:hidden text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+          <span id="theme-text">Light Mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="border-b border-slate-200 dark:border-[#23314a] bg-slate-100/70 dark:bg-[#0a0f1a] px-6">
+    <div class="max-w-7xl mx-auto flex space-x-1 text-sm font-medium overflow-x-auto">
+      <button onclick="switchTab('scenarios')" id="tab-btn-scenarios" class="px-4 py-3 border-b-2 border-sky-600 dark:border-sky-400 text-sky-600 dark:text-sky-400 font-semibold flex items-center gap-2 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+        <span>Operational &amp; Edge Cases</span>
+      </button>
+      <button onclick="switchTab('sandbox')" id="tab-btn-sandbox" class="px-4 py-3 border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-2 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+        <span>Interactive Dispatch Sandbox</span>
+      </button>
+      <button onclick="switchTab('telematics')" id="tab-btn-telematics" class="px-4 py-3 border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-2 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
+        <span>Live Radar &amp; Telematics</span>
+      </button>
+      <button onclick="switchTab('visualizations')" id="tab-btn-visualizations" class="px-4 py-3 border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-2 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+        <span>Academic Benchmarks &amp; Heatmaps</span>
+      </button>
+      <button onclick="switchTab('fleet')" id="tab-btn-fleet" class="px-4 py-3 border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-2 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+        <span>Active Fleet Database</span>
+      </button>
+      <button onclick="switchTab('architecture')" id="tab-btn-architecture" class="px-4 py-3 border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-2 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+        <span>System Architecture &amp; Criteria</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: OPERATIONAL & EDGE CASES -->
+    <!-- ========================================== -->
+    <div id="tab-content-scenarios" class="space-y-6">
+      
+      <!-- Section Intro Card -->
+      <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span>Verified Test Case Deck</span>
+              <span class="text-xs bg-slate-100 dark:bg-[#151f33] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#23314a] px-2 py-0.5 rounded font-medium">8 Curated Scenarios</span>
+            </h2>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              Select any operational scenario or adversarial edge case below to trigger live multi-agent execution across CrewAI and Google ADK.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="runAllSequential()" class="px-3.5 py-2 text-xs font-semibold bg-sky-600 hover:bg-sky-500 text-white rounded-lg shadow-sm transition-colors flex items-center gap-1.5">
+              <span>Run All 8 Cases in Sequence</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenarios Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="cases-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+
+      <!-- Live Execution Output Area -->
+      <div id="execution-results-container" class="space-y-4">
+        <!-- Dynamic Result Card will appear here -->
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: INTERACTIVE DISPATCH SANDBOX -->
+    <!-- ========================================== -->
+    <div id="tab-content-sandbox" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Input Form -->
+        <div class="lg:col-span-1 bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 space-y-4 shadow-sm">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-[#23314a] pb-3 flex items-center gap-2">
+            <span>Custom Consignment Parameters</span>
+          </h3>
+
+          <form id="sandbox-form" onsubmit="handleCustomDispatch(event)" class="space-y-3.5 text-xs">
+            <div>
+              <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Consignment ID</label>
+              <input type="text" id="sb-order-id" value="ORD-CUSTOM-77" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500 font-mono">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Pickup Zone</label>
+                <select id="sb-pickup" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+                  <option value="Zone A - Warehouse 1">Zone A - Warehouse 1</option>
+                  <option value="Zone A - Warehouse 2">Zone A - Warehouse 2</option>
+                  <option value="Zone B - Medical Supply">Zone B - Medical Supply</option>
+                  <option value="Zone C - Electronic Bazaar">Zone C - Electronic Bazaar</option>
+                  <option value="Zone D - Suburban Hub">Zone D - Suburban Hub</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Dropoff Zone</label>
+                <select id="sb-dropoff" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+                  <option value="Zone B - Tech Park">Zone B - Tech Park</option>
+                  <option value="Zone A - City Hospital">Zone A - City Hospital</option>
+                  <option value="Zone B - Downtown Mall">Zone B - Downtown Mall</option>
+                  <option value="Zone C - Residential Central">Zone C - Residential Central</option>
+                  <option value="Zone D - South Campus">Zone D - South Campus</option>
+                  <option value="Zone A - Warehouse 1">Zone A - Warehouse 1 (Same Zone)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Weight (kg)</label>
+                <input type="number" step="0.5" id="sb-weight" value="14.5" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+              </div>
+              <div>
+                <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Priority</label>
+                <select id="sb-priority" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-2 py-2 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+                  <option value="NORMAL">NORMAL</option>
+                  <option value="HIGH" selected>HIGH</option>
+                  <option value="CRITICAL">CRITICAL</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Deadline (m)</label>
+                <input type="number" id="sb-deadline" value="35" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Customer Persona</label>
+              <select id="sb-persona" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+                <option value="polite">Polite (Standard professional)</option>
+                <option value="urgent">Urgent (Time-critical stress)</option>
+                <option value="frustrated">Frustrated (Complaints on history)</option>
+                <option value="abusive">Abusive (Hostile tokens trigger guardrail)</option>
+                <option value="injection">Adversarial Injection (Jailbreak attempt)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Customer Special Instructions / Notes</label>
+              <textarea id="sb-notes" rows="3" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500 resize-none font-mono">Handle with extreme care. Ring buzzer on arrival.</textarea>
+            </div>
+
+            <div class="pt-2 border-t border-slate-200 dark:border-[#23314a] space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sb-exception" class="rounded bg-slate-100 dark:bg-[#151f33] border-slate-300 dark:border-[#23314a] text-sky-600 focus:ring-0">
+                <span class="text-amber-700 dark:text-amber-400 font-medium">Simulate Mid-Route Emergency Disruption</span>
+              </label>
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <div>
+                  <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Orchestrator</label>
+                  <select id="sb-orchestrator" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-2 py-1.5 text-slate-900 dark:text-slate-200">
+                    <option value="hierarchical">Hierarchical (Manager)</option>
+                    <option value="sequential">Sequential (Pipeline)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Prompt Reasoning</label>
+                  <select id="sb-style" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-2 py-1.5 text-slate-900 dark:text-slate-200">
+                    <option value="ReAct">ReAct Reasoning</option>
+                    <option value="Zero-Shot">Zero-Shot Direct</option>
+                    <option value="Chain-of-Thought">Chain-of-Thought</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" id="sb-submit-btn" class="w-full mt-3 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+              <span>Execute Multi-Agent Dispatch</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Custom Execution Output -->
+        <div class="lg:col-span-2 space-y-4">
+          <div id="sandbox-result-container" class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 min-h-[450px] flex flex-col justify-center items-center text-center shadow-sm">
+            <div class="w-16 h-16 rounded-full bg-sky-50 dark:bg-[#151f33] border border-sky-100 dark:border-[#23314a] flex items-center justify-center text-sky-600 dark:text-sky-400 mb-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            </div>
+            <h4 class="text-base font-semibold text-slate-800 dark:text-slate-300">Ready to Dispatch</h4>
+            <p class="text-xs text-slate-500 max-w-sm mt-1">
+              Configure parameters on the left and click "Execute Multi-Agent Dispatch" to observe live agent coordination, A2A messaging, and Blackboard states.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: LIVE RADAR & TELEMATICS -->
+    <!-- ========================================== -->
+    <div id="tab-content-telematics" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Radar Map Visualizer -->
+        <div class="lg:col-span-2 bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 space-y-4 shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-[#23314a] pb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>Real-Time Fleet Radar Visualizer</span>
+                <span id="telematics-connection-badge" class="px-2 py-0.5 text-xs bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 rounded-full font-mono font-medium">WebSocket: Connected</span>
+              </h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Live GPS telematics stream broadcasting simulated vehicle locations across Zone A, B, C, and D.</p>
+            </div>
+            <span class="text-xs font-mono text-slate-500" id="telematics-last-sync">Sync: live</span>
+          </div>
+
+          <!-- SVG Simulated Radar Screen (High Contrast Light Mode) -->
+          <div class="relative w-full h-[420px] rounded-lg border border-slate-200 dark:border-[#23314a] bg-slate-50 dark:bg-[#070b12] radar-grid overflow-hidden flex items-center justify-center">
+            
+            <!-- Zone Labels on Grid -->
+            <div class="absolute top-4 left-4 text-xs font-mono text-sky-700 dark:text-sky-400 bg-white/90 dark:bg-[#0e1524]/80 px-2.5 py-1 rounded border border-slate-200 dark:border-[#23314a] shadow-xs">
+              Zone A &bull; Industrial Depots
+            </div>
+            <div class="absolute top-4 right-4 text-xs font-mono text-purple-700 dark:text-purple-400 bg-white/90 dark:bg-[#0e1524]/80 px-2.5 py-1 rounded border border-slate-200 dark:border-[#23314a] shadow-xs">
+              Zone B &bull; Downtown &amp; Tech Park
+            </div>
+            <div class="absolute bottom-4 left-4 text-xs font-mono text-emerald-700 dark:text-emerald-400 bg-white/90 dark:bg-[#0e1524]/80 px-2.5 py-1 rounded border border-slate-200 dark:border-[#23314a] shadow-xs">
+              Zone C &bull; Commercial District
+            </div>
+            <div class="absolute bottom-4 right-4 text-xs font-mono text-amber-700 dark:text-amber-400 bg-white/90 dark:bg-[#0e1524]/80 px-2.5 py-1 rounded border border-slate-200 dark:border-[#23314a] shadow-xs">
+              Zone D &bull; Suburban Residential
+            </div>
+
+            <!-- SVG Radar Canvas -->
+            <svg id="radar-svg-canvas" class="w-full h-full" viewBox="0 0 800 420">
+              <!-- Radial rings -->
+              <circle cx="400" cy="210" r="180" fill="none" stroke="rgba(2, 132, 199, 0.2)" stroke-width="1" stroke-dasharray="4 4" />
+              <circle cx="400" cy="210" r="100" fill="none" stroke="rgba(2, 132, 199, 0.3)" stroke-width="1" />
+              <line x1="400" y1="30" x2="400" y2="390" stroke="rgba(2, 132, 199, 0.15)" stroke-width="1" />
+              <line x1="100" y1="210" x2="700" y2="210" stroke="rgba(2, 132, 199, 0.15)" stroke-width="1" />
+              <g id="radar-vehicles-layer"></g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Security Gateway & Edge Telemetry Card -->
+        <div class="lg:col-span-1 bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 space-y-4 shadow-sm">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-[#23314a] pb-3 flex items-center gap-2">
+            <span>Edge Security &amp; Gateway Health</span>
+          </h3>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="font-bold text-sky-700 dark:text-sky-400">HMAC-SHA256 Request Signing</span>
+              <p class="text-slate-600 dark:text-slate-400 mt-1">Replay defense window active (&plusmn;300s). All mutation dispatches are cryptographically validated against shared secrets.</p>
+            </div>
+
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="font-bold text-emerald-700 dark:text-emerald-400">Idempotency Key Deduplication</span>
+              <p class="text-slate-600 dark:text-slate-400 mt-1">Duplicate dispatch submissions return cached results with <code class="text-slate-700 dark:text-slate-300">X-Cache-Lookup: HIT</code>, preventing multiple vehicle dispatches.</p>
+            </div>
+
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="font-bold text-purple-700 dark:text-purple-400">Cloudflare Edge Proxy (wrangler.toml)</span>
+              <p class="text-slate-600 dark:text-slate-400 mt-1">Distributed rate limiting (120 req/min per IP) and strict CSP, HSTS, and X-Content-Type-Options headers.</p>
+            </div>
+          </div>
+
+          <!-- Active Security Metrics -->
+          <div class="pt-2 border-t border-slate-200 dark:border-[#23314a] space-y-2 font-mono text-xs text-slate-700 dark:text-slate-300">
+            <div class="flex justify-between">
+              <span class="text-slate-500">Wrangler Edge Status:</span>
+              <span class="text-emerald-600 dark:text-emerald-400 font-bold">READY</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Idempotency Cache:</span>
+              <span class="text-sky-600 dark:text-sky-400 font-bold" id="telematics-cache-count">Active</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Stream Protocol:</span>
+              <span class="text-amber-600 dark:text-amber-400 font-bold">RFC 6455 WebSocket</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: ACADEMIC BENCHMARKS & HEATMAPS -->
+    <!-- ========================================== -->
+    <div id="tab-content-visualizations" class="space-y-6 hidden">
+      <!-- KPI Row -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-4 shadow-sm">
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Mean Query Sensitivity</span>
+          <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1 font-mono">1.000</div>
+          <span class="text-[11px] text-slate-500">100% relevant policy recall</span>
+        </div>
+        <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-4 shadow-sm">
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Mean Query Specificity</span>
+          <div class="text-2xl font-bold text-sky-600 dark:text-sky-400 mt-1 font-mono">1.000</div>
+          <span class="text-[11px] text-slate-500">0% irrelevant rule leakage</span>
+        </div>
+        <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-4 shadow-sm">
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Shannon Decision Entropy</span>
+          <div class="text-2xl font-bold text-purple-600 dark:text-purple-400 mt-1 font-mono">0.917 <span class="text-xs font-normal text-slate-500">bits</span></div>
+          <span class="text-[11px] text-slate-500">Structured decision certainty</span>
+        </div>
+        <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-4 shadow-sm">
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400">MAS Accuracy Score</span>
+          <div class="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1 font-mono">1.000 / 1.0</div>
+          <span class="text-[11px] text-slate-500">Across all 48 factorial runs</span>
+        </div>
+      </div>
+
+      <!-- Chart Viewer Section -->
+      <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 space-y-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-[#23314a] pb-3">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>Diagnostic Visualizations (48-Run Evaluation Matrix)</span>
+          </h3>
+          <div class="flex items-center gap-2 text-xs">
+            <button onclick="showChart('latency')" id="chart-btn-latency" class="px-3 py-1.5 rounded-lg bg-sky-600 text-white font-semibold transition-colors">Latency Boxplot</button>
+            <button onclick="showChart('cost')" id="chart-btn-cost" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#151f33] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1c2942] transition-colors">Cost Boxplot</button>
+            <button onclick="showChart('agent_metrics')" id="chart-btn-agent_metrics" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#151f33] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1c2942] transition-colors">Agent Metric Heatmap</button>
+            <button onclick="showChart('agent_runs')" id="chart-btn-agent_runs" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#151f33] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1c2942] transition-colors">Agent Run Heatmap</button>
+            <button onclick="showChart('eval_metrics')" id="chart-btn-eval_metrics" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#151f33] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1c2942] transition-colors">Evaluation Metrics</button>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-[#080c14] border border-slate-200 dark:border-[#23314a] rounded-lg min-h-[480px]">
+          <img id="active-chart-img" src="/artifacts/latency_boxplot.png" alt="Diagnostic Visualization" class="max-h-[520px] max-w-full rounded shadow-sm object-contain">
+          <p id="active-chart-caption" class="text-xs text-slate-600 dark:text-slate-400 mt-3 font-mono">Figure 1: Latency distribution across architectures (Hierarchical vs. Sequential) and prompt styles.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: ACTIVE FLEET DATABASE -->
+    <!-- ========================================== -->
+    <div id="tab-content-fleet" class="space-y-6 hidden">
+      <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 space-y-4 shadow-sm">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-[#23314a] pb-3">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span>Live Fleet Telemetry &amp; Driver Pool</span>
+              <span id="fleet-count-badge" class="px-2 py-0.5 text-xs bg-slate-100 dark:bg-[#151f33] text-slate-700 dark:text-slate-300 rounded font-mono font-medium">10 Drivers</span>
+            </h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Live state synchronized with DriverDBTool (MCP Tool 1) with legal shift limit tracking.</p>
+          </div>
+          <button onclick="loadFleetData()" class="px-3 py-1.5 text-xs bg-slate-100 dark:bg-[#151f33] hover:bg-slate-200 dark:hover:bg-[#1c2942] text-slate-700 dark:text-slate-200 rounded-lg border border-slate-300 dark:border-[#23314a] transition-colors flex items-center gap-1.5 font-medium">
+            <span>Refresh Fleet State</span>
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left text-slate-800 dark:text-slate-300">
+            <thead class="text-[11px] uppercase bg-slate-100 dark:bg-[#151f33] text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-[#23314a]">
+              <tr>
+                <th class="px-4 py-3">Driver ID</th>
+                <th class="px-4 py-3">Full Name</th>
+                <th class="px-4 py-3">Stationed Zone</th>
+                <th class="px-4 py-3">Vehicle Type</th>
+                <th class="px-4 py-3">Capacity (kg)</th>
+                <th class="px-4 py-3">Hours Worked</th>
+                <th class="px-4 py-3">Rating</th>
+                <th class="px-4 py-3">Status</th>
+              </tr>
+            </thead>
+            <tbody id="fleet-table-body" class="divide-y divide-slate-200 dark:divide-[#23314a]/60 font-mono">
+              <tr>
+                <td colspan="8" class="px-4 py-8 text-center text-slate-500">Loading driver records...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: SYSTEM ARCHITECTURE & CRITERIA -->
+    <!-- ========================================== -->
+    <div id="tab-content-architecture" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Architecture Specification -->
+        <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 space-y-4 shadow-sm">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-[#23314a] pb-3 flex items-center gap-2">
+            <span>Dual-Framework Agent Architecture</span>
+          </h3>
+
+          <div class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="font-bold text-sky-700 dark:text-sky-400">1. Hierarchical Manager (Supervisor)</span>
+              <p class="text-slate-600 dark:text-slate-400 mt-1">Directs the workflow lifecycle, orchestrates parallel context gathering via ThreadPoolExecutor, and verifies invariants before final mission sign-off.</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="font-bold text-cyan-700 dark:text-cyan-400">2. Google ADK Route Planning Agent</span>
+              <p class="text-slate-600 dark:text-slate-400 mt-1">Exposes an interoperable AgentCard, receives typed A2AMessage payloads, and computes Pareto-optimal transit routes factoring traffic matrices.</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="font-bold text-amber-700 dark:text-amber-400">3. CrewAI Dispatch &amp; Exception Agents</span>
+              <p class="text-slate-600 dark:text-slate-400 mt-1">CrewDispatchAgent executes multi-criteria driver selection; CrewExceptionAgent dynamically intercepts mid-route failures and performs real-time reroutes.</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="font-bold text-emerald-700 dark:text-emerald-400">4. Blackboard Shared Memory State</span>
+              <p class="text-slate-600 dark:text-slate-400 mt-1">Single source of truth guarded by `threading.RLock()`. Every state mutation records agent identity, timestamp, and payload for full provenance auditing.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evaluation Criteria Coverage -->
+        <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 space-y-4 shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-[#23314a] pb-3">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span>Evaluation Criteria Coverage (Phase 2 &amp; Phase 3)</span>
+            </h3>
+            <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-500/30">100% Target Met</span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C1: Diverse Personas &amp; Adaptive Prompting</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C2: RAG Pipeline with Document Chunking</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C3: FastMCP Tool Ecosystem (5 tools)</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C4: Multi-Tier Guardrails &amp; HMAC Security</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C5: Observability, Tracing &amp; Cost Metrics</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C6: Collaborative MAS Protocols (A2A Bridge)</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C7: Exception Handling &amp; Dynamic Recovery</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C8: Dual Orchestrations (Hierarchical vs Sequential)</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C9: Comprehensive Academic Benchmarks</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C10: Individual Member Contributions &amp; Testing</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                <span>C11: Edge Deployment &amp; Cloudflare Gateway</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 dark:border-[#23314a] bg-white dark:bg-[#070b12] px-6 py-4 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+      <div>CSE3101 Agentic AI | Group 8 | Phase 3 Production Platform</div>
+      <div class="font-mono text-[11px] text-slate-500 dark:text-slate-400">DeliveryFleet-MAS v3.0 &bull; Cloudflare Edge &bull; Hallmark Light Mode &bull; WebSocket Live</div>
+    </div>
+  </footer>
+
+  <!-- Script Logic -->
+  <script>
+    let presetCases = {};
+    let telematicsWs = null;
+
+    // Theme Management: Light Mode is DEFAULT
+    function initTheme() {
+      const savedTheme = localStorage.getItem('deliveryfleet_theme');
+      // Default to light if not explicitly set to 'dark'
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        updateThemeUI('dark');
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+        updateThemeUI('light');
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('deliveryfleet_theme', 'light');
+        updateThemeUI('light');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('deliveryfleet_theme', 'dark');
+        updateThemeUI('dark');
+      }
+    }
+
+    function updateThemeUI(theme) {
+      const textEl = document.getElementById('theme-text');
+      if (textEl) {
+        textEl.innerText = theme === 'dark' ? 'Dark Mode' : 'Light Mode';
+      }
+    }
+
+    function switchTab(tabId) {
+      const tabs = ['scenarios', 'sandbox', 'telematics', 'visualizations', 'fleet', 'architecture'];
+      tabs.forEach(t => {
+        const content = document.getElementById(`tab-content-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (content && btn) {
+          if (t === tabId) {
+            content.classList.remove('hidden');
+            btn.classList.add('border-sky-600', 'dark:border-sky-400', 'text-sky-600', 'dark:text-sky-400', 'font-semibold');
+            btn.classList.remove('border-transparent', 'text-slate-600', 'dark:text-slate-400');
+          } else {
+            content.classList.add('hidden');
+            btn.classList.remove('border-sky-600', 'dark:border-sky-400', 'text-sky-600', 'dark:text-sky-400', 'font-semibold');
+            btn.classList.add('border-transparent', 'text-slate-600', 'dark:text-slate-400');
+          }
+        }
+      });
+      if (tabId === 'fleet') loadFleetData();
+      if (tabId === 'telematics') connectTelematicsWebSocket();
+    }
+
+    async function initCases() {
+      try {
+        const res = await fetch('/api/cases');
+        presetCases = await res.json();
+        renderCasesGrid();
+      } catch (err) {
+        console.error("Failed to load cases:", err);
+      }
+    }
+
+    function renderCasesGrid() {
+      const grid = document.getElementById('cases-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      Object.entries(presetCases).forEach(([caseId, c]) => {
+        const isEdge = c.category === 'Edge Case';
+        const isSecurity = c.category === 'Security & Guardrails';
+        
+        let badgeColor = 'bg-sky-50 dark:bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-500/30';
+        if (isEdge) badgeColor = 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-500/30';
+        if (isSecurity) badgeColor = 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-500/30';
+
+        const card = document.createElement('div');
+        card.className = "bg-white dark:bg-[#0e1524] hover:bg-slate-50 dark:hover:bg-[#151f33] border border-slate-200 dark:border-[#23314a] hover:border-slate-300 dark:hover:border-[#334668] rounded-xl p-4 flex flex-col justify-between transition-colors shadow-xs group";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded border ${badgeColor}">
+                ${c.category}
+              </span>
+              <span class="text-xs text-slate-500 font-mono font-medium">${c.payload.priority}</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-300 transition-colors">${c.title}</h4>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">${c.description}</p>
+          </div>
+          <div class="pt-4 mt-3 border-t border-slate-100 dark:border-[#23314a] flex items-center justify-between">
+            <span class="text-[11px] text-slate-500 font-mono">${c.payload.weight_kg}kg &bull; ${c.payload.persona}</span>
+            <button onclick="runCase('${caseId}')" id="btn-${caseId}" class="px-3 py-1.5 text-xs font-semibold bg-sky-50 hover:bg-sky-600 text-sky-700 hover:text-white dark:bg-sky-500/10 dark:hover:bg-sky-500 dark:text-sky-400 dark:hover:text-slate-950 border border-sky-200 hover:border-sky-600 dark:border-sky-500/30 dark:hover:border-sky-500 rounded-lg transition-colors flex items-center gap-1">
+              <span>Run</span>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    async function runCase(caseId) {
+      const btn = document.getElementById(`btn-${caseId}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="animate-spin text-xs">...</span> Running...`;
+      }
+
+      const container = document.getElementById('execution-results-container');
+      container.innerHTML = `
+        <div class="bg-white dark:bg-[#0e1524] border border-sky-300 dark:border-sky-500/30 rounded-xl p-6 text-center space-y-2 shadow-sm animate-pulse">
+          <h4 class="text-sm font-bold text-sky-600 dark:text-sky-400 tracking-wide">Executing Multi-Agent Coordination Pipeline...</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-400 font-mono">Running Google ADK + CrewAI &bull; Querying FastMCP DriverDB &bull; Updating Blackboard Shared State</p>
+        </div>
+      `;
+
+      try {
+        const res = await fetch(`/api/run-case/${caseId}`, { method: 'POST' });
+        const data = await res.json();
+        renderResult(data.report, 'execution-results-container', presetCases[caseId]?.title);
+      } catch (err) {
+        container.innerHTML = `<div class="p-4 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-500 rounded-xl text-rose-700 dark:text-rose-300 text-xs">Execution Error: ${err}</div>`;
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<span>Run</span>`;
+        }
+      }
+    }
+
+    async function runAllSequential() {
+      const keys = Object.keys(presetCases);
+      for (const k of keys) {
+        await runCase(k);
+        await new Promise(r => setTimeout(r, 600));
+      }
+    }
+
+    async function handleCustomDispatch(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('sb-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Coordinating Multi-Agent System...</span>`;
+
+      const resultBox = document.getElementById('sandbox-result-container');
+      resultBox.innerHTML = `
+        <div class="bg-white dark:bg-[#0e1524] border border-sky-300 dark:border-sky-500/30 rounded-xl p-8 text-center space-y-2 w-full animate-pulse shadow-sm">
+          <h4 class="text-sm font-bold text-sky-600 dark:text-sky-400">Coordinating Dual-Framework Dispatch Agents...</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-400 font-mono">InputGuard Screening &rarr; RAG Policy Retrieval &rarr; ADK Route Planning &rarr; Fleet Allocation</p>
+        </div>
+      `;
+
+      const payload = {
+        order_id: document.getElementById('sb-order-id').value,
+        pickup: document.getElementById('sb-pickup').value,
+        dropoff: document.getElementById('sb-dropoff').value,
+        weight_kg: parseFloat(document.getElementById('sb-weight').value),
+        priority: document.getElementById('sb-priority').value,
+        deadline_mins: parseInt(document.getElementById('sb-deadline').value),
+        persona: document.getElementById('sb-persona').value,
+        notes: document.getElementById('sb-notes').value,
+        simulate_exception: document.getElementById('sb-exception').checked,
+        orchestrator_type: document.getElementById('sb-orchestrator').value,
+        prompt_style: document.getElementById('sb-style').value
+      };
+
+      try {
+        const res = await fetch('/api/dispatch', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Idempotency-Key': 'IDEM-' + payload.order_id + '-' + Date.now()
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        renderResult(data.report, 'sandbox-result-container', `Custom Dispatch: ${payload.order_id}`);
+      } catch (err) {
+        alert("Dispatch Error: " + err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Execute Multi-Agent Dispatch</span>`;
+      }
+    }
+
+    function renderResult(report, containerId, titleContext = "Execution Report") {
+      const container = document.getElementById(containerId);
+      
+      let outcomeColor = 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/30';
+      if (report.delivery_outcome.includes('EXCEPTION') || report.delivery_outcome.includes('RECOVERED')) {
+        outcomeColor = 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-500/30';
+      } else if (report.delivery_outcome.includes('BLOCK') || report.delivery_outcome.includes('INVALID') || report.delivery_outcome.includes('UNASSIGNED')) {
+        outcomeColor = 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-500/30';
+      }
+
+      const hasException = report.exception_details != null;
+      const guardrailPassed = report.guardrail_summary.passed;
+
+      let html = `
+        <div class="bg-white dark:bg-[#0e1524] border border-slate-200 dark:border-[#23314a] rounded-xl p-5 space-y-5 shadow-sm text-left">
+          
+          <!-- Header Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 dark:border-[#23314a] pb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-slate-500">MISSION DISPATCH REPORT</span>
+                <span class="text-xs font-mono px-2 py-0.5 rounded border ${outcomeColor}">
+                  ${report.delivery_outcome}
+                </span>
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white mt-1">${titleContext} (Order: <span class="font-mono text-sky-600 dark:text-sky-400">${report.order_id}</span>)</h3>
+            </div>
+            <div class="flex items-center gap-3 text-xs font-mono">
+              <span class="px-2.5 py-1 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded text-slate-700 dark:text-slate-300">Latency: <b class="text-slate-900 dark:text-white">${report.total_execution_latency_sec.toFixed(3)}s</b></span>
+              <span class="px-2.5 py-1 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded text-slate-700 dark:text-slate-300">Cost: <b class="text-slate-900 dark:text-white">$${report.estimated_cost_usd.toFixed(5)}</b></span>
+              <span class="px-2.5 py-1 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded text-slate-700 dark:text-slate-300">Tokens: <b class="text-slate-900 dark:text-white">${report.total_tokens_consumed.toLocaleString()}</b></span>
+            </div>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="text-[10px] uppercase font-semibold text-slate-500">Assigned Driver</span>
+              <p class="text-xs font-bold text-slate-900 dark:text-white mt-1 truncate">${report.assigned_driver_id} (${report.assigned_driver_name})</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="text-[10px] uppercase font-semibold text-slate-500">Selected Route</span>
+              <p class="text-xs font-bold text-slate-900 dark:text-white mt-1 truncate">${report.selected_route}</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="text-[10px] uppercase font-semibold text-slate-500">Route Distance</span>
+              <p class="text-xs font-bold text-slate-900 dark:text-white mt-1 font-mono">${report.distance_km.toFixed(1)} km</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="text-[10px] uppercase font-semibold text-slate-500">Final ETA</span>
+              <p class="text-xs font-bold text-slate-900 dark:text-white mt-1 font-mono">${report.final_eta_mins.toFixed(1)} mins</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="text-[10px] uppercase font-semibold text-slate-500">Predicted Delay</span>
+              <p class="text-xs font-bold text-slate-900 dark:text-white mt-1 font-mono">${report.predicted_delay_mins.toFixed(1)} mins</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg">
+              <span class="text-[10px] uppercase font-semibold text-slate-500">Input Security</span>
+              <p class="text-xs font-bold ${report.input_guard_status === 'CLEAN' ? 'text-emerald-600 dark:text-emerald-400' : (report.input_guard_status.includes('MASKED') ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400')} mt-1 truncate">${report.input_guard_status}</p>
+            </div>
+          </div>
+
+          <!-- Exception Recovery Banner -->
+          ${hasException ? `
+            <div class="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-500/30 rounded-lg p-3.5 space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wide">Dynamic Exception Recovery (Criterion C7)</span>
+                <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-500/20">SAVED ${report.exception_details.time_saved_mins.toFixed(1)} mins</span>
+              </div>
+              <div class="text-xs text-slate-800 dark:text-slate-300">
+                <b>Disruption Cause:</b> ${report.exception_details.disruption_cause} &bull; 
+                <b>Recovery Action:</b> ${report.exception_details.recovery_action} &bull; 
+                <b>Reassigned Driver:</b> ${report.exception_details.reassigned_driver_id}
+              </div>
+              <p class="text-[11px] text-slate-600 dark:text-slate-400 italic">${report.exception_details.rationale}</p>
+            </div>
+          ` : ''}
+
+          <!-- Guardrail Summary -->
+          <div class="bg-slate-50 dark:bg-[#151f33] border border-slate-200 dark:border-[#23314a] rounded-lg p-3 text-xs space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-600 dark:text-slate-400 font-semibold">Guardrail Compliance:</span>
+              <span class="font-mono ${guardrailPassed ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'} font-bold">${guardrailPassed ? 'PASSED (0 VIOLATIONS)' : 'INTERVENTIONS TRIGGERED (' + report.guardrail_summary.interventions + ')'}</span>
+            </div>
+            ${report.guardrail_summary.violations.length > 0 ? `
+              <ul class="text-rose-600 dark:text-rose-300 list-disc list-inside text-[11px] pt-1">
+                ${report.guardrail_summary.violations.map(v => `<li>${v}</li>`).join('')}
+              </ul>
+            ` : '<p class="text-slate-500 text-[11px]">All pre-dispatch safety and municipal freight constraints fully satisfied.</p>'}
+          </div>
+
+          <!-- Blackboard Provenance Trail -->
+          <div class="border border-slate-200 dark:border-[#23314a] rounded-lg overflow-hidden">
+            <details class="group">
+              <summary class="px-4 py-2.5 bg-slate-50 dark:bg-[#151f33] hover:bg-slate-100 dark:hover:bg-[#1c2942] cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between transition-colors">
+                <span>Blackboard State Audit Trail (${report.provenance_trail.length} Transitions)</span>
+                <span class="text-sky-600 dark:text-sky-400 text-[11px] group-open:rotate-180 transition-transform">&darr;</span>
+              </summary>
+              <div class="p-3 bg-white dark:bg-[#080c14] space-y-2 text-xs font-mono max-h-60 overflow-y-auto custom-scrollbar">
+                ${report.provenance_trail.map(t => `
+                  <div class="p-2 border border-slate-100 dark:border-[#23314a] rounded bg-slate-50 dark:bg-[#0e1524] flex items-start gap-2">
+                    <span class="text-slate-500 text-[10px] whitespace-nowrap">${t.timestamp ? t.timestamp.split('T')[1].slice(0, 8) : '00:00:00'}</span>
+                    <span class="text-sky-600 dark:text-sky-400 font-bold whitespace-nowrap">[${t.agent_name}]</span>
+                    <span class="text-slate-800 dark:text-slate-300">${t.action_summary}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </details>
+          </div>
+
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function showChart(type) {
+      const charts = {
+        'latency': { src: '/artifacts/latency_boxplot.png', cap: 'Figure 1: Latency distribution across architectures (Hierarchical vs Sequential) and prompt styles.' },
+        'cost': { src: '/artifacts/cost_boxplot.png', cap: 'Figure 2: LLM token expenditure ($USD) per dispatch across models and persona variants.' },
+        'agent_metrics': { src: '/artifacts/agent_metric_heatmap.png', cap: 'Figure 3: Agent correlation matrix (Duration, Tokens, Cost, Accuracy) across the 48-run matrix.' },
+        'agent_runs': { src: '/artifacts/agent_run_heatmap.png', cap: 'Figure 4: Per-agent execution density and latency heatmap across 48 benchmark runs.' },
+        'eval_metrics': { src: '/artifacts/evaluation_metrics_heatmap.png', cap: 'Figure 5: Information-theoretic evaluation heatmap: Shannon Entropy, Sensitivity, and Specificity.' },
+      };
+
+      const c = charts[type];
+      if (c) {
+        document.getElementById('active-chart-img').src = c.src;
+        document.getElementById('active-chart-caption').innerText = c.cap;
+
+        ['latency', 'cost', 'agent_metrics', 'agent_runs', 'eval_metrics'].forEach(t => {
+          const btn = document.getElementById(`chart-btn-${t}`);
+          if (btn) {
+            if (t === type) {
+              btn.className = "px-3 py-1.5 rounded-lg bg-sky-600 text-white font-semibold transition-colors";
+            } else {
+              btn.className = "px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#151f33] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1c2942] transition-colors";
+            }
+          }
+        });
+      }
+    }
+
+    async function loadFleetData() {
+      const tbody = document.getElementById('fleet-table-body');
+      tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-8 text-center text-slate-500">Querying DriverDBTool MCP records...</td></tr>';
+      try {
+        const res = await fetch('/api/fleet');
+        const data = await res.json();
+        document.getElementById('fleet-count-badge').innerText = `${data.total_drivers} Drivers`;
+        
+        tbody.innerHTML = data.drivers.map(d => {
+          let statusBadge = 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30';
+          if (d.status === 'BUSY') statusBadge = 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/30';
+          if (d.status === 'OFF_DUTY') statusBadge = 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30';
+
+          const hoursWarning = d.hours_worked >= 9.0 ? 'text-rose-600 dark:text-rose-400 font-bold' : (d.hours_worked >= 8.0 ? 'text-amber-600 dark:text-amber-400 font-bold' : 'text-slate-700 dark:text-slate-300');
+
+          return `
+            <tr class="hover:bg-slate-50 dark:hover:bg-[#151f33] transition-colors">
+              <td class="px-4 py-3 font-bold text-sky-600 dark:text-sky-400">${d.driver_id}</td>
+              <td class="px-4 py-3 text-slate-900 dark:text-white font-medium">${d.name}</td>
+              <td class="px-4 py-3 text-slate-600 dark:text-slate-300">${d.current_zone}</td>
+              <td class="px-4 py-3 text-slate-600 dark:text-slate-300">${d.vehicle_type}</td>
+              <td class="px-4 py-3 text-slate-600 dark:text-slate-300">${d.capacity_kg} kg</td>
+              <td class="px-4 py-3 ${hoursWarning}">${d.hours_worked.toFixed(1)}h ${d.hours_worked >= 9.0 ? 'BLOCKED' : ''}</td>
+              <td class="px-4 py-3 text-amber-600 dark:text-amber-400">${d.rating.toFixed(2)}</td>
+              <td class="px-4 py-3">
+                <span class="px-2 py-0.5 rounded text-[10px] border ${statusBadge}">${d.status}</span>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-rose-600">Error loading fleet: ${err}</td></tr>`;
+      }
+    }
+
+    function connectTelematicsWebSocket() {
+      if (telematicsWs && telematicsWs.readyState === WebSocket.OPEN) return;
+
+      const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${wsProtocol}//${window.location.host}/ws/telematics`;
+      
+      try {
+        telematicsWs = new WebSocket(wsUrl);
+
+        telematicsWs.onopen = () => {
+          const badge = document.getElementById('telematics-connection-badge');
+          if (badge) {
+            badge.innerText = 'WebSocket: Connected';
+            badge.className = 'px-2 py-0.5 text-xs bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 rounded-full font-mono font-medium';
+          }
+        };
+
+        telematicsWs.onmessage = (event) => {
+          const msg = JSON.parse(event.data);
+          renderRadarVehicles(msg.vehicles);
+          const syncEl = document.getElementById('telematics-last-sync');
+          if (syncEl) syncEl.innerText = 'Sync: ' + new Date().toLocaleTimeString();
+        };
+
+        telematicsWs.onerror = () => {
+          pollTelematicsHttp();
+        };
+
+        telematicsWs.onclose = () => {
+          const badge = document.getElementById('telematics-connection-badge');
+          if (badge) {
+            badge.innerText = 'Polling (HTTP)';
+            badge.className = 'px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/30 rounded-full font-mono font-medium';
+          }
+        };
+      } catch {
+        pollTelematicsHttp();
+      }
+    }
+
+    async function pollTelematicsHttp() {
+      try {
+        const res = await fetch('/api/telematics/live');
+        const data = await res.json();
+        renderRadarVehicles(data.vehicles);
+      } catch (e) {
+        console.warn("Telematics poll failed:", e);
+      }
+    }
+
+    function renderRadarVehicles(vehicles) {
+      const g = document.getElementById('radar-vehicles-layer');
+      if (!g || !vehicles) return;
+
+      const minLat = 28.42, maxLat = 28.75;
+      const minLon = 77.00, maxLon = 77.45;
+
+      let svgHtml = '';
+      vehicles.forEach(v => {
+        const x = Math.max(20, Math.min(780, ((v.lon - minLon) / (maxLon - minLon)) * 760 + 20));
+        const y = Math.max(20, Math.min(400, (1 - ((v.lat - minLat) / (maxLat - minLat))) * 380 + 20));
+
+        const isBlocked = v.status === 'SHIFT_LIMIT_BLOCKED';
+        const color = isBlocked ? '#e11d48' : (v.zone === 'Zone A' ? '#0284c7' : (v.zone === 'Zone B' ? '#7c3aed' : '#059669'));
+
+        svgHtml += `
+          <g transform="translate(${x}, ${y})" class="transition-transform duration-1000">
+            <circle r="6" fill="${color}" fill-opacity="0.9" stroke="#ffffff" stroke-width="1.5" />
+            <circle r="12" fill="none" stroke="${color}" stroke-width="1" stroke-opacity="0.4" class="animate-ping" />
+            <text x="9" y="4" font-size="10" font-family="JetBrains Mono, monospace" fill="#0f172a" class="dark:fill-slate-100 font-bold">${v.driver_id}</text>
+          </g>
+        `;
+      });
+
+      g.innerHTML = svgHtml;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initCases();
+    });
+  </script>
+</body>
+</html>

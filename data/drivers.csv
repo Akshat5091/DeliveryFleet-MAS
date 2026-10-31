@@ -1,0 +1,11 @@
+driver_id,name,current_zone,vehicle_type,capacity_kg,status,current_orders,hours_worked,rating
+D01,Rajesh Sharma,Zone A,Van,80.0,AVAILABLE,0,4.5,4.9
+D02,Vikram Singh,Zone B,Bike,20.0,AVAILABLE,1,6.0,4.7
+D03,Amit Patel,Zone C,Van,100.0,AVAILABLE,0,8.8,4.8
+D04,Suresh Kumar,Zone A,Electric Van,75.0,AVAILABLE,0,2.5,4.95
+D05,Manoj Verma,Zone D,Truck,250.0,AVAILABLE,0,3.0,4.6
+D06,Pooja Nair,Zone B,Van,85.0,BUSY,2,5.5,4.85
+D07,Rohan Das,Zone C,Electric Scooter,25.0,AVAILABLE,0,1.5,4.75
+D08,Kavita Rao,Zone D,Van,90.0,AVAILABLE,1,7.2,4.65
+D09,Deepak Joshi,Zone A,Truck,300.0,OFF_DUTY,0,9.2,4.5
+D10,Sunil Mehra,Zone B,Electric Van,70.0,AVAILABLE,0,3.8,4.9

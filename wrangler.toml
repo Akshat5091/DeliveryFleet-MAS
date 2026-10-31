@@ -1,0 +1,39 @@
+# Cloudflare Workers & Pages Configuration for DeliveryFleet-MAS
+# Skill: wrangler-automation | Production Edge Gateway & Security Shield
+
+name = "deliveryfleet-mas-edge"
+main = "src/edge/worker.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "production"
+API_VERSION = "v3.0.0"
+MAX_REQUESTS_PER_MINUTE = "120"
+ORIGIN_BACKEND_URL = "http://127.0.0.1:8000"
+
+# Distributed KV Cache for Rate Limiting and Session Token Tracking
+[[kv_namespaces]]
+binding = "FLEET_EDGE_KV"
+id = "fleet_edge_kv_prod_001"
+preview_id = "fleet_edge_kv_dev_001"
+
+# D1 Distributed SQL for Persistent Audit Logs and Telematics History
+[[d1_databases]]
+binding = "FLEET_AUDIT_DB"
+database_name = "deliveryfleet_audit_prod"
+database_id = "df09a12c-4731-4a92-91e8-78b94092bcf1"
+
+# Static Asset Serving for Evaluation Reports, Artifacts & Data
+[site]
+bucket = "./artifacts"
+
+[observability]
+enabled = true
+head_sampling_rate = 1.0
+
+# Edge Security Headers and Routing Rules
+[routes]
+pattern = "fleet.mas-logistics.internal/*"
+zone_name = "mas-logistics.internal"
+
