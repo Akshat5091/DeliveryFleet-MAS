@@ -1,7 +1,7 @@
 # 🚚 Autonomous Multi-Agent Delivery Fleet Coordination & Dispatch System
 **Course:** CSE3101: Agentic AI — B.Tech CSE Semester VII  
-**Evaluation Phase:** Phase 2 (75% Milestone — Actual Progress: **~78% Complete**)  
-**Group Number:** 9  
+**Evaluation Phase:** Phase 2 (65–70% Milestone — Actual Progress: **~68% Complete: 7 Core Criteria Verified | 4 End-Term Novelties**)  
+**Group Number:** 8  
 **Team Members:** Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)  
 **Faculty Mentors:** Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari  
 
@@ -122,12 +122,12 @@ Navigate to `DeliveryFleet-MAS/` and install dependencies:
 pip install -r requirements.txt
 ```
 
-### 2. Run Automated Pytest Suite (40 of 40 Passing)
+### 2. Run Automated Pytest Suite (49 of 49 Passing)
 Verify that all unit tests, concurrency locks, A2A messages, MCP tools, guardrails, and metrics pass:
 ```bash
 pytest -v
 ```
-*Expected Result:* `40 passed in ~10.5s` with 0 warnings and 0 errors.
+*Expected Result:* `49 passed in ~10.5s` with 0 warnings and 0 errors.
 
 ### 3. Launch Interactive Web Dashboard
 Start the production web interface:

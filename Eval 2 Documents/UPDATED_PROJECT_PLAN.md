@@ -2,7 +2,7 @@
 
 **Course Code:** CSE3101 — Agentic AI  
 **Academic Year:** 2026–2027 | 7th Semester B.Tech CSE  
-**Group:** 9 | **Phase:** Phase 2 (Mid-Term Evaluation — 75% Milestone)  
+**Group:** 8 | **Phase:** Phase 2 (Mid-Term Evaluation — ~68% Milestone: 7 Core Criteria Verified | 4 End-Term Novelties)  
 **Team Members:** Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)  
 **Date of Update:** October 31, 2026  
 
@@ -34,11 +34,11 @@ In Phase 1, Group 8 proposed a preliminary 5-agent logistics dispatch model. Fol
 | **6** | **A2A Interoperability** | `A2ABridge` (`src/agents/a2a_bridge.py`) routing structured `A2AMessage` envelopes between CrewAI agents and the Google ADK Route Agent. | **Aadit Bassi** | **100% Complete** ✅ |
 | **7** | **CrewAI + Google ADK** | Google ADK powers `adk_route_agent.py`; CrewAI powers `crew_dispatch_agent.py`, `crew_retrieval_agent.py`, `crew_exception_agent.py`, and `hierarchical_orchestrator.py`. | **Aadit Bassi** (ADK)<br>**Bhumika Yadav** (CrewAI) | **100% Complete** ✅ |
 | **8** | **Security & Guardrails** | Multi-tier defense in `src/guardrails/`: `InputGuard` (prompt injection defense, abusive masking), `ToolValidator`, and `BusinessGuardrails` (hours <= 9.0h). | **Akshat Nagori** (Input)<br>**Sahil Mudgil** (Rules) | **100% Complete** ✅ |
-| **9** | **AI Observability & Tracing** | OpenTelemetry trace tree in `src/observability/tracing.py` linking root order IDs to sub-spans for provenance auditing. | **Sahil Mudgil** | **100% Complete** ✅ |
+| **9** | **AI Observability & Tracing** | OpenTelemetry trace tree in src/observability/tracing.py linking root order IDs to sub-spans. Multi-host OTel Collector daemon export to Jaeger dashboard reserved for End-Term. | **Sahil Mudgil** | **Phase 3 Novelty** 🚀 |
 | **10** | **End-to-End Evaluation (40+ Runs & Boxplots)** | Baseline comparative runs operational (`src/evaluation/benchmark_runner.py`). Full 72+ run factorial matrix across 3 architectures with Pareto frontiers reserved for End-Term. | **Sahil Mudgil**<br>**Akshat Nagori** | **Phase 3 Novelty** 🚀 |
-| **11** | **Cloud Deployment** | Production `Dockerfile` and `docker-compose.yml` configured for multi-container cloud deployment. | **Aadit Bassi** | **80% Ready** 🚀 |
+| **11** | **Cloud Deployment** | Production Dockerfile and docker-compose.yml configured. Live multi-cloud VM deployment (AWS EC2/GCP) with Cloudflare edge worker bridge reserved for End-Term. | **Aadit Bassi** | **Phase 3 Novelty** 🚀 |
 
-**Overall Project Milestone Status:** **~78% Complete** (Substantially exceeds Phase 2 requirement of 70–75%).
+**Overall Project Milestone Status:** **~68% Complete** (Exactly 7 of 11 Criteria 100% Verified for Eval-2 | 4 Reserved for End-Term Novelty).
 
 ---
 

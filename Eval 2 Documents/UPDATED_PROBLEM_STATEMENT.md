@@ -2,7 +2,7 @@
 
 **Course Code:** CSE3101 — Agentic AI  
 **Academic Year:** 2026–2027 | 7th Semester B.Tech CSE  
-**Group:** 9 | **Phase:** Evaluation 2 (75% Milestone Completion)  
+**Group:** 8 | **Phase:** Evaluation 2 (~68% Milestone: 7 Core Criteria Verified | 4 End-Term Novelties)  
 **Authors:** Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)  
 
 ---
