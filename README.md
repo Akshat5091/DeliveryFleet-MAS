@@ -29,10 +29,10 @@ DeliveryFleet-MAS/
 │   ├── latency_boxplot.png                  # Latency distribution by architecture & prompt style
 │   ├── cost_boxplot.png                     # Cost distribution across customer personas
 │   ├── agent_metric_heatmap.png             # Operational metrics correlation matrix
-│   ├── agent_run_heatmap.png                # Per-agent execution density across 48 benchmark runs
+│   ├── agent_run_heatmap.png                # Per-agent execution density across 72 benchmark runs
 │   ├── evaluation_metrics_heatmap.png       # Shannon Entropy H(X), Sensitivity, and Specificity
-│   ├── benchmark_results.json               # Full JSON telemetry dump of 48 benchmark runs
-│   └── benchmark_summary.csv                # Tabular summary of 48 factorial runs
+│   ├── benchmark_results.json               # Full JSON telemetry dump of 72 benchmark runs
+│   └── benchmark_summary.csv                # Tabular summary of 72 factorial runs
 ├── data/                                    # Datasets & Local Vector Knowledge Base
 │   ├── orders.csv                           # 20 benchmark delivery consignment orders
 │   ├── drivers.csv                          # 10 active driver profiles with hours and vehicle capacities
@@ -67,7 +67,7 @@ DeliveryFleet-MAS/
 │   │   └── a2a_bridge.py                    # A2A Inter-Framework Protocol Bridge
 │   ├── evaluation/                          # Benchmark & Analytics Suite
 │   │   ├── agent_evaluator.py               # Shannon entropy, sensitivity, and specificity metrics
-│   │   ├── benchmark_runner.py              # 48-run factorial benchmark runner
+│   │   ├── benchmark_runner.py              # 72-run factorial benchmark runner
 │   │   ├── personas.py                      # 4 customer persona prompt variations
 │   │   └── visualizer.py                    # Boxplot and heatmap generator
 │   ├── guardrails/                          # Multi-Tier Safety Layer
@@ -93,7 +93,7 @@ DeliveryFleet-MAS/
 │   └── web/                                 # Interactive Web Dashboard
 │       ├── app.py                           # FastAPI backend server
 │       └── index.html                       # Studio-grade dark mode interactive frontend
-├── tests/                                   # Pytest Test Suite (40 tests, 100% passing)
+├── tests/                                   # Pytest Test Suite (49 tests, 100% passing)
 │   ├── conftest.py                          # Pytest fixtures and environment setup
 │   ├── test_academic_metrics_and_resilience.py
 │   ├── test_concurrency_blackboard.py
@@ -147,7 +147,7 @@ python test_browser_suite.py
 *Expected Result:* All 13 test scenarios and UI interfaces verified with fresh screenshot artifacts saved in `artifacts/browser_screenshots/`.
 
 ### 5. Run Interactive CLI Demonstration
-Execute the full terminal-based demonstration and 48-run benchmark:
+Execute the full terminal-based demonstration and 72-run benchmark:
 ```bash
 python demo.py
 ```
@@ -160,4 +160,4 @@ python demo.py
 * **Bhumika Yadav (230732):** Dispatch & Orchestration Lead (Hierarchical Orchestrator, CrewAI Dispatch Agent, Blackboard State)
 * **Aadit Bassi (230728):** Routing, Tooling & Integration Lead (Google ADK Route Agent, A2A Bridge, FastMCP Server, Docker)
 * **Akshat Nagori (230682):** Retrieval, Prompts & Security Lead (ChromaDB Vector RAG, Input Security Guard, Persona Prompts, Web Dashboard)
-* **Sahil Mudgil (230743):** ML, Observability & Evaluation Lead (Random Forest Delay Model, Business Guardrails, MASTracer, 48-Run Benchmark)
+* **Sahil Mudgil (230743):** ML, Observability & Evaluation Lead (Random Forest Delay Model, Business Guardrails, MASTracer, 72-Run Benchmark)

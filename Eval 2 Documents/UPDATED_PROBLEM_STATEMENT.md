@@ -107,5 +107,5 @@ This updated problem statement establishes baseline compliance across all 11 eva
 7. **Dual-Framework Invariant:** Strict integration of Google ADK and CrewAI.
 8. **Security & Guardrails:** Multi-tier defense (Input Guard for prompt injection/abusive masking, tool return validation, business working-hour bylaws).
 9. **AI Observability:** Distributed OpenTelemetry tracing with order ID as trace root.
-10. **Performance Evaluation (40+ Runs & Boxplots):** 48 multi-variable benchmark runs generating publication-quality latency/cost boxplots.
+10. **Performance Evaluation (40+ Runs & Boxplots):** 72 multi-variable benchmark runs across 3 architectures generating publication-quality latency/cost boxplots.
 11. **Cloud Deployment:** Containerized with Docker and Docker Compose.

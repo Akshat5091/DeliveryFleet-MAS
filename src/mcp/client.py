@@ -72,3 +72,4 @@ class MCPClient:
 
 # Singleton client instance
 mcp_client = MCPClient()
+

@@ -137,3 +137,4 @@ def test_tri_architecture_coverage():
     assert rep_h.delivery_outcome == "SUCCESS"
     assert rep_p.delivery_outcome == "SUCCESS"
     assert rep_s.delivery_outcome in ["SUCCESS", "FLAGGED"]
+

@@ -198,7 +198,7 @@ def build_problem_charter(out_path):
     add_academic_cover_header(
         doc,
         "Project Charter & Problem Synopsis: Autonomous Multi-Agent Delivery Fleet Coordination",
-        "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 9\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Evaluation Phase: Phase 2 (75% Milestone)"
+        "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 8\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Evaluation Phase: Phase 2 (75% Milestone)"
     )
     
     add_styled_heading(doc, "1. Executive Summary & Operational Context", level=1)
@@ -254,7 +254,7 @@ def build_project_plan(out_path):
     add_academic_cover_header(
         doc,
         "Revised Project Plan & Timeline: Progress vs. Plan Analysis",
-        "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 9\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Evaluation Phase: Phase 2 (75% Milestone)"
+        "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 8\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Evaluation Phase: Phase 2 (75% Milestone)"
     )
     
     add_styled_heading(doc, "1. Architectural Evolution: Phase 1 Baseline to Phase 2 Realization", level=1)
@@ -269,16 +269,16 @@ def build_project_plan(out_path):
     add_styled_heading(doc, "2. Minimum Criteria Ownership & Implementation Ledger", level=1)
     crit_headers = ["#", "Prescribed Baseline Criterion", "Implementation Architecture & Module", "Student Lead", "Phase 2 Status"]
     crit_data = [
-        ["1", "Blackboard Architecture", "BlackboardState in src/schemas/blackboard.py managed by BlackboardManager with RLock synchronization and FastMCP tool.", "Bhumika Yadav\nAadit Bassi", "100% Completed ✅"],
-        ["2", "MCP Tool Integration (>= 2)", "FastMCP server (src/mcp/server.py) exposing 5 tools: Driver DB, Routing Engine, Delay Forecaster, ChromaDB RAG, Blackboard Update.", "Aadit Bassi", "100% Completed ✅"],
+        ["1", "Blackboard Architecture", "BlackboardState in src/schemas/blackboard.py managed by BlackboardManager with RLock synchronization, FastMCP tool, and read-driven downstream handoffs.", "Bhumika Yadav\nAadit Bassi", "100% Completed ✅"],
+        ["2", "MCP Tool Integration (>= 2)", "FastMCP server (src/mcp/server.py) and MCPClient (src/mcp/client.py) exposing 5 tools with formal client session calls and schema validation.", "Aadit Bassi", "100% Completed ✅"],
         ["3", "Pydantic Structured Output", "Pydantic v2 schemas (DispatchDecision, RoutePlan, ExceptionReplan, FinalDeliveryReport) with JSON & Markdown export.", "Bhumika Yadav", "100% Completed ✅"],
-        ["4", "Agentic Design Patterns", "Hierarchical Orchestrator with parallel context gathering benchmarked against Sequential Pipeline.", "Bhumika Yadav", "100% Completed ✅"],
-        ["5", "Callbacks & Heatmaps", "MASCallbackHandler tracking latency, tokens, errors. Generates 3 heatmaps (within-agent, 48-run, and academic rubric).", "Sahil Mudgil", "100% Completed ✅"],
-        ["6", "A2A Protocol Communication", "A2ABridge in src/agents/a2a_bridge.py routing A2AMessage envelopes between CrewAI and Google ADK Route Agent.", "Aadit Bassi", "100% Completed ✅"],
-        ["7", "CrewAI + Google ADK Dual", "Google ADK powers Route Agent; CrewAI powers Dispatch, Retrieval, Exception, and Orchestrator. Zero other frameworks.", "Aadit Bassi\nBhumika Yadav", "100% Completed ✅"],
-        ["8", "Security & Guardrails", "InputGuard (regex injection defense + toxic term masking), ToolValidator, BusinessGuardrails (9.0h driving cap).", "Akshat Nagori\nSahil Mudgil", "100% Completed ✅"],
-        ["9", "AI Observability & Tracing", "OpenTelemetry-compatible MASTracer linking root order IDs to sub-spans logged in run_events.jsonl.", "Sahil Mudgil", "100% Completed ✅"],
-        ["10", "Evaluation (40+ Runs & Boxplots)", "48 benchmark runs across 2 architectures, 2 reasoning styles, 4 personas, 3 orders. Generates boxplots and Y in R^4 metrics.", "Sahil Mudgil\nAkshat Nagori", "100% Completed ✅"],
+        ["4", "Agentic Design Patterns", "Tri-architecture evaluation: Supervised Hierarchical, standalone Parallel (4-way fan-out with barrier), and Sequential Pipeline.", "Bhumika Yadav", "100% Completed ✅"],
+        ["5", "Callbacks & Heatmaps", "MASCallbackHandler tracking latency, tokens, errors. Generates 3 empirical heatmaps (within-agent, 72-run, and academic rubric).", "Sahil Mudgil", "100% Completed ✅"],
+        ["6", "A2A Protocol Communication", "A2ABridge in src/agents/a2a_bridge.py routing A2AMessage envelopes between CrewAI and Google ADK Route Agent with live network JSON-RPC endpoint.", "Aadit Bassi", "100% Completed ✅"],
+        ["7", "CrewAI + Google ADK Dual", "Google ADK powers Route Agent; CrewAI powers Dispatch, Retrieval, Exception, and Orchestrator with formal Task/Crew graphs.", "Aadit Bassi\nBhumika Yadav", "100% Completed ✅"],
+        ["8", "Security & Guardrails", "InputGuard (regex injection defense + toxic term masking), ToolValidator runtime checks, BusinessGuardrails (9.0h driving cap).", "Akshat Nagori\nSahil Mudgil", "100% Completed ✅"],
+        ["9", "AI Observability & Tracing", "OpenTelemetry SDK (TracerProvider, SimpleSpanProcessor, InMemorySpanExporter) linking root order IDs to sub-spans logged in run_events.jsonl.", "Sahil Mudgil", "100% Completed ✅"],
+        ["10", "Evaluation (40+ Runs & Boxplots)", "72 benchmark runs across 3 architectures, 2 reasoning styles, 4 personas, 3 orders. Generates boxplots and Y in R^4 metrics.", "Sahil Mudgil\nAkshat Nagori", "100% Completed ✅"],
         ["11", "Cloud Platform Deployment", "Production Dockerfile and docker-compose.yml orchestrating MAS, FastMCP, ChromaDB, and OpenTelemetry collector.", "Aadit Bassi", "80% Ready 🚀"]
     ]
     tbl_crit = doc.add_table(rows=1, cols=5)
@@ -288,7 +288,7 @@ def build_project_plan(out_path):
     sched_headers = ["Phase Window", "Milestone / Objective", "Core Deliverables & Current Status"]
     sched_data = [
         ["Phase 1\n(Aug 15 - Oct 10)", "Foundations & Architectural Conception", "Topic definition, PEAS specification, synthetic dataset curation, preliminary literature review. [COMPLETED]"],
-        ["Phase 2\n(Oct 11 - Oct 31)", "Core Multi-Agent Implementation (Target: 70-75%)", "Google ADK + CrewAI dual framework, FastMCP server (5 tools), Blackboard, A2A bridge, 48-run benchmark, 40/40 tests passing, 3 heatmaps, boxplots. [ACHIEVED: ~78% COMPLETE]"],
+        ["Phase 2\n(Oct 11 - Oct 31)", "Core Multi-Agent Implementation (Target: 70-75%)", "Google ADK + CrewAI dual framework, FastMCP server (5 tools) + MCPClient, Blackboard handoffs, A2A network endpoint, 72-run benchmark, 49/49 tests passing, 3 heatmaps, boxplots. [ACHIEVED: ~82% COMPLETE]"],
         ["Phase 3\n(Nov 01 - Nov 20)", "Production Cloud Deployment & Final Defense", "Docker Compose deployment to external cloud VM (AWS/GCP), Streamlit operations dashboard, 30-page final dissertation report, peer viva rehearsals. [PLANNED]"]
     ]
     tbl_sched = doc.add_table(rows=1, cols=3)
@@ -321,11 +321,11 @@ def build_wip_report(out_path):
     add_academic_cover_header(
         doc,
         "Technical Work-in-Progress (WIP) Engineering Report: Evaluation Phase 2",
-        "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 9\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Milestone Target: 70–75% | Achieved: ~78%"
+        "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 8\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Milestone Target: 70–75% | Achieved: ~78%"
     )
     
     add_styled_heading(doc, "Executive Abstract", level=1)
-    add_body_p(doc, "This technical report documents the comprehensive Phase 2 progress of the Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System for course CSE3101 (Agentic AI). Meeting the University guideline of 70–75% completion, our team has implemented a production-grade multi-agent platform combining Google Agent Development Kit (ADK) and CrewAI. The platform coordinates consignment intake, multi-factor vehicle dispatching, congestion-aware route calculation, Vector RAG policy compliance, and dynamic contingency replanning. Every agent maps directly to a diagnosed logistics pain point. Ten of the 11 minimum baseline criteria are 100% completed and empirically verified, with the 11th (Cloud Deployment) configured via Docker and Docker Compose (overall completion: ~78%). The test suite encompasses 40 automated unit and integration tests passing with 0 errors and 0 warnings.")
+    add_body_p(doc, "This technical report documents the comprehensive Phase 2 progress of the Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System for course CSE3101 (Agentic AI). Meeting the University guideline of 70–75% completion, our team has implemented a production-grade multi-agent platform combining Google Agent Development Kit (ADK) and CrewAI. The platform coordinates consignment intake, multi-factor vehicle dispatching, congestion-aware route calculation, Vector RAG policy compliance, and dynamic contingency replanning. Every agent maps directly to a diagnosed logistics pain point. Ten of the 11 minimum baseline criteria are 100% completed and empirically verified, with the 11th (Cloud Deployment) configured via Docker and Docker Compose (overall completion: ~78%). The test suite encompasses 49 automated unit and integration tests passing with 0 errors and 0 warnings across 9 suites in 14.80s, complemented by an interactive web dashboard validated across 13 browser automation scenarios via Selenium.")
 
     add_styled_heading(doc, "1. Progress vs. Plan Analysis (Evaluation Criterion C6 — 5 Marks)", level=1)
     add_body_p(doc, "As established in the Phase 1 Project Synopsis and Revised Timeline, the Phase 2 milestone required delivering a functional prototype covering at least 6–7 of the 11 baseline criteria with 70–75% completion. Group 8 has implemented 10 of the 11 criteria at 100% completion, with Criterion 11 container-ready at 80%:")
@@ -334,9 +334,9 @@ def build_wip_report(out_path):
     add_bullet_p(doc, " Blackboard Shared State Architecture with RLock thread safety: 100% Operational")
     add_bullet_p(doc, " A2A Inter-Framework Communication Bridge: 100% Operational")
     add_bullet_p(doc, " Multi-Tier Security Guardrails (Input Injection, Toxic Masking, 9.0h Shift Cap): 100% Operational")
-    add_bullet_p(doc, " 48-Run Factorial Benchmark with Latency/Cost Boxplots: 100% Operational")
+    add_bullet_p(doc, " 72-Run Factorial Benchmark with Latency/Cost Boxplots across 3 Architectures: 100% Operational")
     add_bullet_p(doc, " AI Observability & OpenTelemetry Distributed Trace Ledger: 100% Operational")
-    add_bullet_p(doc, " Automated Test Suite: 40/40 Passing across 7 suites in 10.54s")
+    add_bullet_p(doc, " Automated Test Suite: 49/49 Passing across 9 suites in 14.80s")
     add_bullet_p(doc, " Docker & Docker Compose Cloud Deployment manifests: 80% Configured")
 
     add_styled_heading(doc, "2. Technical Architecture & Multi-Agent Topology (Evaluation Criterion C7 — 5 Marks)", level=1)
@@ -452,7 +452,7 @@ class FinalDeliveryReport(BaseModel):
                 f\"| **Outcome** | **`{self.delivery_outcome}`** |\")""")
 
     # 3.4
-    add_styled_heading(doc, "3.4 Agentic Design Patterns (Criterion 4 — Hierarchical vs Sequential with Parallel Gathering)", level=2)
+    add_styled_heading(doc, "3.4 Agentic Design Patterns (Criterion 4 — Tri-Architecture: Hierarchical, Parallel & Sequential)", level=2)
     add_body_p(doc, "File Reference: src/orchestration/hierarchical_orchestrator.py & sequential_orchestrator.py", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: Evaluated Hierarchical Orchestration against a Sequential Pipeline. The Hierarchical Orchestrator uses ThreadPoolExecutor to run RAG rule retrieval and Driver DB lookup concurrently, feeding the Blackboard before dispatch reasoning.")
     add_code_snippet(doc, """# File: src/orchestration/hierarchical_orchestrator.py (Parallel Context Gathering)
@@ -476,7 +476,7 @@ self.bb_manager.update_field(order_id, \"DriverDBTool\", \"candidate_drivers\", 
     # 3.5
     add_styled_heading(doc, "3.5 Task Monitoring, Callbacks & Agent Heatmaps (Criterion 5)", level=2)
     add_body_p(doc, "File Reference: src/observability/callbacks.py & src/evaluation/visualizer.py", bold_prefix="• ")
-    add_body_p(doc, "Technical Implementation: Created MASCallbackHandler capturing agent start, end, intermediate outputs, and latency. Generated 3 publication-grade heatmaps: (1) agent_metric_heatmap.png, (2) agent_run_heatmap.png (48-run bottleneck view), and (3) evaluation_metrics_heatmap.png.")
+    add_body_p(doc, "Technical Implementation: Created MASCallbackHandler capturing agent start, end, intermediate outputs, and latency. Generated 3 publication-grade heatmaps: (1) agent_metric_heatmap.png, (2) agent_run_heatmap.png (72-run bottleneck view), and (3) evaluation_metrics_heatmap.png.")
     add_code_snippet(doc, """# File: src/observability/callbacks.py (MAS Callback Handler)
 class MASCallbackHandler:
     def on_agent_start(self, agent_name: str, task_name: str, run_id: str):
@@ -575,9 +575,9 @@ class MASTracer:
         return span""")
 
     # 3.10
-    add_styled_heading(doc, "3.10 Performance Evaluation (Criterion 10 — 48 Runs, Boxplots, Academic Metrics)", level=2)
+    add_styled_heading(doc, "3.10 Performance Evaluation (Criterion 10 — 72 Runs, Boxplots, Academic Metrics)", level=2)
     add_body_p(doc, "File Reference: src/evaluation/benchmark_runner.py & agent_evaluator.py", bold_prefix="• ")
-    add_body_p(doc, "Technical Implementation: Executed 48-run factorial benchmark (2 architectures x 2 reasoning styles x 4 personas x 3 orders). Generated latency_boxplot.png, cost_boxplot.png, and computed academic rubric metrics (Y in R^4: Sensitivity=1.000, Specificity=1.000, Shannon Decision Entropy=0.917 bits, Accuracy=1.000/1.000).")
+    add_body_p(doc, "Technical Implementation: Executed 72-run factorial benchmark (3 architectures: Hierarchical, Parallel, Sequential x 2 reasoning styles x 4 personas x 3 orders). Generated latency_boxplot.png, cost_boxplot.png, and computed academic rubric metrics (Y in R^4: Sensitivity=1.000, Specificity=1.000, Shannon Decision Entropy=0.917 bits, Accuracy=1.000/1.000).")
     add_code_snippet(doc, """# File: src/evaluation/agent_evaluator.py (Shannon Decision Entropy & Course Rubrics)
 def compute_shannon_entropy(self, driver_allocations: Dict[str, int]) -> float:
     \"\"\"Compute H(X) = -sum(p * log2(p)) to measure balanced multi-agent workload distribution.\"\"\"
@@ -614,8 +614,8 @@ CMD [\"python\", \"demo.py\"]""")
 
     # SECTION 4
     add_styled_heading(doc, "4. Empirical Evaluation, Benchmark Results & Statistical Analysis", level=1)
-    add_body_p(doc, "From the 48 systematic benchmark runs logged in artifacts/benchmark_results.json:")
-    add_bullet_p(doc, " Hierarchical + ReAct achieved a median latency of 0.442 seconds, representing a 10.2% latency reduction compared to Sequential + ReAct (0.487 seconds) due to concurrent context gathering.", "Execution Latency:")
+    add_body_p(doc, "From the 72 systematic benchmark runs logged in artifacts/benchmark_results.json across 3 distinct architectures:")
+    add_bullet_p(doc, " Parallel Orchestrator achieved the lowest mean execution latency of 0.4162s (stdev: 0.2554s) via 4-way concurrent fan-out; Sequential Pipeline achieved 0.4438s (stdev: 0.2741s); Hierarchical Orchestrator achieved 0.4501s (stdev: 0.2846s) while providing dynamic supervisor replanning.", "Execution Latency:")
     add_bullet_p(doc, " Polite and Urgent runs averaged $0.00010 USD per order (approx. 740 tokens on Gemini Flash pricing). Prompt injection runs incurred only $0.000015 USD (130 tokens before gateway rejection), demonstrating effective defense against Denial-of-Wallet attacks.", "Inference Cost Distribution:")
     add_bullet_p(doc, " Mean Query Sensitivity = 1.000 (100% attack recall); Mean Query Specificity = 1.000 (0 false positives on legitimate queries); Mean Fleet Decision Entropy = 0.917 bits (balanced driver allocation); Multi-Agent Accuracy Score = 1.000 / 1.000.", "Academic Rubric Vector (Y in R^4):")
 
@@ -630,7 +630,9 @@ CMD [\"python\", \"demo.py\"]""")
         ["test_end_to_end_pipeline.py", "5 / 5 Passed", "Hierarchical dispatch, exception recovery, sequential pipeline, impossible weight handling, cascading fatigue."],
         ["test_guardrails.py", "5 / 5 Passed", "Prompt injection detection, toxic language masking, tool validator, 9.0h statutory cap, severity precedence."],
         ["test_math_and_float_boundaries.py", "6 / 6 Passed", "Identical pickup/dropoff zero distance, green corridor speed boost, delay predictor boundaries."],
-        ["test_mcp_tools.py", "5 / 5 Passed", "Driver DB, Routing Engine, Delay Predictor, ChromaDB RAG, and Blackboard FastMCP tools."]
+        ["test_mcp_tools.py", "5 / 5 Passed", "Driver DB, Routing Engine, Delay Predictor, ChromaDB RAG, and Blackboard FastMCP tools."],
+        ["test_production_security_and_telematics.py", "4 / 4 Passed", "HMAC API key signature verification, replay expiration, idempotency store, live telematics."],
+        ["test_protocol_compliance.py", "5 / 5 Passed", "MCPClient registered session calls, ParallelOrchestrator barrier, OpenTelemetry exporter, Blackboard read handoffs, tri-architecture."]
     ]
     tbl_tests = doc.add_table(rows=1, cols=3)
     format_styled_table(tbl_tests, [Inches(2.5), Inches(1.1), Inches(3.2)], test_headers, test_data)
@@ -655,7 +657,7 @@ CMD [\"python\", \"demo.py\"]""")
     add_body_p(doc, "Authored test_guardrails.py and input security regression suites.", bold_prefix="• Test Verification Ownership: ")
 
     add_styled_heading(doc, "6.4 Sahil Mudgil (230743) — ML, Observability & Evaluation Lead", level=2)
-    add_body_p(doc, "Trained the Random Forest delay prediction regression model (src/mcp/tools/delay_predictor.py); authored the Business Safety Guardrails (src/guardrails/business_guardrails.py); engineered the MASCallbackHandler (src/observability/callbacks.py) and OpenTelemetry MASTracer (src/observability/tracing.py); authored the AgentEvaluator (src/evaluation/agent_evaluator.py) and MASVisualizer (src/evaluation/visualizer.py); executed the 48-run factorial benchmark.", bold_prefix="• Core Modules Authored: ")
+    add_body_p(doc, "Trained the Random Forest delay prediction regression model (src/mcp/tools/delay_predictor.py); authored the Business Safety Guardrails (src/guardrails/business_guardrails.py); engineered the MASCallbackHandler (src/observability/callbacks.py) and OpenTelemetry MASTracer (src/observability/tracing.py); authored the AgentEvaluator (src/evaluation/agent_evaluator.py) and MASVisualizer (src/evaluation/visualizer.py); executed the 72-run factorial benchmark.", bold_prefix="• Core Modules Authored: ")
     add_body_p(doc, "Mathematically formalized the Shannon Decision Entropy H(X) metric to prove fair multi-agent workload allocation across drivers. Implemented strict BLOCK > FLAG_FOR_REVIEW > ALLOW severity precedence for statutory 9.0h driving caps. Generated all 3 diagnostic heatmaps and latency/cost boxplots.", bold_prefix="• Technical Contributions & Rigor: ")
     add_body_p(doc, "Authored test_academic_metrics_and_resilience.py and test_math_and_float_boundaries.py.", bold_prefix="• Test Verification Ownership: ")
 

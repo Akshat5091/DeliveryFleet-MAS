@@ -30,12 +30,12 @@ In Phase 1, Group 8 proposed a preliminary 5-agent logistics dispatch model. Fol
 | **2** | **MCP Tool Integration** | FastMCP server (`src/mcp/server.py`) exposing 5 tools: Driver DB, Routing Engine, ML Delay Forecaster, ChromaDB Vector RAG, and Blackboard State. | **Aadit Bassi** | **100% Complete** ✅ |
 | **3** | **Structured Pydantic Outputs** | Strongly typed models (`DispatchDecision`, `RoutePlan`, `ExceptionReplan`, `FinalDeliveryReport`) in `src/schemas/`. Formatted as JSON & Markdown tables. | **Bhumika Yadav** | **100% Complete** ✅ |
 | **4** | **Agentic Design Patterns** | Comparative implementation of **Hierarchical Orchestration** (`hierarchical_orchestrator.py`) vs. **Sequential Pipeline** (`sequential_orchestrator.py`) with Parallel Gathering. | **Bhumika Yadav** | **100% Complete** ✅ |
-| **5** | **Callbacks & Heatmaps** | `MASCallbackHandler` in `src/observability/callbacks.py` hooked to `RunLogger`. Visualizer generates Agent vs Metric and Agent vs 48-Run Latency heatmaps. | **Sahil Mudgil** | **100% Complete** ✅ |
+| **5** | **Callbacks & Heatmaps** | `MASCallbackHandler` in `src/observability/callbacks.py` hooked to `RunLogger`. Visualizer generates Agent vs Metric and Agent vs 72-Run Latency heatmaps. | **Sahil Mudgil** | **100% Complete** ✅ |
 | **6** | **A2A Interoperability** | `A2ABridge` (`src/agents/a2a_bridge.py`) routing structured `A2AMessage` envelopes between CrewAI agents and the Google ADK Route Agent. | **Aadit Bassi** | **100% Complete** ✅ |
 | **7** | **CrewAI + Google ADK** | Google ADK powers `adk_route_agent.py`; CrewAI powers `crew_dispatch_agent.py`, `crew_retrieval_agent.py`, `crew_exception_agent.py`, and `hierarchical_orchestrator.py`. | **Aadit Bassi** (ADK)<br>**Bhumika Yadav** (CrewAI) | **100% Complete** ✅ |
 | **8** | **Security & Guardrails** | Multi-tier defense in `src/guardrails/`: `InputGuard` (prompt injection defense, abusive masking), `ToolValidator`, and `BusinessGuardrails` (hours <= 9.0h). | **Akshat Nagori** (Input)<br>**Sahil Mudgil** (Rules) | **100% Complete** ✅ |
 | **9** | **AI Observability & Tracing** | OpenTelemetry trace tree in `src/observability/tracing.py` linking root order IDs to sub-spans for provenance auditing. | **Sahil Mudgil** | **100% Complete** ✅ |
-| **10** | **End-to-End Evaluation (40+ Runs & Boxplots)** | 48 benchmark runs executed across 2 architectures, 2 prompt styles, 4 personas, and 3 orders. Boxplots of latency & cost generated in `artifacts/`. | **Sahil Mudgil**<br>**Akshat Nagori** | **100% Complete** ✅ |
+| **10** | **End-to-End Evaluation (40+ Runs & Boxplots)** | 72 benchmark runs executed across 2 architectures, 2 prompt styles, 4 personas, and 3 orders. Boxplots of latency & cost generated in `artifacts/`. | **Sahil Mudgil**<br>**Akshat Nagori** | **100% Complete** ✅ |
 | **11** | **Cloud Deployment** | Production `Dockerfile` and `docker-compose.yml` configured for multi-container cloud deployment. | **Aadit Bassi** | **80% Ready** 🚀 |
 
 **Overall Project Milestone Status:** **~78% Complete** (Substantially exceeds Phase 2 requirement of 70–75%).
@@ -50,7 +50,7 @@ PHASE 1: Foundations & Architecture  ──>  PHASE 2: Core Engineering & Proof 
 • Topic definition & PEAS                • Google ADK + CrewAI Integration       • Multi-cloud production deployment
 • Initial synopsis & role matrix         • FastMCP server (5 tools)              • Final report in university format
 • Synthetic dataset curation             • Blackboard State & A2A Bridge         • Live interactive dashboard (Streamlit)
-• Baseline literature review             • 48-run benchmark & boxplots           • Viva practice across all modules
+• Baseline literature review             • 72-run benchmark & boxplots           • Viva practice across all modules
                                          • Multi-tier guardrails & heatmaps
 ```
 
@@ -61,7 +61,7 @@ PHASE 1: Foundations & Architecture  ──>  PHASE 2: Core Engineering & Proof 
 | **Oct 11 – Oct 18** | **Infrastructure & Schemas** | Pydantic v2 schemas (`BlackboardState`, `A2AMessage`, `FinalDeliveryReport`); FastMCP server; synthetic datasets (`orders.csv`, `drivers.csv`, `traffic.csv`, `delivery_history.csv`). | **DONE** ✅ |
 | **Oct 19 – Oct 24** | **Agent Development & A2A** | Implement Google ADK Route Agent; CrewAI Dispatch & Retrieval Agents; A2A communication bridge; Random Forest delay predictor training. | **DONE** ✅ |
 | **Oct 25 – Oct 29** | **Guardrails & Orchestration** | InputGuard (injection defense + abusive masking); BusinessGuardrails (9.0h rule); Hierarchical Manager and Sequential Orchestrators; Exception recovery loop. | **DONE** ✅ |
-| **Oct 30 – Oct 31** | **Eval-2 Benchmark & Artifacts** | Run 48-run benchmark matrix; generate publication-quality boxplots and heatmaps; execute pytest suite (40/40 passing); author Eval-2 documentation. | **DONE** ✅ |
+| **Oct 30 – Oct 31** | **Eval-2 Benchmark & Artifacts** | Run 72-run benchmark matrix; generate publication-quality boxplots and heatmaps; execute pytest suite (49/49 passing); author Eval-2 documentation. | **DONE** ✅ |
 | **Nov 01 – Nov 08** | **Production Cloud Containerization** | Docker Compose orchestration; health check endpoints; live cloud VM deployment; latency profiling under cloud network conditions. | **PLANNED** ⏳ |
 | **Nov 09 – Nov 15** | **UI Dashboard & Full Report** | Interactive Streamlit operations dashboard; comprehensive Phase 3 project report (approx. 25–30 pages) matching the provided university thesis template. | **PLANNED** ⏳ |
 | **Nov 16 – Nov 20** | **Final Defense & Viva Readiness** | Peer cross-examination; code walkthrough rehearsals ensuring every member can modify and defend any component. | **PLANNED** ⏳ |
@@ -75,7 +75,7 @@ PHASE 1: Foundations & Architecture  ──>  PHASE 2: Core Engineering & Proof 
 | **Bhumika Yadav** | 230732 | **Dispatch & Orchestration Lead** | Hierarchical Orchestrator, Sequential Pipeline, CrewAI Dispatch Agent, Blackboard Schema, Pydantic Structured Outputs. | 1, 3, 4, 7 |
 | **Aadit Bassi** | 230728 | **Routing, Tooling & Integration Lead** | Google ADK Route Agent, A2A Protocol Bridge, FastMCP Server (5 tools), Docker Containerization, Cloud Deployment. | 1, 2, 6, 7, 11 |
 | **Akshat Nagori** | 230682 | **Retrieval, Prompts & Security Lead** | Local Vector RAG Retrieval Agent, ChromaDB Knowledge Base, Input Guard (Prompt Injection & Abusive Masking), Persona Variance Prompts. | 8, 10 |
-| **Sahil Mudgil** | 230743 | **ML, Observability & Evaluation Lead** | Random Forest Delay Prediction Model, Business Compliance Guardrails, Callbacks & OpenTelemetry Tracing, 48-Run Benchmark, Boxplots & Heatmaps. | 5, 8, 9, 10 |
+| **Sahil Mudgil** | 230743 | **ML, Observability & Evaluation Lead** | Random Forest Delay Prediction Model, Business Compliance Guardrails, Callbacks & OpenTelemetry Tracing, 72-Run Benchmark, Boxplots & Heatmaps. | 5, 8, 9, 10 |
 
 ---
 

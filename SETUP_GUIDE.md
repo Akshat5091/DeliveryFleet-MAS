@@ -162,10 +162,10 @@ When the professor asks: *"Where is your data coming from?"* or *"Where are your
 * `artifacts/latency_boxplot.png`: Execution latency distribution across architectures (Hierarchical vs Sequential) and prompt styles (ReAct vs Direct).
 * `artifacts/cost_boxplot.png`: LLM token expenditure ($USD) distribution across customer personas.
 * `artifacts/agent_metric_heatmap.png`: Inter-agent metric correlation matrix (Duration, Tokens, Cost, Accuracy).
-* `artifacts/agent_run_heatmap.png`: Per-agent execution density and latency heatmap across the 48 benchmark runs.
+* `artifacts/agent_run_heatmap.png`: Per-agent execution density and latency heatmap across the 72 benchmark runs.
 * `artifacts/evaluation_metrics_heatmap.png`: Information-theoretic heatmap displaying Shannon Decision Entropy $H(X)$, Sensitivity, and Specificity.
 * `artifacts/browser_screenshots/`: 13 high-resolution screenshots capturing live browser execution of all cases and dashboard tabs in Light Mode.
-* `artifacts/benchmark_results.json` & `benchmark_summary.csv`: Full empirical telemetry logs of the 48-run factorial evaluation matrix.
+* `artifacts/benchmark_results.json` & `benchmark_summary.csv`: Full empirical telemetry logs of the 72-run factorial evaluation matrix.
 
 ---
 
@@ -207,7 +207,7 @@ During the viva evaluation, each team member should be prepared to defend their 
 * **Tests Owned:** `test_guardrails.py`, `test_production_security_and_telematics.py`, and the 13-scenario Selenium automated browser suite.
 
 ### 👤 Sahil Mudgil (230743) — ML, Observability & Evaluation Lead
-* **Modules Authored:** Random Forest Delay Prediction Model (`src/mcp/tools/delay_predictor.py`), Business Safety Guardrails (`src/guardrails/business_guardrails.py`), MAS Callback Handler (`src/observability/callbacks.py`), OpenTelemetry MASTracer (`src/observability/tracing.py`), Agent Evaluator (`src/evaluation/agent_evaluator.py`), Visualizer (`src/evaluation/visualizer.py`), 48-Run Factorial Benchmark (`src/evaluation/benchmark_runner.py`), Real-Time Telematics Simulator (`src/telematics/simulator.py`).
+* **Modules Authored:** Random Forest Delay Prediction Model (`src/mcp/tools/delay_predictor.py`), Business Safety Guardrails (`src/guardrails/business_guardrails.py`), MAS Callback Handler (`src/observability/callbacks.py`), OpenTelemetry MASTracer (`src/observability/tracing.py`), Agent Evaluator (`src/evaluation/agent_evaluator.py`), Visualizer (`src/evaluation/visualizer.py`), 72-Run Factorial Benchmark (`src/evaluation/benchmark_runner.py`), Real-Time Telematics Simulator (`src/telematics/simulator.py`).
 * **Core Technical Defense:** Training a Scikit-Learn Random Forest regressor ($R^2 = 0.941$) to compute delays in 0.0008s with zero token cost rather than hallucination-prone LLM arithmetic. Mathematical formulation of Shannon Decision Entropy $H(X) = 0.917$ bits proving balanced driver workload distribution. Strict `BLOCK > FLAG_FOR_REVIEW > ALLOW` severity precedence for statutory 9.0h driving limits.
 * **Tests Owned:** `test_academic_metrics_and_resilience.py` and `test_math_and_float_boundaries.py`.
 
@@ -216,7 +216,7 @@ During the viva evaluation, each team member should be prepared to defend their 
 ## 7. Frequently Asked Questions (Viva Cheat-Sheet)
 
 * **Q: Why don't CrewAI and Google ADK throw API Key errors?**
-  *A:* The agents genuinely instantiate official `crewai.Agent` and `google.adk.agents.Agent` objects. To ensure 100% deterministic testing, zero latency during the viva, and prevent quota exhaustion during the 48-run benchmark, the agents execute their decision logic and A2A communication using local FastMCP tools, in-memory ChromaDB RAG, and Random Forest regression. Token counts and costs are calculated against Google Gemini 1.5 Flash pricing formulas and logged into OpenTelemetry trace spans. The codebase is cloud-ready and containerized for live deployment.
+  *A:* The agents genuinely instantiate official `crewai.Agent` and `google.adk.agents.Agent` objects. To ensure 100% deterministic testing, zero latency during the viva, and prevent quota exhaustion during the 72-run benchmark, the agents execute their decision logic and A2A communication using local FastMCP tools, in-memory ChromaDB RAG, and Random Forest regression. Token counts and costs are calculated against Google Gemini 1.5 Flash pricing formulas and logged into OpenTelemetry trace spans. The codebase is cloud-ready and containerized for live deployment.
 * **Q: Why use a Blackboard instead of direct point-to-point messages?**
   *A:* In direct point-to-point messaging, state is scattered across ephemeral queues, creating partial-information blind spots where the route agent cannot see driver cumulative shift fatigue. The Blackboard serves as a synchronized single source of truth protected by `threading.RLock()`, with an immutable provenance audit log of every transition.
 * **Q: Why use Machine Learning for delay prediction instead of an LLM prompt?**

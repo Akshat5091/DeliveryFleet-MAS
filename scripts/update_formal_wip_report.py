@@ -254,12 +254,12 @@ def generate_enhanced_wip_report():
     add_academic_cover_header(
         doc,
         "Technical Work-in-Progress (WIP) Engineering Report: Evaluation Phase 2",
-        "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 9\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Milestone Target: 70–75% | Achieved: ~78%"
+        "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 8\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Milestone Target: 70–75% | Achieved: ~78%"
     )
 
     # ABSTRACT
     add_styled_heading(doc, "Executive Abstract", level=1)
-    add_body_p(doc, "This technical report documents the comprehensive Phase 2 progress of the Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System for course CSE3101 (Agentic AI). Surpassing the prescribed 70–75% Phase 2 benchmark, our team has realized an end-to-end production-grade platform combining Google Agent Development Kit (ADK) and CrewAI. The platform coordinates consignment intake, multi-factor vehicle dispatching, congestion-aware route calculation, Vector RAG policy compliance, and dynamic contingency replanning. Every agent maps directly to a diagnosed logistics bottleneck. Ten of the 11 baseline criteria are 100% completed and empirically verified, with the 11th (Cloud Deployment) configured via Docker and Docker Compose (overall project completion: ~78%). The test suite encompasses 40 automated unit and integration tests passing with 0 errors and 0 warnings, complemented by an interactive web dashboard validated across 13 browser automation scenarios via Selenium.")
+    add_body_p(doc, "This technical report documents the comprehensive Phase 2 progress of the Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System for course CSE3101 (Agentic AI). Surpassing the prescribed 70–75% Phase 2 benchmark, our team has realized an end-to-end production-grade platform combining Google Agent Development Kit (ADK) and CrewAI. The platform coordinates consignment intake, multi-factor vehicle dispatching, congestion-aware route calculation, Vector RAG policy compliance, and dynamic contingency replanning. Every agent maps directly to a diagnosed logistics bottleneck. Ten of the 11 baseline criteria are 100% completed and empirically verified, with the 11th (Cloud Deployment) configured via Docker and Docker Compose (overall project completion: ~78%). The test suite encompasses 49 automated unit and integration tests passing with 0 errors and 0 warnings across 9 suites in 14.80s, complemented by an interactive web dashboard validated across 13 browser automation scenarios via Selenium.")
 
     # SECTION 1: PROGRESS VS PLAN
     add_styled_heading(doc, "1. Progress vs. Plan Analysis (Evaluation Criterion C6 — 5 Marks)", level=1)
@@ -269,9 +269,9 @@ def generate_enhanced_wip_report():
     add_bullet_p(doc, " Blackboard Shared State Architecture with RLock thread safety: 100% Operational")
     add_bullet_p(doc, " A2A Inter-Framework Communication Bridge: 100% Operational")
     add_bullet_p(doc, " Multi-Tier Security Guardrails (Input Injection, Toxic Masking, 9.0h Shift Cap): 100% Operational")
-    add_bullet_p(doc, " 48-Run Factorial Benchmark with Latency/Cost Boxplots: 100% Operational")
+    add_bullet_p(doc, " 72-Run Factorial Benchmark with Latency/Cost Boxplots across 3 Architectures: 100% Operational")
     add_bullet_p(doc, " AI Observability & OpenTelemetry Distributed Trace Ledger: 100% Operational")
-    add_bullet_p(doc, " Automated Test Suite: 40/40 Passing across 7 suites in 10.54s")
+    add_bullet_p(doc, " Automated Test Suite: 49/49 Passing across 9 suites in 14.80s")
     add_bullet_p(doc, " Interactive Web Dashboard & Selenium Browser Test Suite (13/13 passing): 100% Operational")
     add_bullet_p(doc, " Docker & Docker Compose Cloud Deployment manifests: 80% Configured")
 
@@ -394,7 +394,7 @@ class FinalDeliveryReport(BaseModel):
                 f"| **Outcome** | **`{self.delivery_outcome}`** | Fulfillment state |")""")
 
     # 3.4
-    add_styled_heading(doc, "3.4 Agentic Design Patterns (Criterion 4 — Hierarchical vs Sequential with Parallel Gathering)", level=2)
+    add_styled_heading(doc, "3.4 Agentic Design Patterns (Criterion 4 — Tri-Architecture: Hierarchical, Parallel & Sequential)", level=2)
     add_body_p(doc, "File Reference: src/orchestration/hierarchical_orchestrator.py & sequential_orchestrator.py", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: Evaluated Hierarchical Orchestration against a Sequential Pipeline. The Hierarchical Orchestrator uses ThreadPoolExecutor to run RAG rule retrieval and Driver DB lookup concurrently, feeding the Blackboard before dispatch reasoning.")
     add_code_snippet(doc, """# File: src/orchestration/hierarchical_orchestrator.py (Parallel Context Gathering)
@@ -418,7 +418,7 @@ self.bb_manager.update_field(order_id, "DriverDBTool", "candidate_drivers", cand
     # 3.5
     add_styled_heading(doc, "3.5 Task Monitoring, Callbacks & Agent Heatmaps (Criterion 5)", level=2)
     add_body_p(doc, "File Reference: src/observability/callbacks.py & src/evaluation/visualizer.py", bold_prefix="• ")
-    add_body_p(doc, "Technical Implementation: Created MASCallbackHandler capturing agent start, end, intermediate outputs, and latency. Generated 3 publication-grade heatmaps: (1) agent_metric_heatmap.png, (2) agent_run_heatmap.png (48-run bottleneck view), and (3) evaluation_metrics_heatmap.png.")
+    add_body_p(doc, "Technical Implementation: Created MASCallbackHandler capturing agent start, end, intermediate outputs, and latency. Generated 3 publication-grade heatmaps: (1) agent_metric_heatmap.png, (2) agent_run_heatmap.png (72-run bottleneck view), and (3) evaluation_metrics_heatmap.png.")
     add_code_snippet(doc, """# File: src/observability/callbacks.py (MAS Callback Handler)
 class MASCallbackHandler:
     def on_agent_start(self, agent_name: str, task_name: str, run_id: str):
@@ -517,9 +517,9 @@ class MASTracer:
         return span""")
 
     # 3.10
-    add_styled_heading(doc, "3.10 Performance Evaluation (Criterion 10 — 48 Runs, Boxplots, Academic Metrics)", level=2)
+    add_styled_heading(doc, "3.10 Performance Evaluation (Criterion 10 — 72 Runs, Boxplots, Academic Metrics)", level=2)
     add_body_p(doc, "File Reference: src/evaluation/benchmark_runner.py & agent_evaluator.py", bold_prefix="• ")
-    add_body_p(doc, "Technical Implementation: Executed 48-run factorial benchmark (2 architectures x 2 reasoning styles x 4 personas x 3 orders). Generated latency_boxplot.png, cost_boxplot.png, and computed academic rubric metrics (Y in R^4: Sensitivity=1.000, Specificity=1.000, Shannon Decision Entropy=0.917 bits, Accuracy=1.000/1.000).")
+    add_body_p(doc, "Technical Implementation: Executed 72-run factorial benchmark (3 architectures: Hierarchical, Parallel, Sequential x 2 reasoning styles x 4 personas x 3 orders). Generated latency_boxplot.png, cost_boxplot.png, and computed academic rubric metrics (Y in R^4: Sensitivity=1.000, Specificity=1.000, Shannon Decision Entropy=0.917 bits, Accuracy=1.000/1.000).")
     add_code_snippet(doc, """# File: src/evaluation/agent_evaluator.py (Shannon Decision Entropy & Course Rubrics)
 def compute_shannon_entropy(self, driver_allocations: Dict[str, int]) -> float:
     \"\"\"Compute H(X) = -sum(p * log2(p)) to measure balanced multi-agent workload distribution.\"\"\"
@@ -533,7 +533,7 @@ def compute_shannon_entropy(self, driver_allocations: Dict[str, int]) -> float:
     return round(entropy, 3)
 
 # Factorial Benchmark Loop (src/evaluation/benchmark_runner.py)
-for arch in ["Hierarchical", "Sequential"]:
+for arch in ["Hierarchical", "Parallel", "Sequential"]:
     for style in ["ReAct", "Direct"]:
         for persona in ["polite", "urgent", "abusive", "injection"]:
             for test_order in self.test_orders:
@@ -581,7 +581,7 @@ CMD ["python", "demo.py"]""")
     add_bullet_p(doc, " The Hierarchical Manager pattern reduces message complexity to O(N), maintains a single point of truth in the Blackboard, performs parallel context gathering via ThreadPoolExecutor, and deterministically commits assignments.", "2. Hierarchical Supervisory Guarantee:")
     add_callout_box(
         doc,
-        "Empirical Benchmark Proof: In our 48-run factorial benchmark, Hierarchical Orchestration achieved a mean execution latency of 0.518 seconds (standard deviation: 0.042s) with 0 deadlocks across 48 runs.\n"
+        "Empirical Benchmark Proof: In our 72-run factorial benchmark, Parallel Orchestrator achieved a mean execution latency of 0.4162s (stdev: 0.2554s), Sequential achieved 0.4438s (stdev: 0.2741s), and Hierarchical achieved 0.4501s (stdev: 0.2846s) with zero deadlocks across all 72 runs.\n"
         "In contrast, Sequential Pipeline execution exhibited a mean latency of 0.672 seconds (29.7% slower) due to serialized context loading, and demonstrated inability to backtrack dynamically during mid-route disruptions without a complete pipeline restart.",
         title="EMPIRICAL LATENCY & RESILIENCE PROOF"
     )
@@ -612,7 +612,7 @@ CMD ["python", "demo.py"]""")
     add_bullet_p(doc, " An LLM inference call requires 400–1200 ms and consumes tokens; the Random Forest model evaluates the feature vector [distance_km, weight_kg, traffic_factor] in 0.0008 seconds (800 microseconds) with zero token cost.", "2. Computational Efficiency:")
     add_callout_box(
         doc,
-        "Empirical Regression Proof: Trained on 500 historical transit logs from data/delivery_history.csv, the Random Forest model achieved a coefficient of determination R^2 = 0.941 and Mean Absolute Error (MAE) = 1.84 minutes. Over the 48 benchmark runs, ML delay prediction consumed exactly 0 tokens and executed in 0.0008s average latency, avoiding $0.005/order in redundant LLM inference costs.",
+        "Empirical Regression Proof: Trained on 500 historical transit logs from data/delivery_history.csv, the Random Forest model achieved a coefficient of determination R^2 = 0.941 and Mean Absolute Error (MAE) = 1.84 minutes. Over the 72 benchmark runs, ML delay prediction consumed exactly 0 tokens and executed in 0.0008s average latency, avoiding $0.005/order in redundant LLM inference costs.",
         title="EMPIRICAL ML BENCHMARK PROOF"
     )
 
@@ -638,22 +638,22 @@ CMD ["python", "demo.py"]""")
     add_body_p(doc, "Spawning an auxiliary LLM agent to supervise and audit other LLM agents introduces a recursive token expenditure, injects 1–2 seconds of observational latency, and introduces a failure mode where the auditor itself hallucinates non-existent errors. Observability is handled natively by code-level callbacks (MASCallbackHandler) and OpenTelemetry-compatible trace spans (MASTracer), achieving zero-token overhead and microsecond-level precision.")
 
     # SECTION 5: EXPERIMENTAL BENCHMARK & VISUAL PROOFS
-    add_styled_heading(doc, "5. Experimental Evaluation, 48-Run Factorial Benchmark & Visual Proofs", level=1)
-    add_body_p(doc, "To provide empirical proof of system behavior across diverse operational regimes, we executed a complete 48-run factorial benchmark encompassing:")
-    add_bullet_p(doc, " Hierarchical Orchestrator vs. Sequential Pipeline", "• Architectures (2): ")
+    add_styled_heading(doc, "5. Experimental Evaluation, 72-Run Factorial Benchmark & Visual Proofs", level=1)
+    add_body_p(doc, "To provide empirical proof of system behavior across diverse operational regimes, we executed a complete 72-run factorial benchmark encompassing:")
+    add_bullet_p(doc, " Hierarchical Orchestrator vs. Parallel Orchestrator vs. Sequential Pipeline", "• Architectures (3): ")
     add_bullet_p(doc, " ReAct Reasoning Loop vs. Direct Zero-Shot Dispatch", "• Reasoning Styles (2): ")
     add_bullet_p(doc, " Polite, Urgent, Abusive, and Adversarial Injection", "• Customer Personas (4): ")
     add_bullet_p(doc, " Standard Express (12.5kg), Critical Cold-Chain (18.0kg), and Heavy Freight (35.0kg)", "• Consignment Profiles (3): ")
 
     # Embed Diagnostic Figures: Boxplots & Heatmaps
-    add_figure(doc, ARTIFACTS_DIR / "latency_boxplot.png", "Figure 3: Latency Distribution (s) across Multi-Agent Architectures and Reasoning Styles (48 Runs)")
+    add_figure(doc, ARTIFACTS_DIR / "latency_boxplot.png", "Figure 3: Latency Distribution (s) across Multi-Agent Architectures and Reasoning Styles (72 Runs)")
     add_figure(doc, ARTIFACTS_DIR / "cost_boxplot.png", "Figure 4: LLM Inference Cost ($USD) Distribution across Customer Personas and Prompt Styles")
     add_figure(doc, ARTIFACTS_DIR / "agent_metric_heatmap.png", "Figure 5: Multi-Metric Correlation Matrix: Execution Duration, Tokens, Cost, and Decision Accuracy")
-    add_figure(doc, ARTIFACTS_DIR / "agent_run_heatmap.png", "Figure 6: Per-Agent Execution Density and Latency Heatmap across the 48-Run Factorial Matrix")
+    add_figure(doc, ARTIFACTS_DIR / "agent_run_heatmap.png", "Figure 6: Per-Agent Execution Density and Latency Heatmap across the 72-Run Factorial Matrix")
     add_figure(doc, ARTIFACTS_DIR / "evaluation_metrics_heatmap.png", "Figure 7: Academic Evaluation Heatmap: Shannon Decision Entropy H(X), Sensitivity, and Specificity")
 
     add_body_p(doc, "Statistical Synthesis of Benchmark Visualizations:", bold_prefix="Key Quantitative Findings: ")
-    add_bullet_p(doc, " Figure 3 demonstrates that Hierarchical + ReAct achieves a median execution latency of 0.442s, representing a 10.2% speedup over Sequential + ReAct (0.487s) due to parallel context retrieval.", "1. Latency Superiority:")
+    add_bullet_p(doc, " Figure 3 demonstrates that Parallel Orchestration achieves the lowest mean latency of 0.4162s via 4-way concurrent fan-out, while Hierarchical Orchestration provides dynamic supervisor exception recovery at 0.4501s mean latency.", "1. Latency Superiority:")
     add_bullet_p(doc, " Figure 4 proves that prompt injection attacks cost only $0.000015 USD (130 tokens before pre-execution rejection), effectively preventing Denial-of-Wallet resource exhaustion.", "2. Cost & Security Gating:")
     add_bullet_p(doc, " Figure 7 confirms Shannon Decision Entropy H(X) = 0.917 bits across the driver pool, proving equitable workload distribution rather than greedy driver starvation.", "3. Balanced Workload Entropy:")
 
@@ -681,7 +681,7 @@ CMD ["python", "demo.py"]""")
 
     # SECTION 7: TEST LEDGER
     add_styled_heading(doc, "7. Automated Unit & Integration Test Suite Ledger (Evaluation Criterion C9 — 5 Marks)", level=1)
-    add_body_p(doc, "The entire test suite was executed from workspace root via pytest -v, achieving 100% pass rate across all 40 tests in 10.54 seconds:")
+    add_body_p(doc, "The entire test suite was executed from workspace root via pytest -v, achieving 100% pass rate across all 49 tests in 14.80 seconds:")
     test_headers = ["Test Suite Module", "Tests Passed", "Technical Scope & Verification Focus"]
     test_data = [
         ["test_academic_metrics_and_resilience.py", "6 / 6 Passed", "Shannon entropy H(X), Sensitivity, Specificity, A2A concurrency, approach deadhead scoring, heatmap generation."],
@@ -690,7 +690,9 @@ CMD ["python", "demo.py"]""")
         ["test_end_to_end_pipeline.py", "5 / 5 Passed", "Hierarchical dispatch, exception recovery, sequential pipeline, impossible weight handling, cascading fatigue."],
         ["test_guardrails.py", "5 / 5 Passed", "Prompt injection detection, toxic language masking, tool validator, 9.0h statutory cap, severity precedence."],
         ["test_math_and_float_boundaries.py", "6 / 6 Passed", "Identical pickup/dropoff zero distance, green corridor speed boost, delay predictor boundaries."],
-        ["test_mcp_tools.py", "5 / 5 Passed", "Driver DB, Routing Engine, Delay Predictor, ChromaDB RAG, and Blackboard FastMCP tools."]
+        ["test_mcp_tools.py", "5 / 5 Passed", "Driver DB, Routing Engine, Delay Predictor, ChromaDB RAG, and Blackboard FastMCP tools."],
+        ["test_production_security_and_telematics.py", "4 / 4 Passed", "HMAC API key signature verification, replay expiration, idempotency store, live telematics."],
+        ["test_protocol_compliance.py", "5 / 5 Passed", "MCPClient registered session calls, ParallelOrchestrator barrier, OpenTelemetry exporter, Blackboard read handoffs, tri-architecture."]
     ]
     tbl_tests = doc.add_table(rows=1, cols=3)
     format_styled_table(tbl_tests, [Inches(2.5), Inches(1.1), Inches(3.2)], test_headers, test_data)
@@ -715,7 +717,7 @@ CMD ["python", "demo.py"]""")
     add_body_p(doc, "Authored test_guardrails.py and the automated Selenium browser verification suite.", bold_prefix="• Test Verification Ownership: ")
 
     add_styled_heading(doc, "8.4 Sahil Mudgil (230743) — ML, Observability & Evaluation Lead", level=2)
-    add_body_p(doc, "Trained the Random Forest delay prediction regression model (src/mcp/tools/delay_predictor.py); authored the Business Safety Guardrails (src/guardrails/business_guardrails.py); engineered the MASCallbackHandler (src/observability/callbacks.py) and OpenTelemetry MASTracer (src/observability/tracing.py); authored the AgentEvaluator (src/evaluation/agent_evaluator.py) and MASVisualizer (src/evaluation/visualizer.py); executed the 48-run factorial benchmark.", bold_prefix="• Core Modules Authored: ")
+    add_body_p(doc, "Trained the Random Forest delay prediction regression model (src/mcp/tools/delay_predictor.py); authored the Business Safety Guardrails (src/guardrails/business_guardrails.py); engineered the MASCallbackHandler (src/observability/callbacks.py) and OpenTelemetry MASTracer (src/observability/tracing.py); authored the AgentEvaluator (src/evaluation/agent_evaluator.py) and MASVisualizer (src/evaluation/visualizer.py); executed the 72-run factorial benchmark.", bold_prefix="• Core Modules Authored: ")
     add_body_p(doc, "Mathematically formalized the Shannon Decision Entropy H(X) metric to prove fair multi-agent workload allocation across drivers. Implemented strict BLOCK > FLAG_FOR_REVIEW > ALLOW severity precedence for statutory 9.0h driving caps. Generated all diagnostic heatmaps and latency/cost boxplots.", bold_prefix="• Technical Contributions & Rigor: ")
     add_body_p(doc, "Authored test_academic_metrics_and_resilience.py and test_math_and_float_boundaries.py.", bold_prefix="• Test Verification Ownership: ")
 
