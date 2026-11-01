@@ -1,6 +1,7 @@
 """FastAPI Interactive Dashboard for Multi-Agent Delivery Fleet Coordination System.
 Course: CSE3101 Agentic AI | Group 8 | Phase 3 Production Up-Leveling
 Dual-Framework: Google ADK + CrewAI | FastMCP Tools | Blackboard Shared State
+Architectures: Hierarchical, Parallel (Fan-Out), Sequential
 Skills: hallmark | wrangler-automation | security-and-hardening | poteto-mode
 """
 import os
@@ -23,6 +24,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from src.orchestration.hierarchical_orchestrator import HierarchicalOrchestrator
+from src.orchestration.parallel_orchestrator import ParallelOrchestrator
 from src.orchestration.sequential_orchestrator import SequentialOrchestrator
 from src.mcp.tools.driver_db import DriverDBTool
 from src.evaluation.personas import CUSTOMER_PERSONAS, get_persona_prompt
@@ -65,6 +67,7 @@ if ARTIFACTS_DIR.exists():
     app.mount("/artifacts", StaticFiles(directory=str(ARTIFACTS_DIR)), name="artifacts")
 
 hierarchical_orch = HierarchicalOrchestrator()
+parallel_orch = ParallelOrchestrator()
 sequential_orch = SequentialOrchestrator()
 driver_db = DriverDBTool()
 telematics_sim = TelematicsSimulator()
@@ -315,6 +318,38 @@ def api_generate_signature(req: SignatureRequest):
         "algorithm": "HMAC-SHA256"
     })
 
+@app.post("/api/a2a/route")
+async def a2a_route_endpoint(request: Request):
+    """Network A2A Protocol JSON-RPC Endpoint for Google ADK Route Agent."""
+    body = await request.json()
+    from src.schemas.a2a import A2AMessage, A2ARequest, A2AResponse
+    from src.agents.adk_route_agent import ADKRouteAgent
+
+    if "payload" in body and isinstance(body["payload"], dict):
+        req_data = body["payload"]
+        msg_id = body.get("message_id", "msg-net")
+        task_id = body.get("task_id", "task-net")
+        from_agent = body.get("from_agent", "crew_dispatch_agent")
+    else:
+        req_data = body
+        msg_id = "msg-net"
+        task_id = "task-net"
+        from_agent = "caller"
+
+    a2a_req = A2ARequest.model_validate(req_data)
+    adk_agent = ADKRouteAgent()
+    resp = adk_agent.handle_a2a_request(a2a_req, run_id="a2a-net")
+
+    resp_msg = A2AMessage(
+        message_id=f"resp-{msg_id}",
+        task_id=task_id,
+        from_agent=adk_agent.agent_id,
+        to_agent=from_agent,
+        message_type="response",
+        payload=resp.model_dump()
+    )
+    return JSONResponse(content=resp_msg.model_dump())
+
 @app.post("/api/dispatch")
 async def execute_dispatch(payload: OrderPayload, request: Request = None):
     # 1. Idempotency Key Check
@@ -356,7 +391,14 @@ async def execute_dispatch(payload: OrderPayload, request: Request = None):
         "notes": payload.notes
     }
 
-    orch = hierarchical_orch if payload.orchestrator_type == "hierarchical" else sequential_orch
+    orch_type = (payload.orchestrator_type or "hierarchical").lower()
+    if orch_type == "parallel":
+        orch = parallel_orch
+    elif orch_type == "sequential":
+        orch = sequential_orch
+    else:
+        orch = hierarchical_orch
+
     run_id = f"WEB-{int(time.time()*1000)}"
 
     report = orch.process_order(

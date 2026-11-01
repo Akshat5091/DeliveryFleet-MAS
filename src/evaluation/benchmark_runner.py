@@ -1,4 +1,7 @@
-"""Automated Benchmark Runner executing 48+ Multi-Factor Agentic Evaluations."""
+"""Automated Benchmark Runner executing 72 Multi-Factor Agentic Evaluations.
+Course: CSE3101 Agentic AI | Group 8 | Multi-Agent Delivery Fleet
+Factorial Matrix: 3 Architectures x 2 Prompt Styles x 4 Personas x 3 Consignments = 72 Runs.
+"""
 import sys
 import time
 import csv
@@ -12,6 +15,7 @@ from typing import List, Dict, Any, Optional
 from pathlib import Path
 from ..config import ARTIFACTS_DIR, ORDERS_CSV
 from ..orchestration.hierarchical_orchestrator import HierarchicalOrchestrator
+from ..orchestration.parallel_orchestrator import ParallelOrchestrator
 from ..orchestration.sequential_orchestrator import SequentialOrchestrator
 from .personas import get_persona_prompt
 from ..observability.run_logger import RunLogger
@@ -21,6 +25,7 @@ class BenchmarkRunner:
 
     def __init__(self):
         self.hierarchical_orch = HierarchicalOrchestrator()
+        self.parallel_orch = ParallelOrchestrator()
         self.sequential_orch = SequentialOrchestrator()
         self.logger = RunLogger.get_logger()
         self.results: List[Dict[str, Any]] = []
@@ -36,15 +41,15 @@ class BenchmarkRunner:
         return orders
 
     def run_full_suite(self) -> List[Dict[str, Any]]:
-        """Execute full 48-run benchmark suite (2 architectures x 2 prompt styles x 4 personas x 3 orders)."""
+        """Execute full 72-run benchmark suite (3 architectures x 2 prompt styles x 4 personas x 3 orders)."""
         orders = self._load_sample_orders()
-        architectures = ["Hierarchical", "Sequential"]
+        architectures = ["Hierarchical", "Parallel", "Sequential"]
         prompt_styles = ["ReAct", "Direct"]
         personas = ["polite", "urgent", "abusive", "injection"]
 
         run_count = 0
         self.results = []
-        print(f"🏁 Starting MAS Multi-Factor Evaluation Suite (Target: 48 runs)...")
+        print(f"🏁 Starting MAS Multi-Factor Evaluation Suite (Target: 72 runs across 3 architectures)...")
 
         for arch in architectures:
             for style in prompt_styles:
@@ -52,7 +57,7 @@ class BenchmarkRunner:
                     for base_order in orders:
                         run_count += 1
                         run_id = f"RUN-{run_count:03d}"
-                        
+
                         # Prepare order instance with persona-varied notes
                         test_order = dict(base_order)
                         test_order["persona"] = persona
@@ -63,7 +68,14 @@ class BenchmarkRunner:
                             report = self.hierarchical_orch.process_order(
                                 order=test_order,
                                 prompt_style=style,
-                                simulate_exception=(base_order["order_id"] == "ORD-105"), # Simulate disruption on medical order
+                                simulate_exception=(base_order["order_id"] == "ORD-105"),
+                                run_id=run_id
+                            )
+                        elif arch == "Parallel":
+                            report = self.parallel_orch.process_order(
+                                order=test_order,
+                                prompt_style=style,
+                                simulate_exception=(base_order["order_id"] == "ORD-105"),
                                 run_id=run_id
                             )
                         else:
@@ -98,36 +110,24 @@ class BenchmarkRunner:
         print(f"✅ Successfully completed and logged all {len(self.results)} benchmark runs.")
 
         # Compute and persist academic course evaluation metrics (Sensitivity, Specificity, Entropy, Accuracy)
-        from .agent_evaluator import AgentEvaluator
-        evaluator = AgentEvaluator()
-        eval_metrics = evaluator.evaluate_batch(self.results)
-        summary = evaluator.compute_aggregate_summary(eval_metrics)
-        print(f"\n📊 Academic Evaluation Summary (Course Rubric: Y in R^4 across {len(self.results)} runs):")
-        print(f"  • Mean Query Sensitivity (Recall): {summary['mean_query_sensitivity']:.3f} (100% injection interception)")
-        print(f"  • Mean Query Specificity (TNR):    {summary['mean_query_specificity']:.3f} (Zero false-alarm rejections)")
-        print(f"  • Mean Fleet Decision Entropy:     {summary['mean_decision_entropy']:.3f} bits (Balanced driver allocation)")
-        print(f"  • Multi-Agent Accuracy Score:      {summary['mean_agent_accuracy']:.3f} / 1.000 (LLM-as-a-Judge composite)")
-
-        eval_path = ARTIFACTS_DIR / "evaluation_metrics.json"
-        with open(eval_path, "w", encoding="utf-8") as f:
-            json.dump({
-                "aggregate_summary": summary,
-                "run_metrics": [m.model_dump() for m in eval_metrics]
-            }, f, indent=2)
+        try:
+            from .agent_evaluator import AgentEvaluator
+            evaluator = AgentEvaluator()
+            metrics = evaluator.evaluate_batch(self.results)
+            evaluator.save_metrics_summary(metrics)
+            print("📈 Academic course evaluation metrics computed and saved to artifacts/evaluation_metrics.json.")
+        except Exception as e:
+            print(f"⚠️ Warning: Could not compute course evaluation metrics: {e}")
 
         return self.results
 
     def _save_results(self) -> None:
-        """Persist structured benchmark logs for visualization."""
-        json_path = ARTIFACTS_DIR / "benchmark_results.json"
-        csv_path = ARTIFACTS_DIR / "benchmark_summary.csv"
-
-        with open(json_path, "w", encoding="utf-8") as f:
+        """Persist structured benchmark runs to JSON artifact."""
+        ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+        out_path = ARTIFACTS_DIR / "benchmark_results.json"
+        with open(out_path, "w", encoding="utf-8") as f:
             json.dump(self.results, f, indent=2)
 
-        if self.results:
-            with open(csv_path, "w", newline="", encoding="utf-8") as f:
-                writer = csv.DictWriter(f, fieldnames=list(self.results[0].keys()))
-                writer.writeheader()
-                writer.writerows(self.results)
-
+if __name__ == "__main__":
+    runner = BenchmarkRunner()
+    runner.run_full_suite()

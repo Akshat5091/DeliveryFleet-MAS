@@ -1,6 +1,8 @@
-"""Visualization Suite: Generates Publication-Quality Boxplots and MAS Agent Heatmaps."""
+"""Visualization Suite: Generates Publication-Quality Boxplots and MAS Agent Heatmaps.
+Course: CSE3101 Agentic AI | Group 8 | Multi-Agent Delivery Fleet
+Pure empirical telemetry: zero synthetic fallback values or mock jitter.
+"""
 import warnings
-# Safeguard against Python 3.13 / Matplotlib skip_file_prefixes keyword argument issue
 _orig_warn = warnings.warn
 def _safe_warn(message, category=None, stacklevel=1, source=None, **kwargs):
     try:
@@ -38,7 +40,7 @@ class MASVisualizer:
             data = json.load(f)
         df = pd.DataFrame(data)
 
-        # Filter out blocked injection runs for execution latency boxplots (as requested in guidelines)
+        # Filter out blocked injection runs for execution latency boxplots
         valid_df = df[df["outcome"] != "BLOCKED_BY_GUARDRAIL"].copy()
 
         paths = {}
@@ -52,32 +54,33 @@ class MASVisualizer:
         return paths
 
     def plot_latency_boxplot(self, df: pd.DataFrame) -> str:
-        """Boxplot 1: Latency Distribution by MAS Architecture and Prompt Style."""
-        fig, ax = plt.subplots(figsize=(8, 5.5), dpi=300)
-        
-        # Prepare data groups matching Course LAB-03 Boxplot standard
+        """Boxplot 1: Latency Distribution by MAS Architecture (Hierarchical, Parallel, Sequential) and Prompt Style."""
+        fig, ax = plt.subplots(figsize=(10, 5.5), dpi=300)
+
         groups = [
             ("Hierarchical\n(ReAct)", df[(df["architecture"] == "Hierarchical") & (df["prompt_style"] == "ReAct")]["latency_sec"].values),
             ("Hierarchical\n(Direct)", df[(df["architecture"] == "Hierarchical") & (df["prompt_style"] == "Direct")]["latency_sec"].values),
+            ("Parallel\n(ReAct)", df[(df["architecture"] == "Parallel") & (df["prompt_style"] == "ReAct")]["latency_sec"].values),
+            ("Parallel\n(Direct)", df[(df["architecture"] == "Parallel") & (df["prompt_style"] == "Direct")]["latency_sec"].values),
             ("Sequential\n(ReAct)", df[(df["architecture"] == "Sequential") & (df["prompt_style"] == "ReAct")]["latency_sec"].values),
             ("Sequential\n(Direct)", df[(df["architecture"] == "Sequential") & (df["prompt_style"] == "Direct")]["latency_sec"].values),
         ]
-        
+
         labels = [g[0] for g in groups]
         data = [g[1] if len(g[1]) > 0 else np.array([0.0]) for g in groups]
 
         bp = ax.boxplot(data, tick_labels=labels, patch_artist=True, widths=0.55)
-        
-        colors = ["#2b5c8f", "#41729f", "#d95f02", "#e68541"]
+
+        colors = ["#2b5c8f", "#41729f", "#10b981", "#34d399", "#d95f02", "#e68541"]
         for patch, color in zip(bp['boxes'], colors):
             patch.set_facecolor(color)
             patch.set_alpha(0.85)
 
-        ax.set_title("MAS Execution Latency Distribution: Architecture & Prompt Reasoning", fontsize=12, fontweight="bold", pad=12)
+        ax.set_title("MAS Execution Latency Distribution: Hierarchical vs Parallel vs Sequential", fontsize=12, fontweight="bold", pad=12)
         ax.set_xlabel("Architecture & Prompt Reasoning Strategy", fontsize=11, labelpad=8)
         ax.set_ylabel("Execution Latency (Seconds)", fontsize=11, labelpad=8)
         ax.grid(True, linestyle="--", alpha=0.5, axis="y")
-        
+
         out_path = self.artifacts_dir / "latency_boxplot.png"
         plt.tight_layout()
         plt.savefig(out_path)
@@ -87,7 +90,7 @@ class MASVisualizer:
     def plot_cost_boxplot(self, df: pd.DataFrame) -> str:
         """Boxplot 2: Inference Cost Distribution across Personas and Architectures."""
         fig, ax = plt.subplots(figsize=(8.5, 5.5), dpi=300)
-        
+
         personas = ["polite", "urgent", "abusive", "injection"]
         labels = [p.capitalize() for p in personas]
         data = [df[df["persona"] == p]["cost_usd"].values if len(df[df["persona"] == p]) > 0 else np.array([0.0]) for p in personas]
@@ -103,7 +106,6 @@ class MASVisualizer:
         ax.set_ylabel("Estimated Inference Cost (USD)", fontsize=11, labelpad=8)
         ax.grid(True, linestyle="--", alpha=0.5, axis="y")
 
-
         out_path = self.artifacts_dir / "cost_boxplot.png"
         plt.tight_layout()
         plt.savefig(out_path)
@@ -111,9 +113,9 @@ class MASVisualizer:
         return str(out_path)
 
     def plot_agent_metric_heatmap(self) -> str:
-        """Heatmap 1: Operational Metrics across Each Agent of MAS."""
+        """Heatmap 1: Operational Metrics across Each Agent of MAS (100% Genuine Telemetry)."""
         events = self.logger.get_all_events()
-        
+
         agents = ["crew_retrieval_agent", "crew_dispatch_agent", "adk_route_agent", "crew_exception_agent", "InputGuard"]
         metrics = ["Mean Latency (ms)", "Mean Input Tokens", "Mean Output Tokens", "Interventions/Errors"]
 
@@ -126,14 +128,7 @@ class MASVisualizer:
                 mean_out = float(np.mean([e.output_tokens for e in ag_events]))
                 errs = sum(1 for e in ag_events if e.status != "SUCCESS")
             else:
-                defaults = {
-                    "crew_retrieval_agent": (18.5, 140, 70, 0),
-                    "crew_dispatch_agent": (32.0, 220, 110, 0),
-                    "adk_route_agent": (24.0, 180, 95, 0),
-                    "crew_exception_agent": (22.5, 200, 105, 0),
-                    "InputGuard": (4.5, 100, 30, 12)
-                }
-                mean_lat, mean_in, mean_out, errs = defaults.get(ag, (20.0, 150, 80, 0))
+                mean_lat, mean_in, mean_out, errs = 0.0, 0.0, 0.0, 0
 
             agent_data.append([round(mean_lat, 1), round(mean_in, 1), round(mean_out, 1), errs])
 
@@ -153,10 +148,10 @@ class MASVisualizer:
             linewidths=0.8,
             linecolor="white"
         )
-        
-        ax.set_title("MAS Agent Performance Heatmap: Mean Latency, Tokens & Errors", fontsize=12, fontweight="bold", pad=12)
+
+        ax.set_title("MAS Agent Performance Heatmap: Mean Latency, Tokens & Errors (Empirical)", fontsize=12, fontweight="bold", pad=12)
         ax.set_ylabel("Agent in MAS", fontsize=11, labelpad=8)
-        
+
         out_path = self.artifacts_dir / "agent_metric_heatmap.png"
         plt.tight_layout()
         plt.savefig(out_path)
@@ -164,37 +159,43 @@ class MASVisualizer:
         return str(out_path)
 
     def plot_agent_run_heatmap(self) -> str:
-        """Heatmap 2: Latency per Agent across 48 Benchmark Runs (Bottleneck Identifier)."""
+        """Heatmap 2: Latency per Agent across Benchmark Runs (Pure Observed Run Latency)."""
         events = self.logger.get_all_events()
         agents = ["crew_retrieval_agent", "crew_dispatch_agent", "adk_route_agent", "crew_exception_agent"]
-        
+
+        # Dynamically discover all run IDs present in event log
+        discovered_runs = sorted(list(set(e.run_id for e in events if e.run_id.startswith("RUN-"))))
+        if not discovered_runs:
+            discovered_runs = [f"RUN-{i:03d}" for i in range(1, 73)]
+
         matrix = []
         for ag in agents:
             row = []
-            for r in range(1, 49):
-                run_id = f"RUN-{r:03d}"
+            for run_id in discovered_runs:
                 ag_ev = [e for e in events if e.agent_name == ag and e.run_id == run_id]
                 if ag_ev:
                     row.append(round(ag_ev[0].latency_seconds * 1000.0, 1))
                 else:
-                    base = 32.0 if "dispatch" in ag else (24.0 if "route" in ag else 18.0)
-                    jitter = base + np.sin(r * 0.4) * 4.0
-                    row.append(round(max(10.0, jitter), 1))
+                    # If agent didn't participate in this run (e.g., exception didn't occur), log 0.0
+                    row.append(0.0)
             matrix.append(row)
 
-        df_runs = pd.DataFrame(matrix, index=agents, columns=[f"R{i}" for i in range(1, 49)])
+        col_labels = [f"R{r.split('-')[-1].lstrip('0') or '0'}" for r in discovered_runs]
+        df_runs = pd.DataFrame(matrix, index=agents, columns=col_labels)
 
-        fig, ax = plt.subplots(figsize=(14, 4.5), dpi=300)
+        # Compute dynamic width for large run counts (e.g. 72 runs)
+        fig_width = max(14.0, len(discovered_runs) * 0.22)
+        fig, ax = plt.subplots(figsize=(fig_width, 4.5), dpi=300)
         sns.heatmap(
             df_runs,
             cmap="magma_r",
-            cbar_kws={"label": "Latency (ms)"},
+            cbar_kws={"label": "Observed Latency (ms)"},
             ax=ax,
             linewidths=0.2
         )
-        
-        ax.set_title("MAS Execution Heatmap: Agent Latency across 48 Benchmark Runs (Bottleneck Analysis)", fontsize=12, fontweight="bold", pad=12)
-        ax.set_xlabel("Benchmark Run ID (1 to 48)", fontsize=11, labelpad=8)
+
+        ax.set_title(f"MAS Execution Heatmap: Agent Latency across {len(discovered_runs)} Benchmark Runs", fontsize=12, fontweight="bold", pad=12)
+        ax.set_xlabel(f"Benchmark Run Index (1 to {len(discovered_runs)})", fontsize=11, labelpad=8)
         ax.set_ylabel("Agent", fontsize=11, labelpad=8)
 
         out_path = self.artifacts_dir / "agent_run_heatmap.png"
@@ -204,7 +205,7 @@ class MASVisualizer:
         return str(out_path)
 
     def plot_evaluation_metrics_heatmap(self, records: Optional[List[Dict[str, Any]]] = None) -> str:
-        """Heatmap 3: Academic Evaluation Metrics (Query Sensitivity, Specificity, Entropy, Accuracy) across Runs 1 to 20."""
+        """Heatmap 3: Academic Evaluation Metrics across Runs 1 to 20."""
         from .agent_evaluator import AgentEvaluator
         evaluator = AgentEvaluator()
 
@@ -218,7 +219,7 @@ class MASVisualizer:
 
         metrics = evaluator.evaluate_batch(records)
         eval_slice = metrics[:20] if len(metrics) >= 20 else metrics
-        
+
         row_labels = ["Query Sensitivity", "Query Specificity", "Decision Entropy (bits)", "LLM Judge Accuracy"]
         matrix = [
             [m.query_sensitivity for m in eval_slice],
@@ -226,7 +227,7 @@ class MASVisualizer:
             [m.decision_entropy for m in eval_slice],
             [m.agent_accuracy_score for m in eval_slice]
         ]
-        
+
         col_labels = [f"R{i+1}" for i in range(len(eval_slice))]
         df_eval = pd.DataFrame(matrix, index=row_labels, columns=col_labels)
 
@@ -251,4 +252,3 @@ class MASVisualizer:
         plt.savefig(out_path)
         plt.close(fig)
         return str(out_path)
-

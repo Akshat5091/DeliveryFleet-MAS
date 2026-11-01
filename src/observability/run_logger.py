@@ -1,8 +1,12 @@
-"""Run Event Logger capturing per-agent metrics, latency, tokens, cost, and errors."""
+"""Run Event Logger capturing per-agent metrics, latency, tokens, cost, and errors.
+Course: CSE3101 Agentic AI | Group 8 | Multi-Agent Delivery Fleet
+Robust persistence with error ledger, directory guarantee, and thread safety.
+"""
 import threading
 from typing import List, Dict, Any, Optional
 import json
 import time
+import sys
 from pathlib import Path
 from pydantic import BaseModel, Field
 from ..config import RUN_LOGS_DIR, COST_PER_INPUT_TOKEN, COST_PER_OUTPUT_TOKEN
@@ -32,7 +36,14 @@ class RunLogger:
     def __init__(self, log_file: Optional[Path] = None):
         self.log_file = log_file or (RUN_LOGS_DIR / "run_events.jsonl")
         self.events: List[AgentEvent] = []
+        self.persistence_errors: List[str] = []
         self._lock = threading.RLock()
+        
+        # Ensure log directory exists
+        try:
+            self.log_file.parent.mkdir(parents=True, exist_ok=True)
+        except Exception as e:
+            self.persistence_errors.append(f"Directory creation failure: {e}")
 
     @classmethod
     def get_logger(cls) -> "RunLogger":
@@ -82,12 +93,15 @@ class RunLogger:
         with self._lock:
             self.events.append(event)
             
-            # Append to persistent JSONL log
+            # Append to persistent JSONL log with active error tracking
             try:
+                self.log_file.parent.mkdir(parents=True, exist_ok=True)
                 with open(self.log_file, "a", encoding="utf-8") as f:
                     f.write(event.model_dump_json() + "\n")
-            except Exception:
-                pass
+            except Exception as e:
+                err_msg = f"Failed to persist event {event.run_id} ({event.agent_name}): {e}"
+                self.persistence_errors.append(err_msg)
+                sys.stderr.write(f"[RunLogger Warning] {err_msg}\n")
 
         return event
 
@@ -96,8 +110,13 @@ class RunLogger:
         with self._lock:
             return list(self.events)
 
+    def get_persistence_errors(self) -> List[str]:
+        """Return ledger of any persistence errors encountered."""
+        with self._lock:
+            return list(self.persistence_errors)
+
     def clear(self) -> None:
-        """Reset in-memory log list."""
+        """Reset in-memory log list and error ledger."""
         with self._lock:
             self.events.clear()
-
+            self.persistence_errors.clear()

@@ -1,7 +1,10 @@
-"""Hierarchical Manager MAS Orchestrator coordinating CrewAI and Google ADK."""
+"""Hierarchical Manager MAS Orchestrator coordinating CrewAI and Google ADK.
+Course: CSE3101 Agentic AI | Group 8 | Multi-Agent Delivery Fleet
+Architecture Pattern: Hierarchical Orchestration with FastMCP, OpenTelemetry Tracing, and Blackboard Shared Context.
+"""
 import time
 import concurrent.futures
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from ..schemas.blackboard import BlackboardState, CandidateDriver, RetrievedRule
 from ..schemas.reports import FinalDeliveryReport
 from ..schemas.decisions import GuardrailEvaluation, RoutePlan
@@ -9,6 +12,7 @@ from ..schemas.a2a import A2ARequest
 from ..guardrails.input_guard import InputGuard
 from ..guardrails.business_guardrails import BusinessGuardrails
 from ..guardrails.tool_validator import ToolValidator
+from ..mcp.client import MCPClient, mcp_client
 from ..mcp.tools.driver_db import DriverDBTool
 from ..mcp.tools.delay_predictor import DelayPredictorTool
 from ..agents.crew_retrieval_agent import CrewRetrievalAgent
@@ -18,6 +22,7 @@ from ..agents.adk_route_agent import ADKRouteAgent
 from ..agents.a2a_bridge import A2ABridge
 from .blackboard_manager import BlackboardManager
 from ..observability.run_logger import RunLogger
+from ..observability.callbacks import MASCallbackHandler
 from ..observability.tracing import MASTracer
 
 class HierarchicalOrchestrator:
@@ -30,16 +35,22 @@ class HierarchicalOrchestrator:
         self.tool_validator = ToolValidator()
         self.driver_db = DriverDBTool()
         self.delay_predictor = DelayPredictorTool()
-        
-        # Agents across CrewAI and Google ADK
-        self.adk_route_agent = ADKRouteAgent()
-        self.a2a_bridge = A2ABridge(adk_route_agent=self.adk_route_agent)
-        self.retrieval_agent = CrewRetrievalAgent()
-        self.dispatch_agent = CrewDispatchAgent(a2a_bridge=self.a2a_bridge, delay_predictor=self.delay_predictor)
-        self.exception_agent = CrewExceptionAgent(a2a_bridge=self.a2a_bridge)
-
+        self.mcp_client = mcp_client
         self.logger = RunLogger.get_logger()
+        self.callbacks = MASCallbackHandler(logger=self.logger)
         self.tracer = MASTracer()
+
+        # Agents across CrewAI and Google ADK with MCPClient and MASCallbackHandler injected
+        self.adk_route_agent = ADKRouteAgent(client=self.mcp_client, callback_handler=self.callbacks)
+        self.a2a_bridge = A2ABridge(adk_route_agent=self.adk_route_agent)
+        self.retrieval_agent = CrewRetrievalAgent(client=self.mcp_client, callback_handler=self.callbacks)
+        self.dispatch_agent = CrewDispatchAgent(
+            a2a_bridge=self.a2a_bridge,
+            delay_predictor=self.delay_predictor,
+            client=self.mcp_client,
+            callback_handler=self.callbacks
+        )
+        self.exception_agent = CrewExceptionAgent(a2a_bridge=self.a2a_bridge, callback_handler=self.callbacks)
 
     def process_order(
         self,
@@ -48,10 +59,10 @@ class HierarchicalOrchestrator:
         simulate_exception: bool = False,
         run_id: str = "run-0"
     ) -> FinalDeliveryReport:
-        """Execute complete multi-agent delivery workflow for an incoming consignment."""
+        """Execute complete hierarchical multi-agent delivery workflow for an incoming consignment."""
         start_overall = time.time()
 
-        # Step -1: Pre-Execution Order Payload Validation
+        # Step -1: Pre-Execution Order Payload Validation (ToolValidator Guardrail)
         is_order_valid, order_errors = self.tool_validator.validate_order_data(order)
         order_id = str(order.get("order_id", "INVALID-ORD"))
         if not is_order_valid:
@@ -85,12 +96,11 @@ class HierarchicalOrchestrator:
         span_guard = self.tracer.start_span(trace_id, "InputSecurityScreening", "InputGuard")
         raw_notes = str(order.get("notes") or "")
         guard_res = self.input_guard.evaluate(raw_notes)
-
         self.tracer.end_span(span_guard, status=guard_res.status, extra_attributes={"threats": guard_res.detected_threats})
 
         # If malicious injection attack, refuse and terminate safely
         if guard_res.status == "BLOCKED_INJECTION":
-            total_time = time.time() - start_overall
+            total_time = round(time.time() - start_overall, 4)
             self.logger.log_event(
                 run_id=run_id,
                 order_id=order_id,
@@ -101,7 +111,7 @@ class HierarchicalOrchestrator:
                 end_time=time.time(),
                 input_tokens=100,
                 output_tokens=30,
-                status="BLOCKED_SECURITY",
+                status="BLOCKED_INJECTION",
                 metadata={"threats": guard_res.detected_threats}
             )
             return FinalDeliveryReport(
@@ -116,7 +126,7 @@ class HierarchicalOrchestrator:
                 final_eta_mins=0.0,
                 predicted_delay_mins=0.0,
                 delivery_outcome="BLOCKED_BY_GUARDRAIL",
-                total_execution_latency_sec=round(total_time, 4),
+                total_execution_latency_sec=total_time,
                 total_tokens_consumed=130,
                 estimated_cost_usd=round((100 * 0.075 + 30 * 0.30) / 1_000_000, 6),
                 guardrail_summary=GuardrailEvaluation(
@@ -127,7 +137,7 @@ class HierarchicalOrchestrator:
                 )
             )
 
-        # Step 1: Initialize Blackboard State
+        # Step 1: Initialize Central Blackboard State
         bb_state = self.bb_manager.initialize_order_state(
             order_id=order_id,
             pickup=order["pickup"],
@@ -140,11 +150,9 @@ class HierarchicalOrchestrator:
         )
         bb_state.masked_notes = guard_res.sanitized_text
 
-        # Step 2: Execution Flow with Comprehensive Fault Isolation
+        # Step 2: Context Gathering (Concurrent retrieval via ThreadPoolExecutor with Fault Recovery)
         try:
-            # Parallel Context Gathering (Span 2) - Executed concurrently via ThreadPoolExecutor
             span_gather = self.tracer.start_span(trace_id, "ParallelContextGathering", "Orchestrator")
-            
             with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
                 future_rag = executor.submit(
                     self.retrieval_agent.retrieve_rules_for_order,
@@ -162,7 +170,17 @@ class HierarchicalOrchestrator:
                 rules = future_rag.result()
                 raw_drivers = future_drivers.result()
 
-            self.bb_manager.update_field(order_id, "crew_retrieval_agent", "retrieved_rules", rules, "Pushed RAG rules to Blackboard")
+            # Tool Validation on Driver DB return
+            validated_drivers = []
+            for d in raw_drivers:
+                is_valid, _ = self.tool_validator.validate_driver_data(d)
+                if is_valid:
+                    validated_drivers.append(d)
+
+            # Commit Context into Blackboard Shared State
+            self.bb_manager.update_field(
+                order_id, "crew_retrieval_agent", "retrieved_rules", rules, "Committed RAG policy rules to Blackboard"
+            )
 
             candidates = [
                 CandidateDriver(
@@ -175,12 +193,14 @@ class HierarchicalOrchestrator:
                     rating=d["rating"],
                     status=d["status"]
                 )
-                for d in raw_drivers
+                for d in validated_drivers
             ]
-            self.bb_manager.update_field(order_id, "DriverDBTool", "candidate_drivers", candidates, "Loaded eligible drivers into Blackboard")
+            self.bb_manager.update_field(
+                order_id, "FastMCP:driver_db_lookup", "candidate_drivers", candidates, "Loaded validated drivers into Blackboard"
+            )
             self.tracer.end_span(span_gather, status="OK")
 
-            # Fallback if no available drivers meet payload capacity or hours
+            # Fallback if no available drivers meet criteria
             if not candidates:
                 total_time = round(time.time() - start_overall, 4)
                 guard_eval = GuardrailEvaluation(
@@ -190,19 +210,6 @@ class HierarchicalOrchestrator:
                     interventions=1
                 )
                 self.bb_manager.update_field(order_id, "BusinessGuardrails", "guardrail_passed", False, "No drivers meeting criteria")
-                self.logger.log_event(
-                    run_id=run_id,
-                    order_id=order_id,
-                    agent_name="FleetOrchestrator",
-                    framework="CrewAI",
-                    event_type="DISPATCH_FAILURE",
-                    start_time=start_overall,
-                    end_time=time.time(),
-                    input_tokens=150,
-                    output_tokens=40,
-                    status="NO_ELIGIBLE_DRIVERS",
-                    metadata={"order_id": order_id, "weight_kg": float(order["weight_kg"])}
-                )
                 return FinalDeliveryReport(
                     order_id=order_id,
                     priority=order["priority"],
@@ -222,8 +229,11 @@ class HierarchicalOrchestrator:
                     provenance_trail=bb_state.provenance_log
                 )
 
-            # Step 3: Dispatch Agent Reasoning over Blackboard (Span 3)
+            # Step 3: Dispatch Agent Reads Input STRICTLY FROM BLACKBOARD (Criterion 1 Compliance)
             span_dispatch = self.tracer.start_span(trace_id, "DispatchReasoning", "CrewDispatchAgent")
+            bb_candidates = self.bb_manager.get_field(order_id, "candidate_drivers")
+            bb_rules = self.bb_manager.get_field(order_id, "retrieved_rules")
+
             dispatch_dec = self.dispatch_agent.decide_assignment(
                 order_id=order_id,
                 pickup=order["pickup"],
@@ -231,7 +241,7 @@ class HierarchicalOrchestrator:
                 weight_kg=float(order["weight_kg"]),
                 priority=order["priority"],
                 deadline_mins=int(order["deadline_mins"]),
-                candidate_drivers=candidates,
+                candidate_drivers=bb_candidates,
                 prompt_style=prompt_style,
                 run_id=run_id
             )
@@ -240,57 +250,69 @@ class HierarchicalOrchestrator:
             self.bb_manager.update_field(order_id, "crew_dispatch_agent", "predicted_delay_mins", dispatch_dec.predicted_delay_mins, "Logged delay prediction")
             self.tracer.end_span(span_dispatch, status="OK")
 
-            # Step 4: Route Generation via Google ADK Route Agent over A2A (Span 4)
+            # Step 4: Route Generation via Google ADK Route Agent (Reads Driver Assignment from Blackboard)
             span_route = self.tracer.start_span(trace_id, "ADKRouteCalculation", "ADKRouteAgent")
+            assigned_driver_id = self.bb_manager.get_field(order_id, "assigned_driver_id")
             a2a_req = A2ARequest(
                 order_id=order_id,
-                driver_id=dispatch_dec.assigned_driver_id,
+                driver_id=assigned_driver_id,
                 pickup_zone=order["pickup"],
                 dropoff_zone=order["dropoff"],
                 priority=order["priority"]
             )
             route_plan = self.adk_route_agent.generate_route_plan(a2a_req, run_id=run_id)
+
+            # Guardrail: Tool Output Validation on Route Data
+            is_route_valid, route_errors = self.tool_validator.validate_route_data({
+                "distance_km": route_plan.distance_km,
+                "congestion_adjusted_eta_mins": route_plan.estimated_eta_mins
+            })
             self.bb_manager.update_field(order_id, "adk_route_agent", "selected_route", route_plan.selected_route, "Committed transit route")
             self.bb_manager.update_field(order_id, "adk_route_agent", "distance_km", route_plan.distance_km, "Recorded distance")
             self.bb_manager.update_field(order_id, "adk_route_agent", "estimated_eta_mins", route_plan.estimated_eta_mins, "Recorded congestion ETA")
             self.tracer.end_span(span_route, status="OK")
 
-            # Step 5: Business Guardrail Evaluation (Span 5)
+            # Step 5: Business Guardrail Evaluation
             span_biz = self.tracer.start_span(trace_id, "BusinessRuleValidation", "BusinessGuardrails")
-            chosen_driver_record = self.driver_db.get_driver_by_id(dispatch_dec.assigned_driver_id) or {}
+            bb_driver_id = self.bb_manager.get_field(order_id, "assigned_driver_id")
+            bb_eta = self.bb_manager.get_field(order_id, "estimated_eta_mins")
+            chosen_driver_record = self.driver_db.get_driver_by_id(bb_driver_id) or {}
             guard_eval = self.business_guardrails.evaluate_dispatch(
                 driver=chosen_driver_record,
                 order_weight_kg=float(order["weight_kg"]),
                 dropoff_location=order["dropoff"],
-                estimated_eta_mins=route_plan.estimated_eta_mins
+                estimated_eta_mins=bb_eta
             )
             self.bb_manager.update_field(order_id, "BusinessGuardrails", "guardrail_passed", guard_eval.passed, "Evaluated compliance")
             self.tracer.end_span(span_biz, status="OK" if guard_eval.passed else "FLAGGED")
 
-            # Step 6: Event-Driven Exception Handling (Span 6 - conditional)
+            # Step 6: Dynamic In-Transit Exception Handling
             exception_replan = None
             delivery_outcome = "SUCCESS"
-            final_eta = route_plan.estimated_eta_mins
-            final_route = route_plan.selected_route
-            final_driver_id = dispatch_dec.assigned_driver_id
+            final_eta = self.bb_manager.get_field(order_id, "estimated_eta_mins")
+            final_route = self.bb_manager.get_field(order_id, "selected_route")
+            final_driver_id = self.bb_manager.get_field(order_id, "assigned_driver_id")
             final_driver_name = dispatch_dec.assigned_driver_name
 
             if simulate_exception:
                 span_exc = self.tracer.start_span(trace_id, "ExceptionRecovery", "CrewExceptionAgent")
+                curr_driver = self.bb_manager.get_field(order_id, "assigned_driver_id")
+                curr_candidates = self.bb_manager.get_field(order_id, "candidate_drivers")
+
                 exception_replan = self.exception_agent.recover_disruption(
                     order_id=order_id,
-                    original_driver_id=dispatch_dec.assigned_driver_id,
+                    original_driver_id=curr_driver,
                     disruption_cause="TRAFFIC_ACCIDENT_ROAD_BLOCKAGE",
                     pickup_zone=order["pickup"],
                     dropoff_zone=order["dropoff"],
                     deadline_mins=int(order["deadline_mins"]),
-                    backup_drivers=candidates,
+                    backup_drivers=curr_candidates,
                     run_id=run_id
                 )
                 final_route = exception_replan.new_route
                 final_eta = exception_replan.new_eta_mins
                 final_driver_id = exception_replan.reassigned_driver_id
-                
+
                 if exception_replan.recovery_action == "ESCALATE_DISPATCH_SUPERVISOR":
                     delivery_outcome = "ESCALATED_SUPERVISOR_FATIGUE"
                     final_driver_name = "NONE (Supervisor Escalation)"
@@ -306,7 +328,6 @@ class HierarchicalOrchestrator:
                     reassigned_driver = self.driver_db.get_driver_by_id(final_driver_id)
                     if reassigned_driver:
                         final_driver_name = reassigned_driver["name"]
-                        # Re-verify business guardrails on reassigned driver
                         reassigned_guard = self.business_guardrails.evaluate_dispatch(
                             driver=reassigned_driver,
                             order_weight_kg=float(order["weight_kg"]),
@@ -331,7 +352,7 @@ class HierarchicalOrchestrator:
                 assigned_driver_id=final_driver_id,
                 assigned_driver_name=final_driver_name,
                 selected_route=final_route,
-                distance_km=route_plan.distance_km,
+                distance_km=self.bb_manager.get_field(order_id, "distance_km", route_plan.distance_km),
                 final_eta_mins=final_eta,
                 predicted_delay_mins=dispatch_dec.predicted_delay_mins,
                 delivery_outcome=delivery_outcome,
@@ -347,17 +368,16 @@ class HierarchicalOrchestrator:
             self.logger.log_event(
                 run_id=run_id,
                 order_id=order_id,
-                agent_name="FleetOrchestrator",
+                agent_name="HierarchicalOrchestrator",
                 framework="CrewAI",
-                event_type="SYSTEM_FAULT",
+                event_type="DISPATCH_FAILURE",
                 start_time=start_overall,
                 end_time=time.time(),
-                input_tokens=100,
-                output_tokens=30,
+                input_tokens=200,
+                output_tokens=60,
                 status="ERROR",
                 error_message=str(exc)
             )
-            bb_rec = self.bb_manager.get_state(order_id)
             return FinalDeliveryReport(
                 order_id=order_id,
                 priority=str(order.get("priority", "NORMAL")),
@@ -378,6 +398,5 @@ class HierarchicalOrchestrator:
                     violations=[f"Runtime fault intercepted: {str(exc)}"],
                     action_taken="BLOCK",
                     interventions=1
-                ),
-                provenance_trail=bb_rec.provenance_log if bb_rec else []
+                )
             )

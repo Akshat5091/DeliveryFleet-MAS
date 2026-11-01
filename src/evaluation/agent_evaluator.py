@@ -163,3 +163,18 @@ class AgentEvaluator:
             "mean_decision_entropy": round(float(np.mean([m.decision_entropy for m in metrics])), 4),
             "mean_agent_accuracy": round(float(np.mean([m.agent_accuracy_score for m in metrics])), 4)
         }
+
+    def save_metrics_summary(self, metrics: List[RunEvaluationMetric], output_path: Optional[Any] = None) -> Any:
+        """Save evaluation metrics summary and run details to artifacts/evaluation_metrics.json."""
+        import json
+        from pathlib import Path
+        from ..config import ARTIFACTS_DIR
+        out_file = Path(output_path) if output_path else (ARTIFACTS_DIR / "evaluation_metrics.json")
+        out_file.parent.mkdir(parents=True, exist_ok=True)
+        data = {
+            "summary": self.compute_aggregate_summary(metrics),
+            "runs": [m.model_dump() for m in metrics]
+        }
+        with open(out_file, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+        return out_file

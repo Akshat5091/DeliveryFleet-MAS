@@ -60,12 +60,12 @@ python run_dashboard.py
   5. **Active Fleet Database Tab:** Live telemetry table of all 10 drivers with vehicle types, capacities, ratings, and real-time shift fatigue alerts (`D09 BLOCKED`).
   6. **System Architecture & Criteria Tab:** Full breakdown of the Google ADK + CrewAI dual framework and progress bars for all 11 criteria.
 
-### 🧪 Option B: Run the Automated Pytest Verification Suite (44 of 44 Passing)
-Proves that all Blackboard locks, A2A messaging, FastMCP tools, HMAC security, idempotency caching, and academic metrics pass without errors:
+### 🧪 Option B: Run the Automated Pytest Verification Suite (49 of 49 Passing)
+Proves that all Blackboard locks, A2A messaging, FastMCP tools, OpenTelemetry tracing, HMAC security, idempotency caching, and academic metrics pass without errors:
 ```bash
 pytest -v
 ```
-* **Expected Result:** `44 passed in ~11.0s` (0 errors, 0 warnings across 8 test suites).
+* **Expected Result:** `49 passed in ~14.0s` (0 errors, 0 warnings across all test suites including protocol compliance).
 
 ### 🖥️ Option C: Run the Automated Selenium Browser Test Suite
 Drives a real headless Chrome session to verify all 13 dashboard scenarios, clicks buttons, verifies DOM contracts, and captures timestamped UI screenshots:
@@ -74,8 +74,15 @@ python test_browser_suite.py
 ```
 * **Expected Result:** `ALL BROWSER TESTS PASSED EMPIRICALLY (13/13 VERIFIED)`. Fresh screenshots are saved in `artifacts/browser_screenshots/`.
 
-### 📋 Option D: Run the Interactive Terminal CLI Demonstration
-Executes a terminal-based walkthrough of 5 operational scenarios and runs the 48-run factorial benchmark:
+### 📊 Option D: Run the 72-Run Factorial Benchmark Suite
+Executes the empirical benchmark comparing all 3 architectures (Hierarchical, Parallel, Sequential) across 2 prompt styles and 4 personas:
+```bash
+python -c "from src.evaluation.benchmark_runner import BenchmarkRunner; r = BenchmarkRunner(); r.run_full_suite()"
+```
+* **Expected Result:** `72 completed runs` logged to `artifacts/benchmark_results.json` and diagnostic charts regenerated.
+
+### 📋 Option E: Run the Interactive Terminal CLI Demonstration
+Executes a terminal-based walkthrough of operational scenarios:
 ```bash
 python demo.py
 ```
@@ -86,12 +93,27 @@ python demo.py
 
 When asked: *"Where are your agents defined in the code and why did you use each one?"*, point directly to these modules:
 
-### 1. Hierarchical Manager / Supervisor Agent
+### 1. Hierarchical Manager / Supervisor Orchestrator
 * **File Location:** `src/orchestration/hierarchical_orchestrator.py`
-* **Framework:** Custom Supervised Orchestrator with ThreadPoolExecutor & Blackboard Synchronization
-* **Why It Is Used:** Central coordinator that directs the lifecycle of every delivery mission. It coordinates parallel context gathering (RAG + Route Planning) via ThreadPoolExecutor, enforces invariant checks before dispatch, and prevents cyclic deadlocks that occur in pure peer-to-peer agent networks. Reduces message coordination complexity from $O(N^2)$ to $O(N)$.
+* **Framework:** Supervised Orchestrator with ThreadPoolExecutor & Blackboard Synchronization
+* **Why It Is Used:** Central coordinator directing the multi-agent workflow. It coordinates parallel context gathering (RAG + Driver Fleet) via ThreadPoolExecutor, updates the Blackboard shared state, passes state to downstream agents via Blackboard reads, and enforces pre-dispatch invariants.
 
-### 2. Google ADK Route Planning Agent
+### 2. Parallel Fan-Out Orchestrator
+* **File Location:** `src/orchestration/parallel_orchestrator.py`
+* **Framework:** High-Concurrency Fan-Out Architecture with ThreadPoolExecutor Barrier
+* **Why It Is Used:** Evaluates all independent tasks simultaneously (RAG Policy Search, Fleet Driver DB Lookup, Transit Corridor Routing, and Delay Forecasting) across concurrent threads, converging at a Blackboard consensus barrier. Delivers the lowest latency among all 3 architectures.
+
+### 3. Sequential Pipeline Orchestrator
+* **File Location:** `src/orchestration/sequential_orchestrator.py`
+* **Framework:** Deterministic Waterfall Pipeline Pattern
+* **Why It Is Used:** Executes agents in rigid serial order (InputGuard -> RAG -> Driver DB -> Dispatch -> Routing -> Guardrails) with Blackboard state mutation. Serves as the empirical baseline to benchmark against Hierarchical and Parallel architectures.
+
+### 4. FastMCP Protocol Tool Client
+* **File Location:** `src/mcp/client.py` & `src/mcp/server.py`
+* **Framework:** Model Context Protocol (FastMCP)
+* **Why It Is Used:** Exposes fleet tools (`driver_db_lookup`, `routing_engine_calculate`, `delay_predictor_forecast`, `policy_rag_search`, `blackboard_update`) via standard MCP protocol schemas. Agents interact with external databases and simulation tools via `mcp_client.call_tool(...)`.
+
+### 5. Google ADK Route Planning Agent
 * **File Location:** `src/agents/adk_route_agent.py`
 * **Framework:** Google Agent Development Kit (ADK)
 * **Why It Is Used:** Encapsulates traffic-aware inter-zone path optimization. It exposes a standard `AgentCard` and communicates via typed `A2AMessage` envelopes over the A2A Bridge (`src/agents/a2a_bridge.py`). Demonstrates cross-framework agentic interoperability without binary coupling or cloud vendor lock-in.

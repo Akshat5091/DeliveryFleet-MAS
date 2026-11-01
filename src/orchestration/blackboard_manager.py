@@ -53,6 +53,14 @@ class BlackboardManager:
         with self._lock:
             return self._states.get(order_id)
 
+    def get_field(self, order_id: str, field_name: str, default: Any = None) -> Any:
+        """Fetch a specific field value directly from the order's Blackboard state."""
+        with self._lock:
+            state = self._states.get(order_id)
+            if not state:
+                return default
+            return getattr(state, field_name, default)
+
     def get_state_snapshot(self, order_id: str) -> Optional[BlackboardState]:
         """Fetch an isolated deep copy snapshot of active blackboard state preventing read/write contention."""
         with self._lock:

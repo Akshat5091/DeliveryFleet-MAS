@@ -324,6 +324,7 @@
                   <label class="block text-slate-600 dark:text-slate-400 font-medium mb-1">Orchestrator</label>
                   <select id="sb-orchestrator" class="w-full bg-slate-50 dark:bg-[#151f33] border border-slate-300 dark:border-[#23314a] rounded-lg px-2 py-1.5 text-slate-900 dark:text-slate-200">
                     <option value="hierarchical">Hierarchical (Manager)</option>
+                    <option value="parallel">Parallel (Fan-Out)</option>
                     <option value="sequential">Sequential (Pipeline)</option>
                   </select>
                 </div>
@@ -496,7 +497,7 @@
 
         <div class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-[#080c14] border border-slate-200 dark:border-[#23314a] rounded-lg min-h-[480px]">
           <img id="active-chart-img" src="/artifacts/latency_boxplot.png" alt="Diagnostic Visualization" class="max-h-[520px] max-w-full rounded shadow-sm object-contain">
-          <p id="active-chart-caption" class="text-xs text-slate-600 dark:text-slate-400 mt-3 font-mono">Figure 1: Latency distribution across architectures (Hierarchical vs. Sequential) and prompt styles.</p>
+          <p id="active-chart-caption" class="text-xs text-slate-600 dark:text-slate-400 mt-3 font-mono">Figure 1: Latency distribution across architectures (Hierarchical vs Parallel vs Sequential) and prompt styles.</p>
         </div>
       </div>
     </div>
@@ -657,7 +658,7 @@
 
             <div>
               <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
-                <span>C8: Dual Orchestrations (Hierarchical vs Sequential)</span>
+                <span>C8: Tri-Architecture Orchestrations (Hierarchical vs Parallel vs Sequential)</span>
                 <span class="text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
               </div>
               <div class="w-full bg-slate-100 dark:bg-[#151f33] h-1.5 rounded-full overflow-hidden">
@@ -1022,7 +1023,7 @@
 
     function showChart(type) {
       const charts = {
-        'latency': { src: '/artifacts/latency_boxplot.png', cap: 'Figure 1: Latency distribution across architectures (Hierarchical vs Sequential) and prompt styles.' },
+        'latency': { src: '/artifacts/latency_boxplot.png', cap: 'Figure 1: Latency distribution across architectures (Hierarchical vs Parallel vs Sequential) and prompt styles.' },
         'cost': { src: '/artifacts/cost_boxplot.png', cap: 'Figure 2: LLM token expenditure ($USD) per dispatch across models and persona variants.' },
         'agent_metrics': { src: '/artifacts/agent_metric_heatmap.png', cap: 'Figure 3: Agent correlation matrix (Duration, Tokens, Cost, Accuracy) across the 48-run matrix.' },
         'agent_runs': { src: '/artifacts/agent_run_heatmap.png', cap: 'Figure 4: Per-agent execution density and latency heatmap across 48 benchmark runs.' },
