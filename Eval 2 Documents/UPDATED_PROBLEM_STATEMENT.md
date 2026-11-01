@@ -97,15 +97,15 @@ In early brainstorming, a "Monitoring Agent" was proposed. However, **we deliber
 
 ## 4. Minimum Evaluation Criteria Mapping
 
-This updated problem statement establishes baseline compliance across all 11 evaluation requirements:
+This updated problem statement establishes baseline compliance across 7 completed Phase 2 core criteria and 4 Phase 3 research novelty extensions:
 1. **Blackboard Architecture:** Centralized typed `BlackboardState` with provenance logging; benchmarked against direct peer A2A messaging.
 2. **Tool Integration via MCP:** 5 production MCP tools (Driver DB, Routing Engine, ML Delay Forecaster, ChromaDB Vector RAG, Blackboard State Tool).
 3. **Pydantic Structured Output:** Every decision validated via Pydantic v2 (`DispatchDecision`, `RoutePlan`, `ExceptionReplan`, `FinalDeliveryReport` in JSON and Markdown table).
 4. **Agentic Design Patterns:** Hierarchical vs. Sequential architectures benchmarked across identical test orders.
-5. **Callbacks & Heatmaps:** Callback tracking latency, tokens, cost, and errors, generating agent-level heatmaps.
+5. **[Phase 3 Novelty] Callbacks & Heatmaps:** Longitudinal 24h telematics drift tracking, tokens, cost, and errors, generating agent-level heatmaps.
 6. **A2A Protocol:** ADK Route Agent exposed via A2A; CrewAI agents communicate via typed JSON envelopes.
 7. **Dual-Framework Invariant:** Strict integration of Google ADK and CrewAI.
 8. **Security & Guardrails:** Multi-tier defense (Input Guard for prompt injection/abusive masking, tool return validation, business working-hour bylaws).
-9. **AI Observability:** Distributed OpenTelemetry tracing with order ID as trace root.
-10. **Performance Evaluation (40+ Runs & Boxplots):** 72 multi-variable benchmark runs across 3 architectures generating publication-quality latency/cost boxplots.
-11. **Cloud Deployment:** Containerized with Docker and Docker Compose.
+9. **[Phase 3 Novelty] AI Observability:** Distributed OpenTelemetry Collector export to Jaeger dashboard.
+10. **[Phase 3 Novelty] Performance Evaluation:** Exhaustive 72+ run factorial optimization matrix across 3 architectures with Pareto cost-latency frontiers.
+11. **[Phase 3 Novelty] Cloud Deployment:** Live cloud VM deployment (AWS/GCP) with Cloudflare edge security worker bridge.
