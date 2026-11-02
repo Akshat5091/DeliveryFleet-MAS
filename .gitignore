@@ -22,7 +22,8 @@ htmlcov/
 *.swp
 *.swo
 
-# OS files
+# OS and Office temporary lock files
 .DS_Store
 Thumbs.db
+~$*
 

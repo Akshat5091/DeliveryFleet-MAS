@@ -18,7 +18,7 @@ def package_zip():
         for f in REPO_DIR.rglob("*"):
             if any(part in EXCLUDE_DIRS for part in f.parts):
                 continue
-            if f.suffix in EXCLUDE_EXTS:
+            if f.suffix in EXCLUDE_EXTS or f.name.startswith("~$"):
                 continue
             if f.is_file():
                 arcname = f.relative_to(PARENT_DIR)
