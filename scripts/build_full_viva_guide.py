@@ -422,7 +422,11 @@ def build_all():
     append_deep_dive_docx(doc)
 
     # Save Word Document
-    doc.save(str(OUT_DOCX))
+    try:
+        doc.save(str(OUT_DOCX))
+    except PermissionError:
+        target_save = OUT_DIR / "Viva_Preparation_and_Complete_Project_Guide_Updated.docx"
+        doc.save(str(target_save))
     print(f"[DONE] Created Master Word Document with Chapters 1-18: {OUT_DOCX}")
 
     # Build Markdown
