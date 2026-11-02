@@ -21,6 +21,7 @@ from generate_viva_guide import (
     set_cell_background, set_cell_margins, add_heading_1, add_heading_2,
     add_heading_3, add_paragraph, add_bullet, add_callout, format_table
 )
+from viva_deep_dives import append_deep_dive_docx, append_deep_dive_md
 
 def build_all():
     doc = docx.Document()
@@ -417,9 +418,12 @@ def build_all():
         p_q.runs[0].font.color.rgb = RGBColor(0x1E, 0x3A, 0x8A)
         add_paragraph(doc, a, bold_prefix="", space_after=6)
 
+    # Chapters 12, 13, 14: Guardrails, Agent Necessity, Peer Audit
+    append_deep_dive_docx(doc)
+
     # Save Word Document
     doc.save(str(OUT_DOCX))
-    print(f"[DONE] Created Master Word Document with Chapters 1-11: {OUT_DOCX}")
+    print(f"[DONE] Created Master Word Document with Chapters 1-14: {OUT_DOCX}")
 
     # Build Markdown
     # We will append Chapters 10 and 11 to md_lines
@@ -608,8 +612,11 @@ def build_all():
         md_lines.append(f"**{q}**  ")
         md_lines.append(f"*{a}*\n")
 
+    # Chapters 12, 13, 14: Guardrails, Agent Necessity, Peer Audit
+    append_deep_dive_md(md_lines)
+
     OUT_MD.write_text("\n".join(md_lines).strip(), encoding="utf-8")
-    print(f"[DONE] Created Master Markdown Document with Chapters 1-11: {OUT_MD}")
+    print(f"[DONE] Created Master Markdown Document with Chapters 1-14: {OUT_MD}")
 
 def update_archives():
     zip_eval2 = REPO_DIR / "Eval 2 Documents.zip"
