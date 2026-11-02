@@ -423,7 +423,7 @@ def build_all():
 
     # Save Word Document
     doc.save(str(OUT_DOCX))
-    print(f"[DONE] Created Master Word Document with Chapters 1-14: {OUT_DOCX}")
+    print(f"[DONE] Created Master Word Document with Chapters 1-16: {OUT_DOCX}")
 
     # Build Markdown
     # We will append Chapters 10 and 11 to md_lines
@@ -616,7 +616,7 @@ def build_all():
     append_deep_dive_md(md_lines)
 
     OUT_MD.write_text("\n".join(md_lines).strip(), encoding="utf-8")
-    print(f"[DONE] Created Master Markdown Document with Chapters 1-14: {OUT_MD}")
+    print(f"[DONE] Created Master Markdown Document with Chapters 1-16: {OUT_MD}")
 
 def update_archives():
     zip_eval2 = REPO_DIR / "Eval 2 Documents.zip"
