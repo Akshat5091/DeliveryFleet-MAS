@@ -394,7 +394,7 @@ def build_all():
     add_heading_2(doc, "11.3 Academic Deliverables Authored/Maintained by Akshat")
     add_bullet(doc, "Project Charter, PEAS formulation, and faculty agent rationale justification.", "Updated_Problem_Statement.docx & UPDATED_PROBLEM_STATEMENT.md: ")
     add_bullet(doc, "Authored Section 3.2 (FastMCP Tooling), Section 3.8 (Multi-Tier Security Guardrails), Section 4.4 (Vector RAG), and Section 7.0 (Web Dashboard & Selenium Browser Testing).", "Work_In_Progress_Report.docx (Key Sections): ")
-    add_bullet(doc, "Authored the comprehensive 11-chapter Master Viva Study & Defense Guide for Group 8.", "Viva_Preparation_and_Complete_Project_Guide.docx: ")
+    add_bullet(doc, "Authored the comprehensive 18-chapter Master Viva Study & Defense Guide for Group 8.", "Viva_Preparation_and_Complete_Project_Guide.docx: ")
 
     add_heading_2(doc, "11.4 Akshat's Personal Ready-to-Speak Viva Defense Scripts")
     add_callout(doc, "AKSHAT'S ELEVATOR PITCH: 'WHAT WAS YOUR SPECIFIC CONTRIBUTION TO GROUP 8?'",
@@ -423,7 +423,7 @@ def build_all():
 
     # Save Word Document
     doc.save(str(OUT_DOCX))
-    print(f"[DONE] Created Master Word Document with Chapters 1-17: {OUT_DOCX}")
+    print(f"[DONE] Created Master Word Document with Chapters 1-18: {OUT_DOCX}")
 
     # Build Markdown
     # We will append Chapters 10 and 11 to md_lines
@@ -597,7 +597,7 @@ def build_all():
         "### 11.3 Academic Deliverables Authored/Maintained by Akshat",
         "* **`Updated_Problem_Statement.docx` & `UPDATED_PROBLEM_STATEMENT.md`:** Project Charter, PEAS formulation, and faculty agent rationale justification.",
         "* **`Work_In_Progress_Report.docx` (Key Sections):** Authored Section 3.2 (FastMCP Tooling), Section 3.8 (Multi-Tier Security Guardrails), Section 4.4 (Vector RAG), and Section 7.0 (Web Dashboard & Selenium Browser Testing).",
-        "* **`Viva_Preparation_and_Complete_Project_Guide.docx`:** Authored the comprehensive 11-chapter Master Viva Study & Defense Guide for Group 8.",
+        "* **`Viva_Preparation_and_Complete_Project_Guide.docx`:** Authored the comprehensive 18-chapter Master Viva Study & Defense Guide for Group 8.",
         "",
         "### 11.4 Akshat's Personal Ready-to-Speak Viva Defense Scripts",
         "",
@@ -616,7 +616,7 @@ def build_all():
     append_deep_dive_md(md_lines)
 
     OUT_MD.write_text("\n".join(md_lines).strip(), encoding="utf-8")
-    print(f"[DONE] Created Master Markdown Document with Chapters 1-17: {OUT_MD}")
+    print(f"[DONE] Created Master Markdown Document with Chapters 1-18: {OUT_MD}")
 
 def update_archives():
     zip_eval2 = REPO_DIR / "Eval 2 Documents.zip"
