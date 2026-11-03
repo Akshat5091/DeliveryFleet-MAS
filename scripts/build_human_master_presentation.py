@@ -339,9 +339,9 @@ def create_deck():
     arr2.fill.fore_color.rgb = COLOR_CRIMSON
     arr2.line.color.rgb = COLOR_CRIMSON
 
-    # Stage 3 Card: Parallel Fan-Out Context Retrieval
+    # Stage 3 Card: Parallel Context Retrieval
     tf_s3 = add_card(slide5, Inches(8.88), top_r1, w5, h5, title="Stage 3: Parallel Context Retrieval")
-    add_bullet(tf_s3, "Architecture Pattern:", "Parallel Fan-Out via ThreadPoolExecutor(max_workers=2)", size=11.0, space_after=3)
+    add_bullet(tf_s3, "Architecture Pattern:", "Parallel Execution via ThreadPoolExecutor(max_workers=2)", size=11.0, space_after=3)
     add_bullet(tf_s3, "Concurrent Execution:", "Retrieval Agent (ChromaDB RAG) & Driver DB (SQLite) run in parallel.", size=10.5, space_after=3)
     add_bullet(tf_s3, "Measured Performance:", "Completes both I/O queries in 21ms barrier join (vs 600ms sequential).", size=10.5, space_after=3)
     add_bullet(tf_s3, "Blackboard Commit:", "Writes candidate drivers and active municipal rules under concurrency lock.", size=10.5, space_after=2)
@@ -564,28 +564,29 @@ def update_field(self, order_id: str, agent_name: str,
     add_slide_header(slide11, "Multi-Agent Orchestration: Comparing 3 Execution Patterns", "Architectural Taxonomy & Execution Strategies")
     
     tf_top10 = add_card(slide11, Inches(0.8), Inches(1.55), Inches(11.733), Inches(1.2), title="Comparative Architectural Evaluation")
-    add_bullet(tf_top10, "Methodology:", "Implemented and benchmarked three distinct orchestration patterns (Sequential Waterfall, Parallel Fan-Out, and Supervised Hierarchical) to quantitatively measure execution latency, token cost, and error resilience under identical benchmark workloads.", size=13.0, space_after=0)
+    add_bullet(tf_top10, "Methodology:", "Implemented and benchmarked three distinct orchestration patterns: Sequential, Parallel, and a Hierarchical Hybrid. This measures execution latency, token cost, and error resilience under identical 72-run benchmark workloads.", size=13.0, space_after=0)
 
     w10 = Inches(3.75)
     gap10 = Inches(0.24)
     
-    tf_seq = add_card(slide11, Inches(0.8), Inches(2.9), w10, Inches(4.1), title="1. Sequential Architecture (Baseline)")
+    tf_seq = add_card(slide11, Inches(0.8), Inches(2.9), w10, Inches(4.1), title="1. Sequential Architecture")
     add_bullet(tf_seq, "File:", "src/orchestration/sequential_orchestrator.py")
-    add_bullet(tf_seq, "Execution Flow:", "A linear waterfall pipeline. Step 1 (RAG) must complete 100% before Step 2 (Driver DB) can start.")
-    add_bullet(tf_seq, "Measured Latency:", "Slowest (0.582s – 0.672s). Total time is the additive sum of all blocking I/O calls.")
-    add_bullet(tf_seq, "Failure Mode:", "Lacks recovery logic. Road blockages or driver unavailabilities halt the entire dispatch.")
+    add_bullet(tf_seq, "Execution Flow:", "A linear step-by-step pipeline. Step 1 (RAG retrieval) must complete 100% before Step 2 (Driver DB) can start.")
+    add_bullet(tf_seq, "Measured Latency:", "Slowest (0.582s to 0.672s). Total time is the additive sum of all blocking I/O calls.")
+    add_bullet(tf_seq, "Failure Mode:", "Zero dynamic recovery. A road blockage or missing driver halts the entire dispatch.")
 
-    tf_par = add_card(slide11, Inches(0.8) + w10 + gap10, Inches(2.9), w10, Inches(4.1), title="2. Parallel Architecture (Read Speed)")
+    tf_par = add_card(slide11, Inches(0.8) + w10 + gap10, Inches(2.9), w10, Inches(4.1), title="2. Parallel Architecture")
     add_bullet(tf_par, "File:", "src/orchestration/parallel_orchestrator.py")
-    add_bullet(tf_par, "Execution Flow:", "Uses ThreadPoolExecutor(max_workers=4) to launch RAG, Driver DB, Route, and Delay queries simultaneously.")
-    add_bullet(tf_par, "Measured Latency:", "Fastest for pure reads (0.4162s) by executing 4 tasks concurrently in 21ms.")
+    add_bullet(tf_par, "Execution Flow:", "Uses ThreadPoolExecutor to launch RAG, Driver DB, Route, and Delay queries simultaneously across worker threads.")
+    add_bullet(tf_par, "Measured Latency:", "Fastest for pure concurrent reads (0.4162s median), executing independent tasks in parallel.")
     add_bullet(tf_par, "Limitation:", "Lacks a supervisory coordinator to arbitrate assignment conflicts or manage multi-step recovery.")
 
-    tf_hie = add_card(slide11, Inches(0.8) + (w10 + gap10)*2, Inches(2.9), w10, Inches(4.1), title="3. Hierarchical MAS (Production)")
+    tf_hie = add_card(slide11, Inches(0.8) + (w10 + gap10)*2, Inches(2.9), w10, Inches(4.1), title="3. Hierarchical Architecture (Hybrid)")
     add_bullet(tf_hie, "File:", "src/orchestration/hierarchical_orchestrator.py")
-    add_bullet(tf_hie, "Execution Flow:", "A lead supervisor manages workflow, spawns parallel context retrieval, and delegates specialized tasks.")
-    add_bullet(tf_hie, "Measured Latency:", "Optimal (0.4501s) — only 34ms supervisory overhead over pure parallel execution.")
-    add_bullet(tf_hie, "Production Advantage:", "Enables autonomous mid-route exception recovery, load balancing, and centralized guardrail checks.")
+    add_bullet(tf_hie, "Architecture Type:", "Hybrid Architecture combining parallel retrieval with sequential supervisory deliberation.")
+    add_bullet(tf_hie, "Execution Flow:", "Supervisor spawns parallel worker threads for fast 21ms context retrieval, then executes cognitive dispatch and safety checks.")
+    add_bullet(tf_hie, "Measured Latency:", "Optimal balance (0.4501s) — only 34ms supervisory overhead over pure parallel, while 29.7% faster than sequential.")
+    add_bullet(tf_hie, "Production Advantage:", "Enables autonomous mid-route exception recovery, vehicle load balancing, and centralized guardrail checks.")
 
     # =========================================================================
     # SLIDE 12: Empirical Benchmark Proof: Latency & Reliability (WITH GRAPH)
@@ -593,20 +594,36 @@ def update_field(self, order_id: str, agent_name: str,
     slide12 = prs.slides.add_slide(blank_layout)
     add_slide_header(slide12, "Empirical Benchmark Results: Latency & Reliability", "Performance Analysis from 72 Factorial Benchmark Runs")
     
-    # Left: Embed the actual Latency Boxplot Graph!
+    # Left: Embed Latency Boxplot Graph (Slightly adjusted height to accommodate 1-2 line takeaway card below)
     latency_img = REPO_DIR / "artifacts" / "latency_boxplot.png"
     if latency_img.exists():
-        slide12.shapes.add_picture(str(latency_img), Inches(0.8), Inches(1.6), Inches(6.0), Inches(5.3))
+        slide12.shapes.add_picture(str(latency_img), Inches(0.8), Inches(1.6), Inches(6.0), Inches(4.30))
     else:
-        add_card(slide12, Inches(0.8), Inches(1.6), Inches(6.0), Inches(5.3), title="Latency Boxplot: 72 Benchmark Runs")
+        add_card(slide12, Inches(0.8), Inches(1.6), Inches(6.0), Inches(4.30), title="Latency Boxplot: 72 Benchmark Runs")
+
+    # Below Diagram: 1-2 Line Direct Inference Card
+    tf_inf = add_card(slide12, Inches(0.8), Inches(5.98), Inches(6.0), Inches(0.95), title=None)
+    p_inf = tf_inf.paragraphs[0]
+    p_inf.text = "Key Takeaway from Diagram (What It Shows):"
+    p_inf.font.name = "Calibri"
+    p_inf.font.size = Pt(11.5)
+    p_inf.font.bold = True
+    p_inf.font.color.rgb = COLOR_CRIMSON
+    p_inf.space_after = Pt(2)
+    
+    p_inf2 = tf_inf.add_paragraph()
+    p_inf2.text = "• Pure Parallel is fastest (0.416s) but cannot handle recovery. Hierarchical MAS is a Hybrid combining parallel retrieval with supervisory control—running 29.7% faster than Sequential (0.450s vs 0.672s) with full safety gating."
+    p_inf2.font.name = "Calibri"
+    p_inf2.font.size = Pt(10.5)
+    p_inf2.font.color.rgb = COLOR_CHARCOAL
 
     # Right: Technical Analysis & Quantitative Proof
-    tf_data = add_card(slide12, Inches(7.0), Inches(1.6), Inches(5.533), Inches(5.3), title="Latency & Reliability Performance Analysis")
-    add_bullet(tf_data, "Experimental Design:", "72 systematic benchmark runs testing 3 Architectures × 2 Prompt Styles (ReAct vs Direct) × 4 Personas × 3 Consignment types.")
-    add_bullet(tf_data, "Parallel Fan-Out (Read Speed):", "Parallel Orchestrator achieves the lowest median latency (0.4162s) by retrieving driver catalogs and RAG bylaws simultaneously in worker threads.")
-    add_bullet(tf_data, "Sequential Waterfall (29.7% Slower):", "Sequential execution exhibits high latency (0.5821s to 0.6720s) due to cumulative blocking I/O calls, and completely fails on road blockages.")
-    add_bullet(tf_data, "Hierarchical MAS (Optimal Production Balance):", "Hierarchical Orchestrator runs in 0.4501s—adding only 34ms supervisory overhead over parallel. In return, it enables autonomous exception recovery and safety gating.")
-    add_bullet(tf_data, "ReAct Reasoning Overhead:", "ReAct reasoning introduces only ~12% latency overhead over direct zero-shot prompting while completely eliminating greedy vehicle over-allocations.")
+    tf_data = add_card(slide12, Inches(7.0), Inches(1.6), Inches(5.533), Inches(5.33), title="Latency & Reliability Performance Analysis")
+    add_bullet(tf_data, "Experimental Design:", "72 systematic benchmark runs testing 3 Architectures (Sequential, Parallel, Hierarchical) × 2 Prompt Styles (ReAct vs Direct) × 4 Personas × 3 Consignment types.")
+    add_bullet(tf_data, "Parallel Architecture (Lowest Latency):", "Parallel execution achieves the lowest median latency (0.4162s) by retrieving driver catalogs and RAG bylaws simultaneously in worker threads.")
+    add_bullet(tf_data, "Sequential Architecture (29.7% Slower):", "Sequential execution exhibits high latency (0.5821s to 0.6720s) due to cumulative blocking I/O calls, and completely fails on road blockages.")
+    add_bullet(tf_data, "Hierarchical Hybrid (Production Balance):", "Hierarchical MAS runs in 0.4501s—adding only 34ms supervisory overhead over parallel. In return, it enables autonomous exception recovery and safety gating.")
+    add_bullet(tf_data, "ReAct Reasoning Overhead:", "ReAct cognitive loops add only ~12% latency overhead over direct zero-shot prompting while completely eliminating greedy vehicle over-allocations.")
 
     # =========================================================================
     # SLIDE 13: Code Snippet: Hierarchical Orchestrator Workflow
@@ -1018,7 +1035,7 @@ if projected_hours > 9.0:
     tf_sum = add_card(slide22, Inches(0.8), Inches(1.6), Inches(5.7), Inches(5.3), title="Summary of Phase 2 Deliverables Achieved")
     add_bullet(tf_sum, "Operational Multi-Agent Pipeline:", "Delivered a fully working multi-agent delivery fleet system with 8 core modules operational and verified without manual dispatch intervention.")
     add_bullet(tf_sum, "Dual-Framework Synergy:", "Demonstrated live network interoperability between CrewAI (cognitive dispatching/exceptions) and Google ADK (declarative routing) over the A2A protocol.")
-    add_bullet(tf_sum, "29.7% Latency Reduction:", "Empirically proved that our Hierarchical MAS (0.450s) outperforms sequential waterfall pipelines (0.672s) while enabling dynamic mid-route exception recovery.")
+    add_bullet(tf_sum, "29.7% Latency Reduction:", "Empirically proved that our Hierarchical Hybrid MAS (0.450s) outperforms sequential pipelines (0.672s) while enabling dynamic mid-route exception recovery.")
     add_bullet(tf_sum, "Sub-Millisecond Security:", "InputGuard neutralizes adversarial prompt injection attacks in 0.0004s, saving 96.4% in token expenditure.")
     add_bullet(tf_sum, "134 Automated Test Runs Passing:", "49/49 Pytest unit tests, 13/13 Selenium browser scenarios, and 72/72 factorial benchmark runs verified with zero errors.")
 
