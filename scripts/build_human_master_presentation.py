@@ -7,7 +7,7 @@ Designed specifically to address faculty feedback:
 - Covers 8 criteria as completed (including Criterion 5 Callbacks/Heatmaps), 3 novelties staged.
 - Dedicated code snippet slides after major topics with file paths and line-by-line explanations.
 - Real empirical graphs embedded directly on slides to back up architectural choices.
-- Simple, conversational, human English that students can speak directly from during viva.
+- Simple, direct, professional engineering English suitable for formal academic presentation.
 - Coverage Matrix split cleanly across two readable slides: What We Have Done vs What Is Left.
 """
 import sys
@@ -138,27 +138,39 @@ def create_deck():
         p_ref.font.bold = True
         p_ref.font.color.rgb = COLOR_CRIMSON
 
-        # Left Column: Code Box
-        code_shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.75), Inches(6.0), Inches(5.2))
+        # Left Column: Code Box (VS Code styled editor frame, strictly left-aligned)
+        w_code = Inches(6.4)
+        h_box = Inches(5.3)
+        code_shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.75), w_code, h_box)
         code_shape.fill.solid()
         code_shape.fill.fore_color.rgb = COLOR_CODE_BG
         code_shape.line.color.rgb = COLOR_CODE_BORDER
         code_shape.line.width = Pt(1.0)
         
         tf_code = code_shape.text_frame
-        tf_code.word_wrap = True
-        tf_code.margin_left = tf_code.margin_right = tf_code.margin_top = tf_code.margin_bottom = Inches(0.18)
+        tf_code.word_wrap = False
+        tf_code.margin_left = Inches(0.25)
+        tf_code.margin_right = Inches(0.20)
+        tf_code.margin_top = Inches(0.22)
+        tf_code.margin_bottom = Inches(0.22)
         
-        p_code = tf_code.paragraphs[0]
-        p_code.text = code_text.strip()
-        p_code.font.name = "Consolas"
-        p_code.font.size = Pt(9.5)
-        p_code.font.color.rgb = COLOR_CODE_TEXT
+        lines = code_text.strip().split("\n")
+        code_font_size = Pt(10.5) if len(lines) > 20 else Pt(11.0)
         
-        # Right Column: Explanation Cards
-        tf_exp = add_card(slide, Inches(7.05), Inches(1.75), Inches(5.483), Inches(5.2), title="Technical Code Walkthrough")
+        for idx, line in enumerate(lines):
+            p_code = tf_code.paragraphs[0] if idx == 0 else tf_code.add_paragraph()
+            p_code.text = line
+            p_code.alignment = PP_ALIGN.LEFT
+            p_code.font.name = "Consolas"
+            p_code.font.size = code_font_size
+            p_code.font.color.rgb = COLOR_CODE_TEXT
+            p_code.space_after = Pt(2)
+        
+        # Right Column: Explanation Card (What is happening and why in 3-4 lines max)
+        w_exp = Inches(5.083)
+        tf_exp = add_card(slide, Inches(7.45), Inches(1.75), w_exp, h_box, title="Engineering Architecture & Mechanism")
         for b_bold, b_txt in bullets:
-            add_bullet(tf_exp, b_bold, b_txt, size=12.0, space_after=8)
+            add_bullet(tf_exp, b_bold, b_txt, size=12.0, space_after=10)
 
     # =========================================================================
     # SLIDE 1: Title Slide (Simple, Crisp, Academic)
@@ -298,29 +310,27 @@ def create_deck():
         category_text="Code Implementation Reference 1",
         file_path="src/agents/crew_dispatch_agent.py",
         line_ref="Lines 30–52",
-        code_text="""# Creating the Autonomous Dispatch Agent in CrewAI
+        code_text="""# Autonomous Urban Dispatcher in CrewAI
 self.agent = Agent(
     role="Urban Fleet Dispatch Supervisor",
-    goal="Optimize delivery vehicle allocation while strictly enforcing "
-         "statutory driver shift limits and low-emission municipal rules.",
-    backstory="You are a senior logistics controller with 15 years experience. "
-              "You prioritize driver safety, regulatory compliance, and on-time "
-              "SLA completion above all else.",
+    goal="Optimize delivery vehicle allocation while strictly "
+         "enforcing shift caps and municipal zoning rules.",
+    backstory="Senior logistics controller prioritizing safety "
+              "and on-time delivery SLAs.",
     tools=[
-        driver_db_lookup,      # FastMCP Driver Database tool
-        policy_rag_search,     # ChromaDB Vector RAG Policy tool
-        blackboard_update      # Thread-Safe Central Shared State tool
+        driver_db_lookup,    # FastMCP driver capacity tool
+        policy_rag_search,   # ChromaDB vector bylaws tool
+        blackboard_update    # Central shared state tool
     ],
     verbose=True,
-    allow_delegation=False,    # Direct execution, no runaway delegation
-    memory=True                # Retains conversation context during reasoning
-)
-""",
+    allow_delegation=False,  # Bounded execution, no loops
+    memory=True              # Preserves reasoning context
+)""",
         bullets=[
-            ("Lines 2–8 (Role, Goal & Backstory):", "Establishes a strict cognitive persona. The agent refuses assignments that violate safety or legal rules, ensuring deterministic decision-making."),
-            ("Lines 9–13 (Decoupled FastMCP Tools):", "Injects external tools conforming to Model Context Protocol standards. The LLM does not execute raw SQL or math directly."),
-            ("Line 15 (allow_delegation=False):", "Prevents recursive sub-agent delegation loops, bounding token usage and ensuring strict latency guarantees."),
-            ("Why this matters in Viva:", "Demonstrates clean separation of concerns and production prompt engineering rather than naive zero-shot LLM queries.")
+            ("What is Happening:", "Instantiates the lead CrewAI Dispatch Agent with an autonomous fleet management role and explicit operational constraints."),
+            ("Implementation Mechanism:", "Binds 3 decoupled FastMCP tools (driver_db_lookup, policy_rag_search, blackboard_update) rather than executing direct SQL queries."),
+            ("Why this Architecture:", "Setting allow_delegation=False prevents recursive delegation storms, guaranteeing bounded token expenditure and predictable sub-second runtime."),
+            ("System Invariant:", "ReAct reasoning loops ensure drivers are selected strictly based on weight capacity and remaining legal shift hours rather than greedy allocation.")
         ]
     )
 
@@ -360,7 +370,7 @@ self.agent = Agent(
 self.agent_card = AgentCard(
     name="ADKRouteAgent",
     version="1.0.0",
-    description="Calculates shortest corridor path and predicts delays.",
+    description="Calculates shortest paths and traffic delays.",
     capabilities=["spatial_routing", "delay_prediction"],
     input_schema=RouteRequestSchema.model_json_schema(),
     output_schema=RoutePlan.model_json_schema()
@@ -374,15 +384,14 @@ def query_adk_route_agent(self, payload: dict) -> RoutePlan:
         "params": payload,
         "id": str(uuid.uuid4())
     }
-    # Direct network invocation with automatic fallback on timeout
-    response = requests.post(f"{self.base_url}/api/a2a/route", json=request, timeout=2.0)
-    return RoutePlan.model_validate(response.json()["result"])
-""",
+    response = requests.post(f"{self.base_url}/api/a2a/route",
+                             json=request, timeout=2.0)
+    return RoutePlan.model_validate(response.json()["result"])""",
         bullets=[
-            ("Lines 2–9 (Google ADK AgentCard):", "Defines the agent contract declaratively using Pydantic schemas, enabling automated client discovery and strict interface guarantees."),
-            ("Lines 12–19 (A2A Protocol Conformance):", "Implements standard JSON-RPC 2.0 network messaging across frameworks, satisfying University Criterion 6 100%."),
-            ("Lines 20–22 (Resilient HTTP Transport):", "CrewAI agents query the ADK agent over HTTP. If the network times out, a local Graph Dijkstra circuit breaker takes over seamlessly."),
-            ("Why this matters in Viva:", "Proves that CrewAI and Google ADK are truly decoupled microservices talking over standard protocols, not just imported in the same file.")
+            ("What is Happening:", "Bridges the CrewAI orchestrator to an external Google ADK Route Agent microservice over an HTTP network interface."),
+            ("Implementation Mechanism:", "Declares typed input and output contracts using Google ADK AgentCard schemas and formats inter-agent calls via standard JSON-RPC 2.0."),
+            ("Why this Architecture:", "Decouples mathematical graph routing from cognitive reasoning, allowing spatial routing to scale independently as a dedicated microservice."),
+            ("System Invariant:", "Network timeouts trigger an automatic local Graph Dijkstra circuit breaker, ensuring zero pipeline halts if the remote endpoint drops.")
         ]
     )
 
@@ -452,10 +461,10 @@ def update_field(self, order_id: str, agent_name: str,
         })
 """,
         bullets=[
-            ("Lines 2–13 (BlackboardState Model):", "Defines the shared memory contract holding order details, candidate drivers, RAG rules, and route decisions in one verified Pydantic schema."),
-            ("Lines 16–18 (Reentrant Lock Protection):", "Every single read and write operation is protected by threading.RLock(), completely eliminating thread deadlocks and data corruption."),
-            ("Lines 19–25 (Immutable Provenance Audit Trail):", "Whenever an agent updates a field, the Blackboard automatically records the agent name, timestamp, and reasoning."),
-            ("Criterion 1 Verified:", "Downstream agents (Dispatch, Route, Exception) read their inputs strictly from this Blackboard state, satisfying Criterion 1 100%.")
+            ("What is Happening:", "Defines the centralized Pydantic v2 shared memory model and serializes all multi-agent state mutations under a concurrency lock."),
+            ("Implementation Mechanism:", "Every state read and write transaction acquires threading.RLock(), preventing race conditions during concurrent agent operations."),
+            ("Why this Architecture:", "Eliminates point-to-point message passing bloat; downstream agents read verified inputs directly from a single validated source of truth."),
+            ("System Invariant:", "Every state mutation automatically appends an immutable provenance audit log (timestamp, agent, field, rationale) ensuring 100% auditability.")
         ]
     )
 
@@ -502,7 +511,7 @@ def update_field(self, order_id: str, agent_name: str,
     else:
         add_card(slide11, Inches(0.8), Inches(1.6), Inches(6.0), Inches(5.3), title="Latency Boxplot: 72 Benchmark Runs")
 
-    # Right: Technical Analysis & Viva Takeaways
+    # Right: Technical Analysis & Quantitative Proof
     tf_data = add_card(slide11, Inches(7.0), Inches(1.6), Inches(5.533), Inches(5.3), title="What the Benchmark Data Proves")
     add_bullet(tf_data, "Experimental Scope:", "72 systematic benchmark runs evaluating 3 Architectures × 2 Prompt Styles × 4 Customer Personas × 3 Consignments.")
     add_bullet(tf_data, "Parallel is Fastest for Reads:", "Parallel Orchestrator achieves the lowest median latency (0.4162s) because worker threads fetch drivers and RAG rules simultaneously.")
@@ -544,10 +553,10 @@ self.bb_manager.update_field(order_id, "crew_retrieval_agent",
                              "retrieved_rules", rules)
 """,
         bullets=[
-            ("Line 156 (ThreadPoolExecutor):", "The Hierarchical Supervisor spawns 2 background worker threads to retrieve context simultaneously instead of blocking serially."),
-            ("Lines 157–169 (Dual Task Submission):", "Thread 1 queries ChromaDB for zoning rules; Thread 2 queries SQLite/FastMCP for drivers meeting minimum weight capacity."),
-            ("Lines 170–171 (Barrier Synchronization):", "Both threads execute in ~21ms total instead of 42ms sequential time, cutting I/O latency in half."),
-            ("Lines 174–176 (State Commit):", "Retrieved bylaws and drivers are committed to BlackboardState, where the Dispatch Agent reads them for ReAct deliberation.")
+            ("What is Happening:", "The Hierarchical Supervisor spawns concurrent background threads to retrieve regulatory bylaws and fleet driver data simultaneously."),
+            ("Implementation Mechanism:", "ThreadPoolExecutor(max_workers=2) dispatches vector ChromaDB RAG and SQLite capacity queries in parallel, joining at a synchronization barrier."),
+            ("Why this Architecture:", "Eliminates serial I/O bottlenecks; parallel retrieval completes in 21ms compared to 42ms sequential time, cutting context gathering latency by 50%."),
+            ("System Invariant:", "All retrieved context is validated and committed atomically to BlackboardState before the Dispatch Agent begins ReAct deliberation.")
         ]
     )
 
@@ -638,10 +647,10 @@ if projected_hours > 9.0:
     )
 """,
         bullets=[
-            ("Lines 2–6 (Injection Regex Patterns):", "Compiled regex patterns based on academic red-teaming scan user delivery notes for jailbreak attempts in 0.0004s."),
-            ("Lines 8–11 (Zero Token Abort):", "Aborts execution immediately with status BLOCKED_INJECTION, protecting against API quota exhaustion."),
-            ("Cost Proof ($0.000015):", "In benchmark tests, adversarial prompts cost only $0.000015 USD (130 tokens) vs $0.00042 USD for normal dispatches—a 96.4% savings."),
-            ("Lines 14–20 (Legal Labour Compliance):", "Calculates projected driver shift hours. If projected_hours > 9.0h, the assignment is blocked deterministically.")
+            ("What is Happening:", "Enforces perimeter defense against prompt injection attacks and verifies statutory driver shift limits before dispatch authorization."),
+            ("Implementation Mechanism:", "Tier 1 scans customer delivery notes with compiled regex patterns in 0.0004s; Tier 3 computes projected cumulative shift duration."),
+            ("Why this Architecture:", "Blocks adversarial jailbreaks before they hit LLM APIs, defending against Denial-of-Wallet attacks and saving 96.4% in token costs ($0.000015 vs $0.00042)."),
+            ("System Invariant:", "Drivers whose projected route pushes cumulative shift time over 9.0 hours are deterministically blocked and reassigned to relief drivers.")
         ]
     )
 
