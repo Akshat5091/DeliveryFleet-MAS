@@ -332,7 +332,7 @@ def build_all():
     # ==========================================
     doc.add_paragraph()
     add_heading_1(doc, "Chapter 10: Architectural Evolution: What Changed from Phase 1 to Phase 2?")
-    add_paragraph(doc, 
+    add_paragraph(doc,
         "A critical question professors love to ask in Phase 2 evaluations is: "
         "'How has your project evolved since your Phase 1 Synopsis? What feedback did you incorporate, and what specific architectural changes were made?' "
         "Here is the complete chronological evolution breakdown:")
@@ -373,13 +373,13 @@ def build_all():
     add_paragraph(doc, "This chapter details everything specifically owned, implemented, and defended by Akshat Nagori (Roll No: 230682, B.Tech CSE Sem VII) in Group 8.")
 
     add_heading_2(doc, "11.1 Official Role & Architecture Responsibilities")
-    add_paragraph(doc, 
+    add_paragraph(doc,
         "Official Title: Retrieval, Prompts & Security Lead (Lead Systems & Security Engineer)\n"
         "Core Mandate: Responsible for the multi-tier security gateway, prompt injection defense, customer persona prompt engineering, "
         "local Vector RAG knowledge base curation, the interactive web operations dashboard, and automated Selenium browser verification.")
 
     add_heading_2(doc, "11.2 The 5 Core Engineering Modules Built by Akshat")
-    
+
     akshat_modules = [
         ("Module A: Multi-Tier Security Gateway", "src/guardrails/input_guard.py", "Engineered InputGuard class with 11 compiled regex patterns (Course LAB-06) intercepting prompt injections in 0.000s (IGNORE PREVIOUS INSTRUCTIONS, SYSTEM OVERRIDE). Built toxic language masking engine replacing hostile tokens (pathetic, idiot, clown) with [REDACTED_HOSTILE]. Integrated into Hierarchical (lines 96-138) and Sequential (lines 88-120) orchestrators."),
         ("Module B: Local Vector RAG Knowledge Base", "src/mcp/tools/chroma_rag.py\ndata/knowledge_base/", "Curated municipal logistics bylaws, zoning constraints, and statutory driver fatigue rules. Implemented ChromaRAGTool with persistent ChromaDB storage in data/chroma_db/ (logistics_policies collection). Built FastMCP tool policy_rag_search providing <15ms semantic retrieval without sending private data to cloud APIs. Wired into CrewRetrievalAgent."),
