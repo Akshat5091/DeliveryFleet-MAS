@@ -762,21 +762,38 @@ if projected_hours > 9.0:
     slide17 = prs.slides.add_slide(blank_layout)
     add_slide_header(slide17, "Observability: Lifecycle Callbacks & Latency Heatmaps", "Observability, Telemetry Streaming & Latency Profiling")
     
-    # Left: Embed the actual Agent Run Heatmap Graph!
+    # Left: Embed the clear, publication-grade Component Latency Heatmap!
     heatmap_img = REPO_DIR / "artifacts" / "agent_run_heatmap.png"
     if heatmap_img.exists():
-        slide17.shapes.add_picture(str(heatmap_img), Inches(0.8), Inches(1.6), Inches(5.8), Inches(5.3))
+        slide17.shapes.add_picture(str(heatmap_img), Inches(0.8), Inches(1.6), Inches(5.8), Inches(4.30))
     else:
-        add_card(slide17, Inches(0.8), Inches(1.6), Inches(5.8), Inches(5.3), title="Agent Execution Heatmap (72 Runs)")
+        add_card(slide17, Inches(0.8), Inches(1.6), Inches(5.8), Inches(4.30), title="Component Latency Heatmap")
+
+    # Below Heatmap: 2-3 Line Direct Inference Card
+    tf_inf17 = add_card(slide17, Inches(0.8), Inches(5.98), Inches(5.8), Inches(0.95), title=None)
+    p_inf = tf_inf17.paragraphs[0]
+    p_inf.text = "Key Inference from Heatmap (What It Shows):"
+    p_inf.font.name = "Calibri"
+    p_inf.font.size = Pt(11.5)
+    p_inf.font.bold = True
+    p_inf.font.color.rgb = COLOR_CRIMSON
+    p_inf.space_after = Pt(2)
+    
+    p_inf2 = tf_inf17.add_paragraph()
+    p_inf2.text = "• InputGuard provides zero-overhead security in 0.4ms; FastMCP retrieval runs concurrently in ~20ms, while cognitive LLM dispatch accounts for ~104ms.\n• Exception Agent remains on standby (0.0ms) during normal operations, but dynamically engages in 38.1ms upon road blockage to reroute without system failure."
+    p_inf2.font.name = "Calibri"
+    p_inf2.font.size = Pt(10.0)
+    p_inf2.font.color.rgb = COLOR_CHARCOAL
 
     # Right: Explaining Observability Implementation
-    tf_c5 = add_card(slide17, Inches(6.8), Inches(1.6), Inches(5.733), Inches(5.3), title="Lifecycle Callback Architecture & Latency Profiling")
-    add_bullet(tf_c5, "MASCallbackHandler Architecture:", "Implemented in src/observability/callbacks.py. Monitors lifecycle events: on_agent_start, on_tool_start, on_agent_finish, and on_exception.")
-    add_bullet(tf_c5, "Multi-Channel Telemetry Streaming:", "Streams real-time step execution timestamps to the console terminal, WebSockets UI dashboard, and logs/run_events.jsonl.")
-    add_bullet(tf_c5, "Component Latency Profiling (72 Runs):", "The 2D density heatmap profiles all 7 pipeline components across the 72 benchmark runs:")
-    add_bullet(tf_c5, "Zero-Overhead Guardrails (<0.5ms):", "InputGuard and BusinessGuardrails execute in under 0.5ms, confirming zero latency penalty for perimeter defense.")
-    add_bullet(tf_c5, "FastMCP Tool Concurrency (~20ms):", "Driver DB lookups and ChromaDB RAG queries execute concurrently in ~20ms, eliminating database I/O bottlenecks.")
-    add_bullet(tf_c5, "Cognitive Isolation (~200ms):", "Dispatch Agent ReAct reasoning and Route Agent calculations account for 85% of total runtime, verifying clean computational isolation.")
+    tf_c5 = add_card(slide17, Inches(6.8), Inches(1.6), Inches(5.733), Inches(5.33), title="Lifecycle Callback Architecture & Latency Profiling")
+    add_bullet(tf_c5, "MASCallbackHandler Architecture:", "Implemented in src/observability/callbacks.py. Hooks into on_agent_start, on_tool_start, on_agent_finish, and on_exception.")
+    add_bullet(tf_c5, "Multi-Channel Telemetry Streaming:", "Streams real-time step execution timestamps to console terminal, WebSockets UI dashboard, and logs/run_events.jsonl.")
+    add_bullet(tf_c5, "Component Latency Profiling:", "The latency heatmap profiles every pipeline stage across operational benchmark scenarios:")
+    add_bullet(tf_c5, "Zero-Overhead Guardrails (<0.5ms):", "InputGuard executes in 0.4ms, intercepting prompt injections with zero LLM token cost.")
+    add_bullet(tf_c5, "FastMCP Tool Concurrency (~20ms):", "Driver DB lookups (5.1ms) and ChromaDB RAG queries (14.8ms) run concurrently, preventing database I/O bottlenecks.")
+    add_bullet(tf_c5, "Cognitive Isolation (~104ms):", "Dispatch Agent ReAct reasoning accounts for ~104ms, ensuring thorough constraint evaluation.")
+    add_bullet(tf_c5, "Dynamic Replanning (~38ms):", "Exception Agent triggers only when road blockages occur (38.1ms) and remains idle (0.0ms) otherwise.")
 
     # =========================================================================
     # SLIDE 18: Empirical Verification & Automated Test Results
