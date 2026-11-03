@@ -2,7 +2,7 @@
 Designed specifically to address faculty feedback:
 - Clean, crisp white background with high-contrast black/charcoal text.
 - Formal academic typography using Calibri and Consolas.
-- 1-2 classic professional accent colors (Navy Blue #1E3A8A, Crimson #B91C1C, Forest Green #15803D).
+- Non-AI academic palette: Crisp Pitch Black (#111827) headers, Deep Crimson (#991B1B) accents, Forest Green (#166534) for completed items, neutral pencil gray borders (#D1D5DB). Completely zero blue.
 - Absolutely ZERO emojis (no rockets, checkmarks, etc.).
 - Covers 8 criteria as completed (including Criterion 5 Callbacks/Heatmaps), 3 novelties staged.
 - Dedicated code snippet slides after major topics with file paths and line-by-line explanations.
@@ -24,20 +24,20 @@ OUT_DIR = REPO_DIR / "Eval 2 Documents"
 OUT_PPTX = OUT_DIR / "DeliveryFleet_MAS_Evaluation2_Master_Presentation.pptx"
 OUT_1SLIDE = OUT_DIR / "1_Slide_Coverage_Matrix_Group8.pptx"
 
-# Color Palette (Human Academic Clean)
-COLOR_WHITE = RGBColor(255, 255, 255)
-COLOR_NAVY = RGBColor(30, 58, 138)        # #1E3A8A Title & Primary Header
-COLOR_SLATE = RGBColor(71, 85, 105)       # #475569 Subtitles & Meta
-COLOR_CHARCOAL = RGBColor(17, 24, 39)     # #111827 Main Body Text
-COLOR_BODY = RGBColor(51, 65, 85)         # #334155 Secondary Text
-COLOR_CARD_BG = RGBColor(248, 250, 252)   # #F8FAFC Card Surface
-COLOR_CARD_BORDER = RGBColor(203, 213, 225) # #CBD5E1 Card Outline
-COLOR_CODE_BG = RGBColor(241, 245, 249)   # #F1F5F9 Code Box Surface
-COLOR_CODE_BORDER = RGBColor(148, 163, 184) # #94A3B8 Code Box Outline
-COLOR_CODE_TEXT = RGBColor(15, 23, 42)    # #0F172A Code Monospace
-COLOR_GREEN = RGBColor(21, 128, 61)       # #15803D Completed / Success
-COLOR_CRIMSON = RGBColor(185, 28, 28)     # #B91C1C Alert / Highlight / Novelty
-COLOR_DIVIDER = RGBColor(226, 232, 240)   # #E2E8F0 Subtle Rule Line
+# Color Palette (Human Academic Non-AI: Pitch Black, Deep Crimson & Neutral Gray - Zero Blue)
+COLOR_WHITE = RGBColor(255, 255, 255)       # #FFFFFF Pure White Slide Background
+COLOR_BLACK = RGBColor(17, 24, 39)          # #111827 Pitch Charcoal / Black (Primary Slide Headers)
+COLOR_CRIMSON = RGBColor(153, 27, 27)       # #991B1B Deep Academic Crimson / Maroon (Primary Card Headers & Accents, Replaces Navy Blue)
+COLOR_MUTED = RGBColor(75, 85, 99)          # #4B5563 Category Trackers, Kicker & Metadata (Neutral Graphite)
+COLOR_CHARCOAL = RGBColor(31, 41, 55)       # #1F2937 Primary Body & Explanation Text
+COLOR_BODY = RGBColor(55, 65, 81)           # #374151 Secondary Descriptive Text
+COLOR_CARD_BG = RGBColor(250, 250, 250)     # #FAFAFA Neutral Off-White Card Surface (Zero Blue Tint)
+COLOR_CARD_BORDER = RGBColor(209, 213, 219) # #D1D5DB Neutral Pencil Gray Outline (Zero Blue Tint)
+COLOR_CODE_BG = RGBColor(243, 244, 246)     # #F3F4F6 Neutral Light Gray Code Surface (Zero Blue Tint)
+COLOR_CODE_BORDER = RGBColor(209, 213, 219) # #D1D5DB Neutral Outline (Zero Blue Tint)
+COLOR_CODE_TEXT = RGBColor(17, 24, 39)      # #111827 Dark Monospace Text
+COLOR_GREEN = RGBColor(22, 101, 52)         # #166534 Forest Green for Completed Criteria
+COLOR_DIVIDER = RGBColor(229, 231, 235)     # #E5E7EB Subtle Neutral Rule Line
 
 def create_deck():
     prs = pptx.Presentation()
@@ -56,7 +56,7 @@ def create_deck():
         p_cat.font.name = "Calibri"
         p_cat.font.size = Pt(10.5)
         p_cat.font.bold = True
-        p_cat.font.color.rgb = COLOR_SLATE
+        p_cat.font.color.rgb = COLOR_CRIMSON
 
         # Main Slide Title
         t_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.68), Inches(11.733), Inches(0.55))
@@ -68,7 +68,7 @@ def create_deck():
         p_t.font.name = "Calibri"
         p_t.font.size = Pt(22.0)
         p_t.font.bold = True
-        p_t.font.color.rgb = COLOR_NAVY
+        p_t.font.color.rgb = COLOR_BLACK
 
         # Subtle divider line
         line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.3), Inches(11.733), Inches(0.015))
@@ -96,11 +96,11 @@ def create_deck():
             p.font.name = "Calibri"
             p.font.size = Pt(15.0)
             p.font.bold = True
-            p.font.color.rgb = COLOR_NAVY
+            p.font.color.rgb = COLOR_CRIMSON
             p.space_after = Pt(8)
         return tf
 
-    def add_bullet(tf, bold_prefix, text, size=13.0, space_after=6, text_color=COLOR_CHARCOAL, bold_color=COLOR_NAVY):
+    def add_bullet(tf, bold_prefix, text, size=13.0, space_after=6, text_color=COLOR_CHARCOAL, bold_color=COLOR_BLACK):
         p = tf.add_paragraph()
         p.font.name = "Calibri"
         p.font.size = Pt(size)
@@ -110,7 +110,7 @@ def create_deck():
         r_bullet = p.add_run()
         r_bullet.text = "• "
         r_bullet.font.bold = True
-        r_bullet.font.color.rgb = COLOR_SLATE
+        r_bullet.font.color.rgb = COLOR_MUTED
         
         if bold_prefix:
             r_bold = p.add_run()
@@ -174,7 +174,7 @@ def create_deck():
     p_kicker.font.name = "Calibri"
     p_kicker.font.size = Pt(13.0)
     p_kicker.font.bold = True
-    p_kicker.font.color.rgb = COLOR_SLATE
+    p_kicker.font.color.rgb = COLOR_CRIMSON
     p_kicker.space_after = Pt(10)
     
     p_main = tf1.add_paragraph()
@@ -182,7 +182,7 @@ def create_deck():
     p_main.font.name = "Calibri"
     p_main.font.size = Pt(36.0)
     p_main.font.bold = True
-    p_main.font.color.rgb = COLOR_NAVY
+    p_main.font.color.rgb = COLOR_BLACK
     p_main.space_after = Pt(14)
     
     p_sub = tf1.add_paragraph()
@@ -616,7 +616,7 @@ self.bb_manager.update_field(order_id, "crew_retrieval_agent",
         category_text="Code Implementation Reference 5",
         file_path="src/guardrails/input_guard.py & business_guardrails.py",
         line_ref="Lines 15–35 (InputGuard) & Lines 18–38 (BusinessGuard)",
-        code_text="""# Tier 1: Pre-Execution Regex Prompt Injection Interception
+        code_text=r"""# Tier 1: Pre-Execution Regex Prompt Injection Interception
 INJECTION_PATTERNS = [
     r"ignore\s+(all\s+|any\s+)?(previous|prior)\s+instructions",
     r"disregard\s+(all|your)\s+(rules|policies|guidelines)",
@@ -782,12 +782,12 @@ if projected_hours > 9.0:
         p0.space_after = Pt(2)
         
         p1 = tf.add_paragraph()
-        r1_lbl = p1.add_run(); r1_lbl.text = "File: "; r1_lbl.font.bold = True; r1_lbl.font.size = Pt(11.0); r1_lbl.font.color.rgb = COLOR_NAVY
+        r1_lbl = p1.add_run(); r1_lbl.text = "File: "; r1_lbl.font.bold = True; r1_lbl.font.size = Pt(11.0); r1_lbl.font.color.rgb = COLOR_CRIMSON
         r1_txt = p1.add_run(); r1_txt.text = c_file; r1_txt.font.name = "Consolas"; r1_txt.font.size = Pt(10.5); r1_txt.font.color.rgb = COLOR_CHARCOAL
         p1.space_after = Pt(2)
         
         p2 = tf.add_paragraph()
-        r2_lbl = p2.add_run(); r2_lbl.text = "Mechanism & Proof: "; r2_lbl.font.bold = True; r2_lbl.font.size = Pt(11.0); r2_lbl.font.color.rgb = COLOR_SLATE
+        r2_lbl = p2.add_run(); r2_lbl.text = "Mechanism & Proof: "; r2_lbl.font.bold = True; r2_lbl.font.size = Pt(11.0); r2_lbl.font.color.rgb = COLOR_MUTED
         r2_txt = p2.add_run(); r2_txt.text = f"{c_impl} {c_proof}"; r2_txt.font.name = "Calibri"; r2_txt.font.size = Pt(11.0); r2_txt.font.color.rgb = COLOR_CHARCOAL
         p2.space_after = Pt(0)
 
@@ -812,12 +812,12 @@ if projected_hours > 9.0:
         p0.space_after = Pt(2)
         
         p1 = tf.add_paragraph()
-        r1_lbl = p1.add_run(); r1_lbl.text = "File: "; r1_lbl.font.bold = True; r1_lbl.font.size = Pt(11.0); r1_lbl.font.color.rgb = COLOR_NAVY
+        r1_lbl = p1.add_run(); r1_lbl.text = "File: "; r1_lbl.font.bold = True; r1_lbl.font.size = Pt(11.0); r1_lbl.font.color.rgb = COLOR_CRIMSON
         r1_txt = p1.add_run(); r1_txt.text = c_file; r1_txt.font.name = "Consolas"; r1_txt.font.size = Pt(10.5); r1_txt.font.color.rgb = COLOR_CHARCOAL
         p1.space_after = Pt(2)
         
         p2 = tf.add_paragraph()
-        r2_lbl = p2.add_run(); r2_lbl.text = "Mechanism & Proof: "; r2_lbl.font.bold = True; r2_lbl.font.size = Pt(11.0); r2_lbl.font.color.rgb = COLOR_SLATE
+        r2_lbl = p2.add_run(); r2_lbl.text = "Mechanism & Proof: "; r2_lbl.font.bold = True; r2_lbl.font.size = Pt(11.0); r2_lbl.font.color.rgb = COLOR_MUTED
         r2_txt = p2.add_run(); r2_txt.text = f"{c_impl} {c_proof}"; r2_txt.font.name = "Calibri"; r2_txt.font.size = Pt(11.0); r2_txt.font.color.rgb = COLOR_CHARCOAL
         p2.space_after = Pt(0)
 
@@ -873,12 +873,12 @@ if projected_hours > 9.0:
         p0.space_after = Pt(2)
         
         p1 = tf.add_paragraph()
-        r1_lbl = p1.add_run(); r1_lbl.text = "Scope: "; r1_lbl.font.bold = True; r1_lbl.font.size = Pt(11.0); r1_lbl.font.color.rgb = COLOR_NAVY
+        r1_lbl = p1.add_run(); r1_lbl.text = "Scope: "; r1_lbl.font.bold = True; r1_lbl.font.size = Pt(11.0); r1_lbl.font.color.rgb = COLOR_CRIMSON
         r1_txt = p1.add_run(); r1_txt.text = n_desc; r1_txt.font.name = "Calibri"; r1_txt.font.size = Pt(11.0); r1_txt.font.color.rgb = COLOR_CHARCOAL
         p1.space_after = Pt(2)
         
         p2 = tf.add_paragraph()
-        r2_lbl = p2.add_run(); r2_lbl.text = "Why Staged: "; r2_lbl.font.bold = True; r2_lbl.font.size = Pt(11.0); r2_lbl.font.color.rgb = COLOR_SLATE
+        r2_lbl = p2.add_run(); r2_lbl.text = "Why Staged: "; r2_lbl.font.bold = True; r2_lbl.font.size = Pt(11.0); r2_lbl.font.color.rgb = COLOR_MUTED
         r2_txt = p2.add_run(); r2_txt.text = n_why; r2_txt.font.name = "Calibri"; r2_txt.font.size = Pt(11.0); r2_txt.font.color.rgb = COLOR_CHARCOAL
         p2.space_after = Pt(0)
         
@@ -956,7 +956,7 @@ def create_human_1slide_matrix():
     hdr1 = slide1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.5), Inches(0.3), Inches(12.333), Inches(0.85))
     hdr1.fill.solid()
     hdr1.fill.fore_color.rgb = COLOR_CARD_BG
-    hdr1.line.color.rgb = COLOR_NAVY
+    hdr1.line.color.rgb = COLOR_CRIMSON
     hdr1.line.width = Pt(1.5)
     
     tf_h1 = hdr1.text_frame
@@ -968,13 +968,13 @@ def create_human_1slide_matrix():
     p0.font.name = "Calibri"
     p0.font.size = Pt(16.0)
     p0.font.bold = True
-    p0.font.color.rgb = COLOR_NAVY
+    p0.font.color.rgb = COLOR_CRIMSON
     
     p1 = tf_h1.add_paragraph()
     p1.text = "Course: CSE3101 Agentic AI | Group 8 | Milestone: ~73% Complete (8 Criteria 100% Operational & Tested)"
     p1.font.name = "Calibri"
     p1.font.size = Pt(10.5)
-    p1.font.color.rgb = COLOR_SLATE
+    p1.font.color.rgb = COLOR_MUTED
 
     w_card = Inches(6.05)
     card_h = Inches(1.30)
@@ -1046,12 +1046,12 @@ def create_human_1slide_matrix():
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "File: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_NAVY
+        r_lbl = p.add_run(); r_lbl.text = "File: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_CRIMSON
         r_txt = p.add_run(); r_txt.text = c_file; r_txt.font.name = "Consolas"; r_txt.font.size = Pt(10.0); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "Proof: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_SLATE
+        r_lbl = p.add_run(); r_lbl.text = "Proof: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_MUTED
         r_txt = p.add_run(); r_txt.text = f"{c_impl} {c_proof}"; r_txt.font.name = "Calibri"; r_txt.font.size = Pt(10.5); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(0)
 
@@ -1076,12 +1076,12 @@ def create_human_1slide_matrix():
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "File: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_NAVY
+        r_lbl = p.add_run(); r_lbl.text = "File: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_CRIMSON
         r_txt = p.add_run(); r_txt.text = c_file; r_txt.font.name = "Consolas"; r_txt.font.size = Pt(10.0); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "Proof: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_SLATE
+        r_lbl = p.add_run(); r_lbl.text = "Proof: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_MUTED
         r_txt = p.add_run(); r_txt.text = f"{c_impl} {c_proof}"; r_txt.font.name = "Calibri"; r_txt.font.size = Pt(10.5); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(0)
 
@@ -1094,7 +1094,7 @@ def create_human_1slide_matrix():
     hdr2 = slide2.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.5), Inches(0.3), Inches(12.333), Inches(0.85))
     hdr2.fill.solid()
     hdr2.fill.fore_color.rgb = COLOR_CARD_BG
-    hdr2.line.color.rgb = COLOR_NAVY
+    hdr2.line.color.rgb = COLOR_CRIMSON
     hdr2.line.width = Pt(1.5)
     
     tf_h2 = hdr2.text_frame
@@ -1106,13 +1106,13 @@ def create_human_1slide_matrix():
     p0.font.name = "Calibri"
     p0.font.size = Pt(16.0)
     p0.font.bold = True
-    p0.font.color.rgb = COLOR_NAVY
+    p0.font.color.rgb = COLOR_CRIMSON
     
     p1 = tf_h2.add_paragraph()
     p1.text = "Course: CSE3101 Agentic AI | Group 8 | Strategic Milestone Progression for November 20 Defense"
     p1.font.name = "Calibri"
     p1.font.size = Pt(10.5)
-    p1.font.color.rgb = COLOR_SLATE
+    p1.font.color.rgb = COLOR_MUTED
 
     # Top Strategy Card
     top_strat = slide2.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.5), Inches(1.3), Inches(12.333), Inches(1.15))
@@ -1130,7 +1130,7 @@ def create_human_1slide_matrix():
     pts.font.name = "Calibri"
     pts.font.size = Pt(13.0)
     pts.font.bold = True
-    pts.font.color.rgb = COLOR_NAVY
+    pts.font.color.rgb = COLOR_CRIMSON
     pts.space_after = Pt(3)
 
     pts2 = tf_ts.add_paragraph()
@@ -1180,12 +1180,12 @@ def create_human_1slide_matrix():
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "Scope: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(11.0); r_lbl.font.color.rgb = COLOR_NAVY
+        r_lbl = p.add_run(); r_lbl.text = "Scope: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(11.0); r_lbl.font.color.rgb = COLOR_CRIMSON
         r_txt = p.add_run(); r_txt.text = n_desc; r_txt.font.name = "Calibri"; r_txt.font.size = Pt(11.0); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "Why Staged: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(11.0); r_lbl.font.color.rgb = COLOR_SLATE
+        r_lbl = p.add_run(); r_lbl.text = "Why Staged: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(11.0); r_lbl.font.color.rgb = COLOR_MUTED
         r_txt = p.add_run(); r_txt.text = n_why; r_txt.font.name = "Calibri"; r_txt.font.size = Pt(11.0); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(0)
 
@@ -1205,7 +1205,7 @@ def create_human_1slide_matrix():
     p.font.name = "Calibri"
     p.font.size = Pt(14.0)
     p.font.bold = True
-    p.font.color.rgb = COLOR_NAVY
+    p.font.color.rgb = COLOR_CRIMSON
     p.space_after = Pt(8)
 
     ev_bullets = [
@@ -1218,8 +1218,8 @@ def create_human_1slide_matrix():
     for b_title, b_txt in ev_bullets:
         p = tf_ev.add_paragraph()
         p.space_after = Pt(6)
-        r_bullet = p.add_run(); r_bullet.text = "• "; r_bullet.font.bold = True; r_bullet.font.color.rgb = COLOR_SLATE
-        r_bold = p.add_run(); r_bold.text = b_title + " "; r_bold.font.bold = True; r_bold.font.size = Pt(11.5); r_bold.font.color.rgb = COLOR_NAVY
+        r_bullet = p.add_run(); r_bullet.text = "• "; r_bullet.font.bold = True; r_bullet.font.color.rgb = COLOR_MUTED
+        r_bold = p.add_run(); r_bold.text = b_title + " "; r_bold.font.bold = True; r_bold.font.size = Pt(11.5); r_bold.font.color.rgb = COLOR_CRIMSON
         r_txt = p.add_run(); r_txt.text = b_txt; r_txt.font.size = Pt(11.0); r_txt.font.color.rgb = COLOR_CHARCOAL
 
     prs.save(str(OUT_1SLIDE))
