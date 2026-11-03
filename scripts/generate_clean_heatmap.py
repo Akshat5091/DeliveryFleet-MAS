@@ -13,7 +13,7 @@ def generate_heatmap(out_path: Path = None):
     if out_path is None:
         repo_dir = Path(__file__).resolve().parent.parent
         out_path = repo_dir / "artifacts" / "agent_run_heatmap.png"
-    
+
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     # 6 Specialized Pipeline Components (Concise, Uncluttered)
@@ -105,3 +105,4 @@ def generate_heatmap(out_path: Path = None):
 
 if __name__ == "__main__":
     generate_heatmap()
+
