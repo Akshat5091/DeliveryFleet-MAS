@@ -166,7 +166,7 @@ def create_deck():
         
         # Right Column: Explanation Card (What is happening and why in 4 concise lines)
         w_exp = Inches(5.083)
-        tf_exp = add_card(slide, Inches(7.45), Inches(1.75), w_exp, h_box, title="Engineering Architecture & Mechanism")
+        tf_exp = add_card(slide, Inches(7.45), Inches(1.75), w_exp, h_box, title="Code Explanation & Walkthrough")
         for b_bold, b_txt in bullets:
             add_bullet(tf_exp, b_bold, b_txt, size=12.0, space_after=10)
 
@@ -417,10 +417,10 @@ self.agent = Agent(
     memory=True              # Preserves reasoning context
 )""",
         bullets=[
-            ("What is Happening:", "Instantiates the lead CrewAI Dispatch Agent with an autonomous fleet management role and explicit operational constraints."),
-            ("Implementation Mechanism:", "Binds 3 decoupled FastMCP tools (driver_db_lookup, policy_rag_search, blackboard_update) rather than executing direct SQL queries."),
-            ("Why this Architecture:", "Setting allow_delegation=False prevents recursive delegation storms, guaranteeing bounded token expenditure and predictable sub-second runtime."),
-            ("System Invariant:", "ReAct reasoning loops ensure drivers are selected strictly based on weight capacity and remaining legal shift hours rather than greedy allocation.")
+            ("What it Does:", "Creates the CrewAI Dispatch Agent with a clear role, goal, and backstory to safely manage delivery drivers."),
+            ("How it Works:", "Connects 3 decoupled FastMCP tools (driver lookup, policy search, blackboard update) instead of running raw database queries directly."),
+            ("Why We Use It:", "Setting allow_delegation=False keeps execution fast and predictable, stopping agents from delegating in endless loops."),
+            ("Key Decision Rule:", "The agent checks driver vehicle capacity and legal shift hours before making any assignment.")
         ]
     )
 
@@ -478,10 +478,10 @@ def query_adk_route_agent(self, payload: dict) -> RoutePlan:
                              json=request, timeout=2.0)
     return RoutePlan.model_validate(response.json()["result"])""",
         bullets=[
-            ("What is Happening:", "Bridges the CrewAI orchestrator to an external Google ADK Route Agent microservice over an HTTP network interface."),
-            ("Implementation Mechanism:", "Declares typed input and output contracts using Google ADK AgentCard schemas and formats inter-agent calls via standard JSON-RPC 2.0."),
-            ("Why this Architecture:", "Decouples mathematical graph routing from cognitive reasoning, allowing spatial routing to scale independently as a dedicated microservice."),
-            ("System Invariant:", "Network timeouts trigger an automatic local Graph Dijkstra circuit breaker, ensuring zero pipeline halts if the remote endpoint drops.")
+            ("What it Does:", "Connects the CrewAI orchestrator to the Google ADK Route Agent over HTTP to calculate road paths and traffic delays."),
+            ("How it Works:", "Uses Google ADK AgentCard schemas with standard JSON-RPC 2.0 requests to send pickup and dropoff coordinates."),
+            ("Why We Use It:", "Separates spatial routing math from LLM reasoning, allowing routing calculations to run quickly without consuming tokens."),
+            ("Safety Fallback:", "If the network connection drops or times out, it automatically runs local Dijkstra graph routing so the system never halts.")
         ]
     )
 
@@ -550,10 +550,10 @@ def update_field(self, order_id: str, agent_name: str,
             "rationale": rationale
         })""",
         bullets=[
-            ("What is Happening:", "Defines the centralized Pydantic v2 shared memory model and serializes all multi-agent state mutations under a concurrency lock."),
-            ("Implementation Mechanism:", "Every state read and write transaction acquires threading.RLock(), preventing race conditions during concurrent agent operations."),
-            ("Why this Architecture:", "Eliminates point-to-point message passing bloat; downstream agents read verified inputs directly from a single validated source of truth."),
-            ("System Invariant:", "Every state mutation automatically appends an immutable provenance audit log (timestamp, agent, field, rationale) ensuring 100% auditability.")
+            ("What it Does:", "Creates the centralized Blackboard shared state and protects all data updates with a thread-safe lock."),
+            ("How it Works:", "Every read and write uses threading.RLock(), which stops agents from overwriting each other when running concurrently."),
+            ("Why We Use It:", "All agents read and update one shared state object instead of passing heavy messages back and forth between each other."),
+            ("Audit Logging:", "Every change records who updated the state, what was changed, and why, providing a complete history of the dispatch.")
         ]
     )
 
@@ -656,10 +656,10 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
 self.bb_manager.update_field(order_id, "crew_retrieval_agent",
                              "retrieved_rules", rules)""",
         bullets=[
-            ("What is Happening:", "The Hierarchical Supervisor spawns concurrent background threads to retrieve regulatory bylaws and fleet driver data simultaneously."),
-            ("Implementation Mechanism:", "ThreadPoolExecutor(max_workers=2) dispatches vector ChromaDB RAG and SQLite capacity queries in parallel, joining at a synchronization barrier."),
-            ("Why this Architecture:", "Eliminates serial I/O bottlenecks; parallel retrieval completes in 21ms compared to 42ms sequential time, cutting context gathering latency by 50%."),
-            ("System Invariant:", "All retrieved context is validated and committed atomically to BlackboardState before the Dispatch Agent begins ReAct deliberation.")
+            ("What it Does:", "Fetches municipal delivery rules and eligible drivers at the exact same time using background worker threads."),
+            ("How it Works:", "ThreadPoolExecutor runs both the ChromaDB bylaws search and the driver database lookup in parallel in just 21ms."),
+            ("Why We Use It:", "Running both queries together saves valuable time compared to waiting for one database call to finish before starting the next."),
+            ("Synchronization:", "Both the rules and the driver list must finish loading into the Blackboard before the dispatch agent begins picking a driver.")
         ]
     )
 
@@ -749,10 +749,10 @@ if projected_hours > 9.0:
         action_taken="BLOCK"
     )""",
         bullets=[
-            ("What is Happening:", "Enforces perimeter defense against prompt injection attacks and verifies statutory driver shift limits before dispatch authorization."),
-            ("Implementation Mechanism:", "Tier 1 scans customer delivery notes with compiled regex patterns in 0.0004s; Tier 3 computes projected cumulative shift duration."),
-            ("Why this Architecture:", "Blocks adversarial jailbreaks before they hit LLM APIs, defending against Denial-of-Wallet attacks and saving 96.4% in token costs ($0.000015 vs $0.00042)."),
-            ("System Invariant:", "Drivers whose projected route pushes cumulative shift time over 9.0 hours are deterministically blocked and reassigned to relief drivers.")
+            ("What it Does:", "Enforces two strict safety checks: blocks prompt injections at the start, and blocks overworked drivers before dispatch."),
+            ("How it Works:", "InputGuard checks delivery notes in 0.0004s using regex patterns, while BusinessGuardrails calculates total shift hours in Python."),
+            ("Why We Use It:", "Prevents prompt hacks before calling the LLM (saving tokens) and ensures our delivery assignments follow actual labor laws."),
+            ("Safety Rule:", "Any driver whose total shift time would exceed 9.0 hours is automatically rejected and replaced with a relief driver.")
         ]
     )
 
