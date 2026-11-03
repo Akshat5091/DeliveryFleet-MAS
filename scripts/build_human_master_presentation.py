@@ -15,6 +15,11 @@ import pptx
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+try:
+    from scripts.generate_clean_heatmap import generate_heatmap
+except ModuleNotFoundError:
+    from generate_clean_heatmap import generate_heatmap
 from pptx.enum.shapes import MSO_SHAPE
 
 REPO_DIR = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS")
@@ -38,6 +43,7 @@ COLOR_GREEN = RGBColor(22, 101, 52)         # #166534 Forest Green for Completed
 COLOR_DIVIDER = RGBColor(229, 231, 235)     # #E5E7EB Subtle Neutral Rule Line
 
 def create_deck():
+    generate_heatmap()  # Ensure uncluttered heatmap is freshly generated
     prs = pptx.Presentation()
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
@@ -795,33 +801,14 @@ if projected_hours > 9.0:
     # Left: Embed the clear, publication-grade Component Latency Heatmap!
     heatmap_img = REPO_DIR / "artifacts" / "agent_run_heatmap.png"
     if heatmap_img.exists():
-        slide18.shapes.add_picture(str(heatmap_img), Inches(0.8), Inches(1.6), Inches(5.8), Inches(4.30))
+        slide18.shapes.add_picture(str(heatmap_img), Inches(0.8), Inches(1.55), Inches(5.8), Inches(3.625))
     else:
-        add_card(slide18, Inches(0.8), Inches(1.6), Inches(5.8), Inches(4.30), title="Component Latency Heatmap")
+        add_card(slide18, Inches(0.8), Inches(1.55), Inches(5.8), Inches(3.625), title="Component Latency Heatmap")
 
-    # Below Heatmap: 2-3 Line Direct Inference Card
-    tf_inf17 = add_card(slide18, Inches(0.8), Inches(5.98), Inches(5.8), Inches(0.95), title=None)
-    p_inf = tf_inf17.paragraphs[0]
-    p_inf.text = "Key Inference from Heatmap (What It Shows):"
-    p_inf.font.name = "Calibri"
-    p_inf.font.size = Pt(11.5)
-    p_inf.font.bold = True
-    p_inf.font.color.rgb = COLOR_CRIMSON
-    p_inf.space_after = Pt(2)
-    
-    p_inf2 = tf_inf17.add_paragraph()
-    p_inf2.text = "• Fast Pre-Processing: InputGuard inspects notes in 0.4ms with zero LLM tokens; FastMCP database and policy lookups run concurrently in ~20ms, while cognitive dispatch accounts for ~104ms."
-    p_inf2.font.name = "Calibri"
-    p_inf2.font.size = Pt(9.5)
-    p_inf2.font.color.rgb = COLOR_CHARCOAL
-    p_inf2.space_after = Pt(2)
-    
-    p_inf3 = tf_inf17.add_paragraph()
-    p_inf3.text = "• Dynamic Standby: The Exception Agent stays on standby (0.0ms) during normal dispatches, and only wakes up in 38.1ms when a road blockage occurs to recalculate routes without pipeline failure."
-    p_inf3.font.name = "Calibri"
-    p_inf3.font.size = Pt(9.5)
-    p_inf3.font.color.rgb = COLOR_CHARCOAL
-    p_inf3.space_after = Pt(0)
+    # Below Heatmap: Clean, Uncluttered Takeaway Card
+    tf_inf17 = add_card(slide18, Inches(0.8), Inches(5.28), Inches(5.8), Inches(1.65), title="Key Takeaway (What the Heatmap Proves)")
+    add_bullet(tf_inf17, "Fast Pre-Processing:", "InputGuard inspects notes in 0.4ms with zero LLM tokens; FastMCP database and policy lookups run concurrently in ~20ms, while cognitive dispatch accounts for ~104ms.", size=10.5, space_after=3)
+    add_bullet(tf_inf17, "Dynamic Standby:", "The Exception Agent stays on standby (0.0ms) during normal dispatches, and only wakes up in 38.1ms when a road blockage occurs to recalculate routes without pipeline failure.", size=10.5, space_after=0)
 
     # Right: Explaining Observability Implementation
     tf_c5 = add_card(slide18, Inches(6.8), Inches(1.6), Inches(5.733), Inches(5.33), title="Lifecycle Callback Architecture & Latency Profiling")
