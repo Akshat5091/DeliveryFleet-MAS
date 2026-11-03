@@ -716,7 +716,7 @@ self.bb_manager.update_field(order_id, "crew_retrieval_agent",
     tf_t2 = add_card(slide15, Inches(6.833), Inches(3.05), w13_b, Inches(4.0), title="Machine Learning Delay Prediction vs LLMs")
     add_bullet(tf_t2, "The Floating-Point Arithmetic Bottleneck:", "LLMs perform poorly on continuous spatial math, take 400–1200ms per invocation, and cost ~$0.002 per order.")
     add_bullet(tf_t2, "500x Faster Inference (0.0008s):", "Our Random Forest model evaluates [distance, traffic_factor, rainfall, hour, weight] in 800 microseconds with zero token spend.")
-    add_bullet(tf_t2, "Physical Transit Dynamics:", "Trained on 600 trip records: distance friction (0.8m/km), congestion scaling, and monsoon rain degradation (0.5m/mm).")
+    add_bullet(tf_t2, "Physical Transit Dynamics:", "Trained on 600 trip records: distance friction (0.8 mins/km), traffic congestion scaling, and monsoon rain delay (0.5 mins per mm rain).")
     add_bullet(tf_t2, "Non-Linear Gridlock Modeling:", "Accurately captures compounding delays (e.g. 15mm rainfall + rush hour + 70kg van) that simple linear formulas cannot model.")
 
     # =========================================================================
@@ -810,10 +810,18 @@ if projected_hours > 9.0:
     p_inf.space_after = Pt(2)
     
     p_inf2 = tf_inf17.add_paragraph()
-    p_inf2.text = "• InputGuard provides zero-overhead security in 0.4ms; FastMCP retrieval runs concurrently in ~20ms, while cognitive LLM dispatch accounts for ~104ms.\n• Exception Agent remains on standby (0.0ms) during normal operations, but dynamically engages in 38.1ms upon road blockage to reroute without system failure."
+    p_inf2.text = "• Fast Pre-Processing: InputGuard inspects notes in 0.4ms with zero LLM tokens; FastMCP database and policy lookups run concurrently in ~20ms, while cognitive dispatch accounts for ~104ms."
     p_inf2.font.name = "Calibri"
-    p_inf2.font.size = Pt(10.0)
+    p_inf2.font.size = Pt(9.5)
     p_inf2.font.color.rgb = COLOR_CHARCOAL
+    p_inf2.space_after = Pt(2)
+    
+    p_inf3 = tf_inf17.add_paragraph()
+    p_inf3.text = "• Dynamic Standby: The Exception Agent stays on standby (0.0ms) during normal dispatches, and only wakes up in 38.1ms when a road blockage occurs to recalculate routes without pipeline failure."
+    p_inf3.font.name = "Calibri"
+    p_inf3.font.size = Pt(9.5)
+    p_inf3.font.color.rgb = COLOR_CHARCOAL
+    p_inf3.space_after = Pt(0)
 
     # Right: Explaining Observability Implementation
     tf_c5 = add_card(slide18, Inches(6.8), Inches(1.6), Inches(5.733), Inches(5.33), title="Lifecycle Callback Architecture & Latency Profiling")
@@ -860,7 +868,7 @@ if projected_hours > 9.0:
     add_bullet(tf_t17c, "Factorial Matrix:", "3 Architectures × 2 Prompt Styles × 4 Personas × 3 Orders.")
     add_bullet(tf_t17c, "Reliability:", "Zero deadlocks, zero crashes, zero data corruptions across all 72 runs.")
     add_bullet(tf_t17c, "Denial-of-Wallet Defense:", "Injection prompts cost $0.000015 USD (130 tokens) vs $0.00042 USD for polite orders—saving 96.4% in tokens.")
-    add_bullet(tf_t17c, "Balanced Fleet Workload:", "Shannon Decision Entropy H(X) = 0.917 bits proves non-greedy driver distribution.")
+    add_bullet(tf_t17c, "Balanced Fleet Workload:", "Workload entropy (H = 0.917) proves orders are distributed fairly across the fleet rather than overloading a single driver.")
     add_bullet(tf_t17c, "Safety Accuracy:", "Sensitivity = 1.0 (100% fatigue violation detection). Specificity = 0.96.")
 
     # =========================================================================
