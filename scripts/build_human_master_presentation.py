@@ -1612,5 +1612,4 @@ def update_archives():
 
 if __name__ == "__main__":
     create_deck()
-    create_human_1slide_matrix()
     update_archives()
