@@ -280,20 +280,20 @@ def create_deck():
     # SLIDE 3: Problem Formulation & 4-Agent Justification
     # =========================================================================
     slide3 = prs.slides.add_slide(blank_layout)
-    add_slide_header(slide3, "Problem Formulation: 4 Sub-Problems Formally Justify 4 Agents", "Decomposing Urban Logistics into Decoupled Computational Domains", code_ref="Scope: Urban Fleet Logistics Decomposition")
+    add_slide_header(slide3, "Formal Problem Statement: 4 Sub-Problems Formally Justify 4 Agents", "Decomposing Urban Logistics into Decoupled Computational Domains", code_ref="Scope: Urban Fleet Logistics Decomposition")
     
-    tf_p_top = add_card(slide3, Inches(0.8), Inches(1.55), Inches(11.733), Inches(1.2), title="Operational Domain Complexity & Faculty Agent Justification Mandate", subtitle="Course Mandate: Zero arbitrary agent proliferation; every agent must resolve an isolated, non-trivial operational bottleneck.")
-    add_bullet(tf_p_top, "The Monolithic Bottleneck:", "Linear solvers fail on qualitative customer notes and dynamic mid-route events; monolithic LLMs suffer from context saturation, floating-point arithmetic errors (R^2 < 0.30), and prompt injection vulnerabilities.", size=12.5, space_after=0)
+    tf_p_top = add_card(slide3, Inches(0.8), Inches(1.48), Inches(11.733), Inches(1.35), title="Formal Problem Statement (3–4 Lines Max)", subtitle="Core logistics problem resolved by 1 Lead Supervisor + 4 Dedicated Domain Worker Agents")
+    add_bullet(tf_p_top, "Statement:", "Urban last-mile logistics requires dynamic parcel dispatch under non-linear road congestion, vehicle capacity bounds, statutory 9.0-hour driver fatigue ceilings, and volatile municipal zoning bylaws without single-point failure or cloud privacy leakage. To resolve this, the system decomposes the problem into four dedicated agents coordinated by a lead supervisor (HierarchicalOrchestrator): the Dispatch Agent (CrewAI) arbitrates multi-factor driver allocation and fatigue limits; the Retrieval Agent (ChromaDB) enforces air-gapped zoning compliance; the Route Agent (Google ADK) computes spatial Dijkstra corridors and ML traffic delays via A2A; and the Dynamic Exception Agent (CrewAI) executes event-driven mid-transit disruption recovery.", size=10.5, space_after=0)
 
     w3 = Inches(5.7)
     
-    tf_p1 = add_card(slide3, Inches(0.8), Inches(2.9), w3, Inches(4.1), title="Sub-Problems 1 & 2: Personnel & Compliance", subtitle="Files: src/agents/crew_dispatch_agent.py & crew_retrieval_agent.py")
+    tf_p1 = add_card(slide3, Inches(0.8), Inches(2.98), w3, Inches(4.05), title="Sub-Problems 1 & 2: Personnel & Compliance", subtitle="Files: src/agents/crew_dispatch_agent.py & crew_retrieval_agent.py")
     add_bullet(tf_p1, "Sub-Problem 1 (Multi-Objective Dispatch Conflict):", "Balancing payload limits (20-30kg vs 80-120kg), SLA urgency, and statutory 9.0h driver fatigue limits requires continuous cognitive reasoning.")
     add_bullet(tf_p1, "Formally Solved By:", "Worker 1 (CrewAI Dispatch Agent) using ReAct loops to interleave candidate database queries with BusinessGuardrails safety bounds.")
     add_bullet(tf_p1, "Sub-Problem 2 (Zoning Bylaws & Data Sovereignty):", "Municipal Low-Emission Zones (LEZs) change dynamically; sending shift records to cloud LLMs violates enterprise privacy and data sovereignty.")
     add_bullet(tf_p1, "Formally Solved By:", "Worker 2 (ChromaDB Retrieval Agent) executing local air-gapped Vector RAG in <15ms with zero cloud telemetry egress.")
 
-    tf_p2 = add_card(slide3, Inches(6.833), Inches(2.9), w3, Inches(4.1), title="Sub-Problems 3 & 4: Routing & Contingency", subtitle="Files: src/agents/adk_route_agent.py & crew_exception_agent.py")
+    tf_p2 = add_card(slide3, Inches(6.833), Inches(2.98), w3, Inches(4.05), title="Sub-Problems 3 & 4: Routing & Contingency", subtitle="Files: src/agents/adk_route_agent.py & crew_exception_agent.py")
     add_bullet(tf_p2, "Sub-Problem 3 (Spatial Routing & Delay Regression):", "LLMs cannot perform graph Dijkstra or floating-point regression. Calculating non-linear impedance requires dedicated declarative spatial engines.")
     add_bullet(tf_p2, "Formally Solved By:", "Worker 3 (Google ADK Route Agent) executing Dijkstra corridors and Scikit-Learn Random Forest regression (R^2 = 0.901) over A2A in 0.0008s.")
     add_bullet(tf_p2, "Sub-Problem 4 (Real-Time Disruption & Deadlock):", "Mid-transit accidents and vehicle breakdowns cause pipeline crashes if dispatches cannot dynamically re-plan on live telemetry signals.")

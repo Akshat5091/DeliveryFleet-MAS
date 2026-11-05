@@ -10,11 +10,17 @@
 
 ***
 
-## 1. Executive Context & Phase 1 to Phase 2 Architectural Evolution
+## 1. Formal Problem Statement & Project Scope
+
+> **"Urban last-mile logistics requires dynamic parcel dispatch under non-linear road congestion, vehicle capacity bounds, statutory 9.0-hour driver fatigue ceilings, and volatile municipal zoning bylaws without single-point failure or cloud privacy leakage. To resolve this, the system decomposes the problem into four dedicated agents coordinated by a lead supervisor (HierarchicalOrchestrator): the Dispatch Agent (CrewAI) arbitrates multi-factor driver allocation and fatigue limits; the Retrieval Agent (ChromaDB) enforces air-gapped zoning compliance; the Route Agent (Google ADK) computes spatial Dijkstra corridors and ML traffic delays via A2A; and the Dynamic Exception Agent (CrewAI) executes event-driven mid-transit disruption recovery."**
+
+***
+
+## 2. Executive Context & Phase 1 to Phase 2 Architectural Evolution
 
 In Phase 1, Group 8 proposed a preliminary multi-agent delivery logistics model. Following faculty feedback, viva cross-examination, and the formal distribution of the **11 Minimum Evaluation Criteria**, our architecture underwent a systematic engineering overhaul.
 
-### 1.1 Formal Problem Decomposition & Agent Justification Invariant
+### 2.1 Formal Problem Decomposition & Agent Justification Invariant
 To satisfy the faculty directive against arbitrary agent proliferation (*"Whatever number of agents you decide to use, you must justify each one by the specific problem it solves"*), our revised problem formulation formally partitions urban fleet logistics into **four decoupled computational sub-problems**, each resolved by a dedicated Domain Worker Agent under a Lead Supervisory Orchestrator:
 1. **Sub-Problem 1 (Multi-Objective Driver Assignment & Fatigue Arbitration):** Resolved by **Worker 1: CrewAI Dispatch Agent** (`src/agents/crew_dispatch_agent.py`) using ReAct reasoning loops and statutory 9.0h fatigue guardrails.
 2. **Sub-Problem 2 (Volatile Environmental Zoning & Enterprise Data Sovereignty):** Resolved by **Worker 2: ChromaDB Retrieval Agent** (`src/agents/crew_retrieval_agent.py`) using air-gapped local Vector RAG in <15ms with zero cloud data leakage.
@@ -22,7 +28,7 @@ To satisfy the faculty directive against arbitrary agent proliferation (*"Whatev
 4. **Sub-Problem 4 (Real-Time Mid-Transit Disruption & Deadlock Recovery):** Resolved by **Worker 4: CrewAI Dynamic Exception Agent** (`src/agents/crew_exception_agent.py`) operating on event-driven standby to achieve an average 18.5-minute delay savings.
 5. **The Coordination Matrix (Concurrency & Perimeter Defense):** Resolved by the **Lead Supervisory Orchestrator** (`src/orchestration/hierarchical_orchestrator.py`) managing thread-safe `BlackboardState` under `threading.RLock()` and executing front-door `InputGuard` regex screening in 0.0004s.
 
-### 1.2 Minimum Criteria Gap Analysis and Architectural Refinements:
+### 2.2 Minimum Criteria Gap Analysis and Architectural Refinements:
 * **Dual-Framework Heterogeneity (Criteria 6 & 7):** Upgraded from a single-framework design to a heterogeneous dual-framework architecture. Google ADK powers spatial routing; CrewAI powers cognitive dispatch, retrieval, and exception handling.
 * **Context Sharing & State Updates (Criterion 1):** Introduced a centralized, typed **Blackboard Shared State (`BlackboardState`)** with reentrant `threading.RLock()` protection, eliminating conversational prompt bloat.
 * **Pydantic v2 Strict Typing (Criterion 3):** Standardized all agent decisions (`DispatchDecision`, `RoutePlan`, `ExceptionReplan`) and final deliverables (`FinalDeliveryReport`) with Pydantic v2 algebraic data schemas.
@@ -32,7 +38,7 @@ To satisfy the faculty directive against arbitrary agent proliferation (*"Whatev
 
 ***
 
-## 2. 11 Minimum Criteria Ownership & Implementation Ledger
+## 3. 11 Minimum Criteria Ownership & Implementation Ledger
 
 | # | Prescribed Criterion | Implementation Architecture & Exact File Reference | Student Lead / Owner | Phase 2 Milestone Status |
 | :- | :--- | :--- | :--- | :---: |
@@ -52,7 +58,7 @@ To satisfy the faculty directive against arbitrary agent proliferation (*"Whatev
 
 ***
 
-## 3. Phase-by-Phase Roadmap & Milestone Timeline
+## 4. Phase-by-Phase Roadmap & Milestone Timeline
 
 ```
 PHASE 1: Foundations & Architecture  ──>  PHASE 2: Core Engineering & Proof  ──>  PHASE 3: Polish & Defense
@@ -78,7 +84,7 @@ PHASE 1: Foundations & Architecture  ──>  PHASE 2: Core Engineering & Proof 
 
 ***
 
-## 4. Team Responsibility Matrix
+## 5. Team Responsibility Matrix
 
 | Member | Roll No. | Primary Role | Core Modules Owned | Eval Criteria |
 | :--- | :---: | :--- | :--- | :---: |
@@ -89,7 +95,7 @@ PHASE 1: Foundations & Architecture  ──>  PHASE 2: Core Engineering & Proof 
 
 ***
 
-## 5. Risk Assessment & Contingency Fallback Plan
+## 6. Risk Assessment & Contingency Fallback Plan
 
 | Risk Description | Probability | Severity | Mitigation & Contingency Strategy |
 | :--- | :---: | :---: | :--- |

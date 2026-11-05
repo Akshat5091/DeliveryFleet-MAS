@@ -380,6 +380,12 @@ def generate_enhanced_wip_report():
     # 2. TECHNICAL ARCHITECTURE & MULTI-AGENT TOPOLOGY
     # --------------------------------------------------------------------------
     add_styled_heading(doc, "2. Technical Architecture, Problem Decomposition & Agent Justification", level=1)
+    add_callout_box(
+        doc,
+        "\"Urban last-mile logistics requires dynamic parcel dispatch under non-linear road congestion, vehicle capacity bounds, statutory 9.0-hour driver fatigue ceilings, and volatile municipal zoning bylaws without single-point failure or cloud privacy leakage. To resolve this, the system decomposes the problem into four dedicated agents coordinated by a lead supervisor (HierarchicalOrchestrator): the Dispatch Agent (CrewAI) arbitrates multi-factor driver allocation and fatigue limits; the Retrieval Agent (ChromaDB) enforces air-gapped zoning compliance; the Route Agent (Google ADK) computes spatial Dijkstra corridors and ML traffic delays via A2A; and the Dynamic Exception Agent (CrewAI) executes event-driven mid-transit disruption recovery.\"",
+        title="FORMAL PROBLEM STATEMENT",
+        border_hex="991B1B"
+    )
     add_body_p(doc, "In strict compliance with the faculty evaluation mandate against arbitrary agent proliferation ('Whatever number of agents you decide to use, you must have a clear understanding of the rationale behind each one and the specific problem it addresses'), our architecture rigorously decomposes urban fleet logistics into four distinct, decoupled operational sub-problems. Each sub-problem represents a unique computational domain that cannot be solved monolithically, justifying the exact deployment of 4 specialized Domain Worker Agents coordinated by 1 Lead Supervisory Orchestrator:")
     
     # 4 Sub-Problems vs 4 Agents alignment table

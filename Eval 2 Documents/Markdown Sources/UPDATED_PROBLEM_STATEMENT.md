@@ -9,7 +9,13 @@
 
 ***
 
-## 1. Executive Summary & Operational Domain Context
+## 1. Formal Problem Statement (3–4 Lines Max)
+
+> **"Urban last-mile logistics requires dynamic parcel dispatch under non-linear road congestion, vehicle capacity bounds, statutory 9.0-hour driver fatigue ceilings, and volatile municipal zoning bylaws without single-point failure or cloud privacy leakage. To resolve this, the system decomposes the problem into four dedicated agents coordinated by a lead supervisor (HierarchicalOrchestrator): the Dispatch Agent (CrewAI) arbitrates multi-factor driver allocation and fatigue limits; the Retrieval Agent (ChromaDB) enforces air-gapped zoning compliance; the Route Agent (Google ADK) computes spatial Dijkstra corridors and ML traffic delays via A2A; and the Dynamic Exception Agent (CrewAI) executes event-driven mid-transit disruption recovery."**
+
+***
+
+## 2. Executive Summary & Operational Domain Context
 
 Last-mile parcel logistics represents the single most volatile, economically burdensome phase in contemporary supply chain networks, accounting for over **53% of total shipping expenditures**. Urban delivery systems operate under severe environmental stochasticity, characterized by unpredictable arterial gridlock, fluctuating precipitation, statutory driver shift hour ceilings, dynamic municipal low-emission zoning bylaws, and unexpected transit vehicle breakdowns.
 
@@ -23,17 +29,17 @@ To overcome these fundamental limitations, this project engineers a **decentrali
 
 ***
 
-## 2. Theoretical Analysis: Why Monolithic Architectures Fail
+## 3. Theoretical Analysis: Why Monolithic Architectures Fail
 
 A central thesis of Agentic AI is that multi-agent systems must be justified by demonstrable computational and structural necessity rather than superficial architectural complexity. We establish this necessity by examining the mathematical and practical failure modes of alternative monolithic architectures:
 
-### 2.1 Failure of Monolithic Linear Programming & Heuristic Solvers
+### 3.1 Failure of Monolithic Linear Programming & Heuristic Solvers
 Conventional Operations Research (OR) tools (e.g., Integer Linear Programming, Vehicle Routing Problem solvers via OR-Tools) model delivery allocation as a deterministic optimization problem. However:
 - **Inability to Parse Qualitative Semantics:** Solvers operate strictly on numerical matrices. They cannot parse, interpret, or adapt to unstructured customer delivery instructions (e.g., "Medical emergency supplies; leave at rear gate code #4412, do not ring bell").
 - **State Space Explosion Under Real-Time Perturbations:** Urban logistics graphs with stochastic edge impedances cannot be re-solved globally from scratch within sub-second latency constraints whenever an incident occurs. Global re-optimization exhibits exponential runtime complexity $\mathcal{O}(V!)$, freezing the dispatch pipeline.
 - **Static Assumption Invalidation:** Solvers assume stationary parameters throughout transit, failing completely when mid-route road closures or driver fatigue timeouts invalidate pre-computed plans.
 
-### 2.2 Failure of Monolithic Single-LLM Architectures
+### 3.2 Failure of Monolithic Single-LLM Architectures
 A naive modern alternative is deploying a single, monolithic Large Language Model (e.g., GPT-4) prompted with all system instructions, driver rosters, road matrices, and bylaws. This approach suffers from fatal empirical failure modes:
 - **Context Saturation & Attention Dilution:** Ingesting active driver databases (10–50 drivers), directed graph adjacency matrices, municipal zoning bylaws, and weather telemetry into a single prompt consumes 12,000–18,000 tokens per dispatch. This triggers severe attention degradation, token bloat ($0.05+/dispatch), and non-deterministic response latency (2,500–5,000 ms).
 - **Floating-Point Arithmetic Hallucination:** LLMs are autoregressive token predictors lacking internal floating-point arithmetic units. On continuous numerical regressions (such as computing travel times under compounding traffic and weather factors), monolithic LLM predictions achieve an $R^2 < 0.30$, whereas dedicated machine learning regression models achieve $R^2 = 0.901$.
@@ -42,7 +48,7 @@ A naive modern alternative is deploying a single, monolithic Large Language Mode
 
 ***
 
-## 3. Problem Decomposition: The 4 Fundamental Operational Problems & Exact Agent Justifications
+## 4. Problem Decomposition: The 4 Fundamental Operational Problems & Exact Agent Justifications
 
 To ensure absolute architectural rigor, our Problem Statement decomposes urban logistics into **four decoupled computational and operational sub-problems**. Each sub-problem exhibits distinct mathematical properties, data boundaries, and performance requirements that cannot be unified into a single process. Consequently, our system assigns **four specialized Domain Worker Agents** coordinated by **one Lead Supervisory Orchestrator**.
 
@@ -151,7 +157,7 @@ A vital senior engineering decision in our architecture is the **categorical rej
 
 ***
 
-## 4. Operational PEAS Formulation (Russell & Norvig Framework)
+## 5. Operational PEAS Formulation (Russell & Norvig Framework)
 
 Following the standard Multi-Agent Systems formalization established by Russell & Norvig:
 
@@ -164,7 +170,7 @@ Following the standard Multi-Agent Systems formalization established by Russell 
 
 ***
 
-## 5. Minimum Evaluation Criteria Mapping Matrix
+## 6. Minimum Evaluation Criteria Mapping Matrix
 
 This updated problem statement establishes baseline compliance across the **8 completed Phase 2 core criteria** and the **3 staged Phase 3 research novelty extensions**:
 

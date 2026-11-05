@@ -294,16 +294,24 @@ def build_problem_charter(out_path):
         "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 8\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Evaluation Phase: Phase 2 (~73% Milestone: 8 Core Modules Completed)"
     )
     
-    add_styled_heading(doc, "1. Executive Summary & Operational Domain Context", level=1)
+    add_styled_heading(doc, "1. Formal Problem Statement", level=1)
+    add_callout_box(
+        doc,
+        "\"Urban last-mile logistics requires dynamic parcel dispatch under non-linear road congestion, vehicle capacity bounds, statutory 9.0-hour driver fatigue ceilings, and volatile municipal zoning bylaws without single-point failure or cloud privacy leakage. To resolve this, the system decomposes the problem into four dedicated agents coordinated by a lead supervisor (HierarchicalOrchestrator): the Dispatch Agent (CrewAI) arbitrates multi-factor driver allocation and fatigue limits; the Retrieval Agent (ChromaDB) enforces air-gapped zoning compliance; the Route Agent (Google ADK) computes spatial Dijkstra corridors and ML traffic delays via A2A; and the Dynamic Exception Agent (CrewAI) executes event-driven mid-transit disruption recovery.\"",
+        title="FORMAL PROBLEM STATEMENT",
+        border_hex="991B1B"
+    )
+
+    add_styled_heading(doc, "2. Executive Summary & Operational Domain Context", level=1)
     add_body_p(doc, "Last-mile parcel delivery represents the single most volatile, economically burdensome phase in contemporary supply chain management, accounting for over 53% of total logistics expenditures. Urban delivery operations take place under continuous environmental stochasticity, governed by fluctuating arterial congestion, statutory driver shift hour ceilings, dynamic municipal low-emission zoning bylaws, and unexpected transit vehicle breakdowns. Conventional commercial logistics software depends almost exclusively on static heuristic assignment (such as greedy Euclidean nearest-neighbor dispatching) or centralized, monolithic rule engines. While computationally lightweight, these legacy paradigms fail fundamentally under dynamic operational conditions.")
     add_body_p(doc, "This project develops a decentralized, verifiable, and secure Multi-Agent System (MAS) that coordinates fleet dispatch, transit routing, and real-time contingency recovery. The platform integrates Google Agent Development Kit (ADK) and CrewAI, leveraging a centralized Blackboard Shared State Architecture, Model Context Protocol (FastMCP) tool integration, and standardized Agent-to-Agent (A2A) network messaging protocols. In Phase 2, Group 8 has realized a fully operational working prototype covering 8 core modules with 100% empirical verification across 49 unit tests and 72 factorial benchmark runs, achieving ~73% completion against university criteria.")
 
-    add_styled_heading(doc, "2. Theoretical Analysis: Why Monolithic Architectures Fail", level=1)
+    add_styled_heading(doc, "3. Theoretical Analysis: Why Monolithic Architectures Fail", level=1)
     add_body_p(doc, "A foundational requirement of Agentic AI is that multi-agent systems must be justified by demonstrable computational necessity rather than arbitrary complexity. We establish this necessity by examining the mathematical and practical failure modes of alternative monolithic architectures:")
     add_bullet_p(doc, "Conventional Operations Research tools (e.g., Integer Linear Programming, Vehicle Routing Problem solvers) model delivery allocation as a static optimization problem. However, they cannot parse unstructured customer notes (e.g., medical emergency gate codes), suffer exponential state explosion O(V!) when re-solving urban graphs under real-time perturbations, and fail when mid-transit road closures invalidate pre-computed plans.", "1. Failure of Monolithic Linear Programming Solvers:")
     add_bullet_p(doc, "Deploying a single, monolithic LLM prompted with all driver databases, road matrices, and bylaws creates severe context saturation (12k–18k tokens/run), costing over $0.05 per dispatch. LLMs lack floating-point math units, producing hallucinated travel delays (R^2 < 0.30 vs Random Forest R^2 = 0.901). Furthermore, any sub-task failure aborts the entire dispatch, and untrusted customer instructions gain direct execution access to dispatch decisions without perimeter defense.", "2. Failure of Monolithic Single-LLM Prompting:")
 
-    add_styled_heading(doc, "3. Problem Decomposition: The 4 Fundamental Sub-Problems & Exact Agent Justifications", level=1)
+    add_styled_heading(doc, "4. Problem Decomposition: The 4 Fundamental Sub-Problems & Exact Agent Justifications", level=1)
     add_callout_box(
         doc,
         "\"Whatever number of agents you decide to use in your Agentic AI system, you must have a clear understanding of the rationale behind each one. You should be able to explain the purpose of every agent and the specific problem it is designed to address. Do not include agents randomly just to make your system appear more advanced or complex.\" — Faculty Evaluation Mandate",
@@ -322,25 +330,25 @@ def build_problem_charter(out_path):
     tbl_align = doc.add_table(rows=1, cols=3)
     format_styled_table(doc, tbl_align, [Inches(2.2), Inches(2.2), Inches(2.4)], align_headers, align_data)
 
-    add_styled_heading(doc, "3.1 Sub-Problem 1: Multi-Objective Driver Assignment & Fatigue Arbitration (Worker 1: Dispatch Agent)", level=2)
+    add_styled_heading(doc, "4.1 Sub-Problem 1: Multi-Objective Driver Assignment & Fatigue Arbitration (Worker 1: Dispatch Agent)", level=2)
     add_body_p(doc, "Implemented in src/agents/crew_dispatch_agent.py. Selecting the optimal driver d* for consignment o requires balancing multi-dimensional constraints: payload compatibility (20–30 kg bike vs 80–120 kg van), customer SLA deadlines, and statutory daily driving ceilings (H <= 9.0 hours under the Motor Transport Workers Act, 1961). Monolithic rule engines fail to evaluate nuanced customer notes against capacity, while unconstrained LLMs violate arithmetic safety bounds. The CrewAI Dispatch Agent executes an Observation-Thought-Action ReAct loop, querying driver databases and business guardrails before producing an algebraic DispatchDecision with zero schema drift.")
 
-    add_styled_heading(doc, "3.2 Sub-Problem 2: Volatile Environmental Bylaws & Data Sovereignty (Worker 2: Retrieval Agent)", level=2)
+    add_styled_heading(doc, "4.2 Sub-Problem 2: Volatile Environmental Bylaws & Data Sovereignty (Worker 2: Retrieval Agent)", level=2)
     add_body_p(doc, "Implemented in src/agents/crew_retrieval_agent.py. Urban freight corridors are governed by dynamic municipal environmental policies (e.g., Zone A Low-Emission Zone requiring EVs; Zone B heavy commercial freight bans after 17:00). Hardcoding bylaws causes code fragility, while sending corporate driver shift logs to public cloud LLMs creates severe data privacy violations. The ChromaDB Retrieval Agent manages an air-gapped local vector store (src/mcp/tools/chroma_rag.py), executing semantic cosine similarity searches in under 15ms and writing verified bylaw chunks to the shared Blackboard state with zero network egress.")
 
-    add_styled_heading(doc, "3.3 Sub-Problem 3: Continuous Spatial Graph Routing & Delay Modeling (Worker 3: Route Agent)", level=2)
+    add_styled_heading(doc, "4.3 Sub-Problem 3: Continuous Spatial Graph Routing & Delay Modeling (Worker 3: Route Agent)", level=2)
     add_body_p(doc, "Implemented in src/agents/adk_route_agent.py. Routing across urban directed graphs G = (V, E) requires minimizing travel impedance under compounding traffic and weather factors. LLMs are notoriously incompetent at continuous graph search and floating-point regressions (R^2 < 0.30, consuming 400–1200ms and 500+ tokens). The Google ADK Route Agent is built as a declarative microservice (AgentCard) operating over the Agent-to-Agent (A2A) protocol via HTTP JSON-RPC 2.0 (/api/a2a/route). It executes a deterministic Dijkstra pathfinder and a trained Scikit-Learn Random Forest delay regressor (R^2 = 0.901, MAE = 2.94 mins) in 0.0008 seconds with zero token spend.")
 
-    add_styled_heading(doc, "3.4 Sub-Problem 4: Real-Time Mid-Transit Disruption & Deadlock Recovery (Worker 4: Exception Agent)", level=2)
+    add_styled_heading(doc, "4.4 Sub-Problem 4: Real-Time Mid-Transit Disruption & Deadlock Recovery (Worker 4: Exception Agent)", level=2)
     add_body_p(doc, "Implemented in src/agents/crew_exception_agent.py. Urban delivery transit suffers stochastic disruptions: unexpected road accidents, localized waterlogging, or driver fatigue timeouts occurring mid-route. Static pipelines crash or deadlock when an active route is severed. The CrewAI Exception Agent operates on an event-driven standby model (0.0ms overhead in normal dispatches). Upon receiving an automated delay/blockage telemetry alert, it activates in 38.1ms, queries Google ADK for emergency bypass corridors, locates nearby standby relief drivers, and updates the Blackboard in <0.05s, saving an average of 18.5 minutes per disrupted route.")
 
-    add_styled_heading(doc, "3.5 The Coordination Matrix: Lead Supervisory Orchestrator", level=2)
+    add_styled_heading(doc, "4.5 The Coordination Matrix: Lead Supervisory Orchestrator", level=2)
     add_body_p(doc, "Implemented in src/orchestration/hierarchical_orchestrator.py. Uncoordinated multi-agent deployment creates O(N^2) message storms, race conditions, and state inconsistency. The Lead Supervisory Orchestrator governs the three-phase lifecycle: (1) concurrent context gathering via ThreadPoolExecutor(max_workers=2) querying Driver DB and Vector RAG in parallel (52% I/O wait reduction); (2) dispatch reasoning and cross-framework A2A routing; and (3) event-driven exception monitoring. It synchronizes a centralized BlackboardState under threading.RLock() and enforces perimeter defense via InputGuard regexes, intercepting prompt injection attacks in 0.0004s before any worker agent is invoked.")
 
-    add_styled_heading(doc, "3.6 Negative Architectural Justification: Why Observability is NOT an LLM Agent", level=2)
+    add_styled_heading(doc, "4.6 Negative Architectural Justification: Why Observability is NOT an LLM Agent", level=2)
     add_body_p(doc, "A critical senior engineering design decision made in Phase 2 was the categorical rejection of an LLM-based 'Auditor/Monitoring Agent': logging execution timestamps, counting tokens, tracking HTTP status codes, and generating execution heatmaps requires 100% deterministic arithmetic. Wrapping an LLM around monitoring consumes redundant API tokens ($0.015–$0.03/check), introduces non-deterministic latency (400–1200ms), and risks hallucinated audit logs. Our architecture handles observability natively via MASCallbackHandler (src/observability/callbacks.py) and MASTracer (src/observability/tracing.py), executing in under 0.001s with zero token cost.")
 
-    add_styled_heading(doc, "4. Operational PEAS Formulation", level=1)
+    add_styled_heading(doc, "5. Operational PEAS Formulation", level=1)
     add_body_p(doc, "Following the standard Russell & Norvig Multi-Agent System formalization, the delivery fleet environment is modeled across four foundational dimensions:")
     peas_headers = ["PEAS Element", "Logistics Environment Specification"]
     peas_data = [
@@ -352,7 +360,7 @@ def build_problem_charter(out_path):
     tbl_peas = doc.add_table(rows=1, cols=2)
     format_styled_table(doc, tbl_peas, [Inches(1.8), Inches(5.0)], peas_headers, peas_data)
 
-    add_styled_heading(doc, "5. Minimum Evaluation Criteria Mapping", level=1)
+    add_styled_heading(doc, "6. Minimum Evaluation Criteria Mapping", level=1)
     add_body_p(doc, "The table below establishes the comprehensive mapping between university evaluation criteria, the operational problem statement, and the Phase 2 implementation:")
     crit_map_headers = ["#", "Prescribed Baseline Criterion", "Problem Addressed", "Phase 2 Implementation Status"]
     crit_map_data = [
@@ -391,7 +399,15 @@ def build_project_plan(out_path):
         "Project Title: Autonomous Multi-Agent Delivery Fleet Coordination and Dispatch System | Group: 8\nAuthors: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)\nFaculty Mentors: Dr. Soharab Hossain Shaikh, Mr. Pranshu Tiwari | Evaluation Phase: Phase 2 (~73% Milestone: 8 Core Modules Completed)"
     )
     
-    add_styled_heading(doc, "1. Executive Context & Phase 1 to Phase 2 Architectural Evolution", level=1)
+    add_styled_heading(doc, "1. Formal Problem Statement & Project Scope", level=1)
+    add_callout_box(
+        doc,
+        "\"Urban last-mile logistics requires dynamic parcel dispatch under non-linear road congestion, vehicle capacity bounds, statutory 9.0-hour driver fatigue ceilings, and volatile municipal zoning bylaws without single-point failure or cloud privacy leakage. To resolve this, the system decomposes the problem into four dedicated agents coordinated by a lead supervisor (HierarchicalOrchestrator): the Dispatch Agent (CrewAI) arbitrates multi-factor driver allocation and fatigue limits; the Retrieval Agent (ChromaDB) enforces air-gapped zoning compliance; the Route Agent (Google ADK) computes spatial Dijkstra corridors and ML traffic delays via A2A; and the Dynamic Exception Agent (CrewAI) executes event-driven mid-transit disruption recovery.\"",
+        title="FORMAL PROBLEM STATEMENT",
+        border_hex="991B1B"
+    )
+
+    add_styled_heading(doc, "2. Executive Context & Phase 1 to Phase 2 Architectural Evolution", level=1)
     add_body_p(doc, "Following the Phase 1 evaluation and the formal distribution of the 11 Minimum Baseline Criteria, Group 8 executed a systematic engineering gap analysis, restructuring the prototype into a production-grade multi-agent architecture:")
     add_bullet_p(doc, "Upgraded from a monolithic framework to a dual-framework architecture. Google ADK powers the Route Optimization Agent; CrewAI powers the Orchestrator, Dispatch, Retrieval, and Exception Agents.", "Dual-Framework Heterogeneity (Criteria 6 & 7):")
     add_bullet_p(doc, "Replaced peer-only messaging with a centralized, thread-safe BlackboardState carrying complete provenance auditing, while retaining A2A messaging for empirical comparison.", "Centralized Blackboard Architecture (Criterion 1):")
@@ -401,7 +417,7 @@ def build_project_plan(out_path):
     add_bullet_p(doc, "Implemented InputGuard defending against prompt injection attacks (regex patterns from LAB-06) and masking abusive customer personas.", "Multi-Tier Security Guardrails (Criterion 8):")
     add_bullet_p(doc, "Eliminated LLM monitoring bloat in favor of native callback hooks and OpenTelemetry tracing.", "Deterministic Observability & Heatmaps (Criteria 5 & 9):")
 
-    add_styled_heading(doc, "2. Minimum Criteria Ownership & Implementation Ledger", level=1)
+    add_styled_heading(doc, "3. Minimum Criteria Ownership & Implementation Ledger", level=1)
     add_body_p(doc, "Below is the detailed criteria ownership and source code reference ledger covering all 11 evaluation criteria:")
     crit_headers = ["#", "Prescribed Baseline Criterion", "Implementation Architecture & Module", "Student Lead", "Phase 2 Status"]
     crit_data = [
@@ -420,7 +436,7 @@ def build_project_plan(out_path):
     tbl_crit = doc.add_table(rows=1, cols=5)
     format_styled_table(doc, tbl_crit, [Inches(0.4), Inches(1.5), Inches(2.6), Inches(1.1), Inches(1.2)], crit_headers, crit_data)
 
-    add_styled_heading(doc, "3. Phase-by-Phase Roadmap & Milestone Timeline", level=1)
+    add_styled_heading(doc, "4. Phase-by-Phase Roadmap & Milestone Timeline", level=1)
     sched_headers = ["Phase Window", "Milestone / Objective", "Core Deliverables & Current Status"]
     sched_data = [
         ["Phase 1\n(Aug 15 - Oct 10)", "Foundations & Architectural Conception", "Topic definition, PEAS specification, synthetic dataset curation, preliminary literature review. [COMPLETED]"],
@@ -430,7 +446,7 @@ def build_project_plan(out_path):
     tbl_sched = doc.add_table(rows=1, cols=3)
     format_styled_table(doc, tbl_sched, [Inches(1.5), Inches(2.5), Inches(2.8)], sched_headers, sched_data)
 
-    add_styled_heading(doc, "4. Detailed Bi-Weekly Sprint Execution Schedule", level=1)
+    add_styled_heading(doc, "5. Detailed Bi-Weekly Sprint Execution Schedule", level=1)
     add_body_p(doc, "To ensure structured execution across the semester, development was tracked through seven distinct bi-weekly sprint windows:")
     sprint_headers = ["Sprint Window", "Milestone & Technical Objectives", "Deliverables & Artifacts", "Sprint Status"]
     sprint_data = [
@@ -445,7 +461,7 @@ def build_project_plan(out_path):
     tbl_sprint = doc.add_table(rows=1, cols=4)
     format_styled_table(doc, tbl_sprint, [Inches(1.3), Inches(1.8), Inches(2.7), Inches(1.0)], sprint_headers, sprint_data)
 
-    add_styled_heading(doc, "5. Team Responsibility & Criteria Ownership Matrix", level=1)
+    add_styled_heading(doc, "6. Team Responsibility & Criteria Ownership Matrix", level=1)
     resp_headers = ["Student Name & ID", "Engineering Role", "Primary Module Ownership & Deliverables", "Criteria"]
     resp_data = [
         ["Bhumika Yadav\n(230732)", "Architecture Lead", "Blackboard state architecture (src/schemas/blackboard.py) and Pydantic v2 output models (src/schemas/reports.py, decisions.py); Hierarchical Orchestrator; concurrency tests.", "1, 3, 4, 7"],
@@ -456,7 +472,7 @@ def build_project_plan(out_path):
     tbl_resp = doc.add_table(rows=1, cols=4)
     format_styled_table(doc, tbl_resp, [Inches(1.4), Inches(1.6), Inches(3.0), Inches(0.8)], resp_headers, resp_data)
 
-    add_styled_heading(doc, "6. Risk Assessment & Contingency Fallback Plan", level=1)
+    add_styled_heading(doc, "7. Risk Assessment & Contingency Fallback Plan", level=1)
     risk_headers = ["Identified Operational Risk", "Likelihood", "Impact", "Mitigation & Contingency Strategy"]
     risk_data = [
         ["Cross-Framework A2A Link Disruption", "Low", "High", "Pinned exact package versions in requirements.txt. Built in-process A2ABridge with thread-safe RLock history recording and HTTP JSON-RPC fallback."],
