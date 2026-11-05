@@ -1,5 +1,5 @@
 """Generates the official 1-Slide Presentation on Criteria Coverage for Eval-2.
-Maps exactly 7 completed criteria (Eval-2 core prototype) and 4 Phase 3 novelty criteria (End-Term scope).
+Maps exactly 8 completed criteria (Eval-2 core prototype, ~73% completion) and 3 Phase 3 novelty criteria (End-Term scope).
 File: DeliveryFleet-MAS/Eval 2 Documents/1_Slide_Coverage_Matrix_Group8.pptx
 """
 import sys
@@ -13,18 +13,26 @@ from pptx.enum.shapes import MSO_SHAPE
 OUT_PPTX = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents\1_Slide_Coverage_Matrix_Group8.pptx")
 OUT_MD = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents\EVAL2_1_SLIDE_COVERAGE_MATRIX.md")
 
+COLOR_CRIMSON = RGBColor(153, 27, 27)    # #991B1B Academic Crimson
+COLOR_BLACK = RGBColor(17, 24, 39)       # #111827 Pitch Black
+COLOR_CHARCOAL = RGBColor(31, 41, 55)    # #1F2937 Dark Charcoal
+COLOR_MUTED = RGBColor(75, 85, 99)       # #4B5563 Muted Gray
+COLOR_GREEN = RGBColor(22, 101, 52)      # #166534 Forest Green
+COLOR_BORDER = RGBColor(209, 213, 219)   # #D1D5DB Pencil Border
+COLOR_CARD_BG = RGBColor(249, 250, 251)  # #F9FAFB Card Background
+
 CRITERIA_DATA = [
     ("C01", "Blackboard Shared State", "VERIFIED", "✅ 100% VERIFIED", "Centralized BlackboardState in src/schemas/blackboard.py (lines 35-55) with RLock concurrency synchronization, FastMCP update tool, and read-driven downstream handoffs via bb_manager.get_field (lines 56-63). [WIP Report: Chapter 3.1 & Section 4.3]"),
-    ("C02", "MCP Tool Integration (>= 2)", "VERIFIED", "✅ 100% VERIFIED", "FastMCP server (src/mcp/server.py, lines 23-45) and native MCPClient (src/mcp/client.py, lines 15-40) exposing 5 tools with formal client session calls and schema validation. Exceeds >= 2 requirement. [WIP Report: Chapter 3.2 & Section 4.4]"),
+    ("C02", "MCP Tool Integration (>= 2)", "VERIFIED", "✅ 100% VERIFIED", "FastMCP server (src/mcp/server.py, lines 23-45) and native MCPClient (src/mcp/client.py, lines 15-40) exposing 5 tools with formal client session calls and schema validation. Exceeds >= 2 requirement by 150%. [WIP Report: Chapter 3.2 & Section 4.4]"),
     ("C03", "Pydantic Structured Output", "VERIFIED", "✅ 100% VERIFIED", "Pydantic v2 schemas: FinalDeliveryReport (src/schemas/reports.py, lines 20-45) and DispatchDecision / RoutePlan / ExceptionReplan (src/schemas/decisions.py, lines 15-45) with validated JSON export and Markdown tables. [WIP Report: Chapter 3.3]"),
     ("C04", "Agentic Design Patterns", "VERIFIED", "✅ 100% VERIFIED", "Supervised Hierarchical Manager MAS pattern with parallel context gathering via ThreadPoolExecutor (src/orchestration/hierarchical_orchestrator.py, lines 154-172) benchmarked against Sequential Pipeline. [WIP Report: Chapter 3.4 & Section 4.2]"),
-    ("C05", "Callbacks & Agent Heatmaps", "NOVELTY", "🚀 END-TERM NOVELTY", "Initial runtime latency logging operational. Longitudinal 24-hour fleet telematics shift heatmaps and automated bottleneck pruning reserved for End-Term Defense novelty. [WIP Report: Chapter 3.5 & Section 9.0]"),
+    ("C05", "Callbacks & Latency Heatmaps", "VERIFIED", "✅ 100% VERIFIED", "MASCallbackHandler in src/observability/callbacks.py capturing real-time lifecycle hooks (on_agent_start/end/exception). Generated 2D density heatmaps across 72 factorial runs. [WIP Report: Chapter 3.5 & Section 4.8]"),
     ("C06", "A2A Protocol Communication", "VERIFIED", "✅ 100% VERIFIED", "A2ABridge in src/agents/a2a_bridge.py (lines 74-114) routing A2AMessage envelopes with live network JSON-RPC endpoint (POST /api/a2a/route) and in-process fallback circuit breaker. [WIP Report: Chapter 3.6 & Section 4.1]"),
     ("C07", "Dual Framework (CrewAI + ADK)", "VERIFIED", "✅ 100% VERIFIED", "Google ADK natively powers Route Agent (src/agents/adk_route_agent.py, lines 32-45); CrewAI natively powers Dispatch Agent (src/agents/crew_dispatch_agent.py, lines 40-55), Retrieval, and Exception Agents. [WIP Report: Chapter 3.7 & Section 4.1]"),
-    ("C08", "Security & Multi-Tier Guardrails", "VERIFIED", "✅ 100% VERIFIED", "InputGuard regex injection defense in 0.000s + toxic term masking (src/guardrails/input_guard.py, lines 20-45) and BusinessGuardrails statutory 9.0h driving limit block (src/guardrails/business_guardrails.py, lines 18-38). [WIP Report: Chapter 3.8 & Section 6.0]"),
-    ("C09", "AI Observability & Tracing", "NOVELTY", "🚀 END-TERM NOVELTY", "Local JSONL trace spans operational. Multi-host OpenTelemetry Collector export to Jaeger/Prometheus distributed tracing dashboard reserved for End-Term Defense novelty. [WIP Report: Chapter 3.9 & Section 9.0]"),
-    ("C10", "Evaluation (40+ Runs & Boxplots)", "NOVELTY", "🚀 END-TERM NOVELTY", "Comparative baseline runs active. Full 72+ factorial evaluation matrix across 3 architectures with Pareto cost-latency frontiers reserved for End-Term Defense novelty. [WIP Report: Chapter 3.10 & Section 9.0]"),
-    ("C11", "Cloud Platform Deployment", "NOVELTY", "🚀 END-TERM NOVELTY", "Local multi-stage Docker container configured. Live production deployment to AWS EC2 / GCP Compute Engine with Cloudflare edge proxy reserved for End-Term Defense novelty. [WIP Report: Chapter 3.11 & Section 9.0]")
+    ("C08", "Security & Multi-Tier Guardrails", "VERIFIED", "✅ 100% VERIFIED", "InputGuard regex injection defense in 0.0004s + toxic term masking (src/guardrails/input_guard.py, lines 20-45) and BusinessGuardrails statutory 9.0h driving limit block (src/guardrails/business_guardrails.py, lines 18-38). [WIP Report: Chapter 3.8 & Section 4.7]"),
+    ("C09", "AI Observability & Tracing", "NOVELTY", "🚀 END-TERM NOVELTY", "Local JSONL trace spans operational. Multi-host OpenTelemetry Collector export to Jaeger/Prometheus distributed tracing dashboard reserved for End-Term Defense novelty. [WIP Report: Chapter 9.1 & Section 4.8]"),
+    ("C10", "Evaluation (Cloud Factorial Matrix)", "NOVELTY", "🚀 END-TERM NOVELTY", "Baseline 72 factorial runs complete locally. Full 100+ factorial cloud evaluation matrix across 3 architectures with Pareto cost-latency frontiers reserved for End-Term Defense novelty. [WIP Report: Chapter 9.2 & Section 5.0]"),
+    ("C11", "Cloud Platform Deployment", "NOVELTY", "🚀 END-TERM NOVELTY", "Local multi-stage Docker container configured. Live production deployment to AWS EC2 / GCP Compute Engine with Cloudflare edge proxy reserved for End-Term Defense novelty. [WIP Report: Chapter 9.3 & Section 9.3]")
 ]
 
 def create_coverage_slide():
@@ -38,8 +46,8 @@ def create_coverage_slide():
     # 1. Top Header Banner Box
     banner = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.4), Inches(0.25), Inches(12.533), Inches(0.95))
     banner.fill.solid()
-    banner.fill.fore_color.rgb = RGBColor(0x0F, 0x17, 0x2A) # Deep Slate Navy
-    banner.line.color.rgb = RGBColor(0x3B, 0x82, 0xF6) # Electric Blue
+    banner.fill.fore_color.rgb = COLOR_CARD_BG
+    banner.line.color.rgb = COLOR_CRIMSON
     banner.line.width = Pt(1.5)
 
     tf = banner.text_frame
@@ -56,7 +64,7 @@ def create_coverage_slide():
     r0.font.name = "Calibri"
     r0.font.size = Pt(15.0)
     r0.font.bold = True
-    r0.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+    r0.font.color.rgb = COLOR_BLACK
 
     p1 = tf.add_paragraph()
     p1.alignment = PP_ALIGN.LEFT
@@ -64,23 +72,23 @@ def create_coverage_slide():
     r1.text = "Course: CSE3101 Agentic AI | Group 8: Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)"
     r1.font.name = "Calibri"
     r1.font.size = Pt(9.0)
-    r1.font.color.rgb = RGBColor(0x94, 0xA3, 0xB8)
+    r1.font.color.rgb = COLOR_MUTED
 
     p2 = tf.add_paragraph()
     p2.alignment = PP_ALIGN.LEFT
     r2 = p2.add_run()
-    r2.text = "Milestone Target: 65–70% | Achieved: ~68% Complete  —  [ 7 Core Criteria 100% Verified ✅  |  4 Advanced Research Criteria Reserved for End-Term Novelty 🚀 ]"
+    r2.text = "Milestone Target: 65–70% | Achieved: ~73% Complete  —  [ 8 Core Baseline Criteria 100% Verified ✅  |  3 Advanced Research Criteria Reserved for End-Term Novelty 🚀 ]"
     r2.font.name = "Calibri"
     r2.font.size = Pt(9.0)
     r2.font.bold = True
-    r2.font.color.rgb = RGBColor(0x38, 0xBD, 0xF8)
+    r2.font.color.rgb = COLOR_CRIMSON
 
     # 2. Dual KPI Status Badges
-    # Left Badge: 7 Covered
+    # Left Badge: 8 Covered
     b_left = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.4), Inches(1.28), Inches(6.15), Inches(0.42))
     b_left.fill.solid()
     b_left.fill.fore_color.rgb = RGBColor(0xEC, 0xFD, 0xF5) # Emerald 50
-    b_left.line.color.rgb = RGBColor(0x10, 0xB9, 0x81) # Emerald 500
+    b_left.line.color.rgb = RGBColor(0x16, 0x65, 0x34) # Emerald 800
     b_left.line.width = Pt(1.2)
     tf_l = b_left.text_frame
     tf_l.word_wrap = True
@@ -89,17 +97,17 @@ def create_coverage_slide():
     p_l = tf_l.paragraphs[0]
     p_l.alignment = PP_ALIGN.CENTER
     r_l = p_l.add_run()
-    r_l.text = "✅ 7 EVAL-2 VERIFIED CRITERIA (100% Complete — 49/49 Pytest & 13/13 Selenium Passing)"
+    r_l.text = "✅ 8 EVAL-2 VERIFIED CRITERIA (100% Complete — 49/49 Pytest & 13/13 Selenium Passing)"
     r_l.font.name = "Calibri"
     r_l.font.size = Pt(8.5)
     r_l.font.bold = True
-    r_l.font.color.rgb = RGBColor(0x06, 0x5F, 0x46) # Emerald 900
+    r_l.font.color.rgb = COLOR_GREEN
 
-    # Right Badge: 4 Novelty
+    # Right Badge: 3 Novelty
     b_right = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.783), Inches(1.28), Inches(6.15), Inches(0.42))
     b_right.fill.solid()
-    b_right.fill.fore_color.rgb = RGBColor(0xEF, 0xF6, 0xFF) # Sky 50
-    b_right.line.color.rgb = RGBColor(0x3B, 0x82, 0xF6) # Sky 500
+    b_right.fill.fore_color.rgb = COLOR_CARD_BG
+    b_right.line.color.rgb = COLOR_CRIMSON
     b_right.line.width = Pt(1.2)
     tf_r = b_right.text_frame
     tf_r.word_wrap = True
@@ -108,11 +116,11 @@ def create_coverage_slide():
     p_r = tf_r.paragraphs[0]
     p_r.alignment = PP_ALIGN.CENTER
     r_r = p_r.add_run()
-    r_r.text = "🚀 4 PHASE-3 RESEARCH NOVELTIES (Strategically Staged for End-Term Defense on Nov 20)"
+    r_r.text = "🚀 3 PHASE-3 RESEARCH NOVELTIES (Strategically Staged for End-Term Defense on Nov 20)"
     r_r.font.name = "Calibri"
     r_r.font.size = Pt(8.5)
     r_r.font.bold = True
-    r_r.font.color.rgb = RGBColor(0x1E, 0x40, 0xAF) # Blue 900
+    r_r.font.color.rgb = COLOR_CRIMSON
 
     # 3. Coverage Matrix Table (11 Criteria + Header)
     rows = 12
@@ -242,13 +250,13 @@ def sync_markdown_coverage():
         "**Course:** CSE3101: Agentic AI — B.Tech CSE Semester VII",
         "**Group Number:** 8",
         "**Team Members:** Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)",
-        "**Milestone Achievement:** ~68% Complete (Exactly 7 of 11 Criteria 100% Verified for Eval-2 | 4 Reserved for End-Term Novelty)",
+        "**Milestone Achievement:** ~73% Complete (8 of 11 Criteria 100% Verified for Eval-2 | 3 Reserved for End-Term Novelty)",
         "",
         "---",
         "",
         "### Summary Indicators:",
-        "* **✅ 7 EVAL-2 VERIFIED CRITERIA (100% Complete):** C01, C02, C03, C04, C06, C07, C08 — Supported by 49/49 Pytest unit tests and 13/13 Selenium browser scenarios.",
-        "* **🚀 4 PHASE-3 RESEARCH NOVELTIES:** C05, C09, C10, C11 — Strategically reserved as advanced research scope for the final End-Term defense on November 20, 2026.",
+        "* **✅ 8 EVAL-2 VERIFIED CRITERIA (100% Complete):** C01, C02, C03, C04, C05, C06, C07, C08 — Supported by 49/49 Pytest unit tests, 13/13 Selenium browser scenarios, and 72/72 factorial benchmark runs.",
+        "* **🚀 3 PHASE-3 RESEARCH NOVELTIES:** C09, C10, C11 — Strategically reserved as advanced research scope for the final End-Term defense on November 20, 2026.",
         "",
         "---",
         "",
@@ -265,8 +273,8 @@ def sync_markdown_coverage():
         "",
         "---",
         "",
-        "*Note: The corresponding PowerPoint 16:9 widescreen presentation slide is available at `Eval 2 Documents/1_Slide_Coverage_Matrix_Group8.pptx`.*",
-        "*Empirical Verification: 49/49 Pytest Tests Passing | 13/13 Selenium Browser UI Tests Passing | GitHub: Akshat5091/DeliveryFleet-MAS (Group 8)*"
+        "*Note: The corresponding PowerPoint 16:9 widescreen presentation slides are available at `Eval 2 Documents/1_Slide_Coverage_Matrix_Group8.pptx` (clean coverage matrix deck) and `Eval 2 Documents/DeliveryFleet_MAS_Evaluation2_Master_Presentation.pptx` (Slides 20 & 22).*  ",
+        "*Empirical Verification: 49/49 Pytest Tests Passing | 13/13 Selenium Browser UI Tests Passing | 72/72 Factorial Benchmark Runs Completed | GitHub: Akshat5091/DeliveryFleet-MAS (Group 8)*"
     ])
     OUT_MD.write_text("\n".join(lines).strip(), encoding="utf-8")
     print(f"[DONE] Created Markdown Coverage Matrix: {OUT_MD}")

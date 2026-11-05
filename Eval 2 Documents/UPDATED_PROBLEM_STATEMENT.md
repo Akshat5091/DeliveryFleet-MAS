@@ -2,7 +2,7 @@
 
 **Course Code:** CSE3101 — Agentic AI  
 **Academic Year:** 2026–2027 | 7th Semester B.Tech CSE  
-**Group:** 8 | **Phase:** Evaluation 2 (~68% Milestone: 7 Core Criteria Verified | 4 End-Term Novelties)  
+**Group:** 8 | **Phase:** Evaluation 2 (~73% Milestone: 8 Core Modules Completed & Verified | 3 Staged Research Novelties)  
 **Authors:** Bhumika Yadav (230732), Aadit Bassi (230728), Akshat Nagori (230682), Sahil Mudgil (230743)  
 
 ---
@@ -97,15 +97,15 @@ In early brainstorming, a "Monitoring Agent" was proposed. However, **we deliber
 
 ## 4. Minimum Evaluation Criteria Mapping
 
-This updated problem statement establishes baseline compliance across 7 completed Phase 2 core criteria and 4 Phase 3 research novelty extensions:
-1. **Blackboard Architecture:** Centralized typed `BlackboardState` with provenance logging; benchmarked against direct peer A2A messaging.
-2. **Tool Integration via MCP:** 5 production MCP tools (Driver DB, Routing Engine, ML Delay Forecaster, ChromaDB Vector RAG, Blackboard State Tool).
+This updated problem statement establishes baseline compliance across 8 completed Phase 2 core criteria and 3 Phase 3 research novelty extensions:
+1. **Blackboard Architecture:** Centralized typed `BlackboardState` with RLock concurrency and provenance logging; benchmarked against direct peer A2A messaging.
+2. **Tool Integration via MCP:** 5 production FastMCP tools (Driver DB, Routing Engine, ML Delay Forecaster, ChromaDB Vector RAG, Blackboard State Tool).
 3. **Pydantic Structured Output:** Every decision validated via Pydantic v2 (`DispatchDecision`, `RoutePlan`, `ExceptionReplan`, `FinalDeliveryReport` in JSON and Markdown table).
-4. **Agentic Design Patterns:** Hierarchical vs. Sequential architectures benchmarked across identical test orders.
-5. **[Phase 3 Novelty] Callbacks & Heatmaps:** Longitudinal 24h telematics drift tracking, tokens, cost, and errors, generating agent-level heatmaps.
-6. **A2A Protocol:** ADK Route Agent exposed via A2A; CrewAI agents communicate via typed JSON envelopes.
-7. **Dual-Framework Invariant:** Strict integration of Google ADK and CrewAI.
-8. **Security & Guardrails:** Multi-tier defense (Input Guard for prompt injection/abusive masking, tool return validation, business working-hour bylaws).
-9. **[Phase 3 Novelty] AI Observability:** Distributed OpenTelemetry Collector export to Jaeger dashboard.
-10. **[Phase 3 Novelty] Performance Evaluation:** Exhaustive 72+ run factorial optimization matrix across 3 architectures with Pareto cost-latency frontiers.
-11. **[Phase 3 Novelty] Cloud Deployment:** Live cloud VM deployment (AWS/GCP) with Cloudflare edge security worker bridge.
+4. **Agentic Design Patterns:** Supervised Hierarchical Orchestration with concurrent context gathering benchmarked against Sequential Pipeline.
+5. **Callbacks & Latency Heatmaps:** MASCallbackHandler capturing real-time lifecycle hooks (`on_agent_start`, `on_tool_start`, `on_agent_end`, `on_exception`); generated 2D density heatmaps across 72 factorial runs.
+6. **A2A Protocol Communication:** ADK Route Agent exposed via HTTP `/api/a2a/route`; CrewAI agents communicate via typed JSON-RPC envelopes with circuit-breaker fallback.
+7. **Dual-Framework Invariant:** Strict integration of Google ADK (spatial routing) and CrewAI (cognitive dispatching).
+8. **Security & Guardrails:** Multi-tier defense (Input Guard for regex injection defense in 0.0004s and abusive persona masking, tool return validation, statutory 9.0h driver fatigue limits).
+9. **[Phase 3 Novelty] Distributed AI Observability:** Multi-host OpenTelemetry Collector export to live Jaeger APM dashboard.
+10. **[Phase 3 Novelty] Cloud-Scale Performance Evaluation:** 100+ factorial evaluation matrix across 3 architectures with Pareto cost-latency frontier optimization under simulated network degradation.
+11. **[Phase 3 Novelty] Cloud Platform Deployment:** Live cloud VM deployment (AWS EC2 / GCP) with Cloudflare edge security worker bridge.

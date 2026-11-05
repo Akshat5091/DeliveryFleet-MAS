@@ -40,6 +40,8 @@ def main():
     run_step("update_formal_wip_report.py")
     run_step("sync_markdown_report.py")
     run_step("create_pptx_slide.py")
+    run_step("build_human_master_presentation.py")
+    run_step("package_submission_zip.py")
     
     print("\n" + "=" * 80)
     print("[SUCCESS] ALL EVAL-2 DELIVERABLES GENERATED & SYNCHRONIZED SUCCESSFULLY")

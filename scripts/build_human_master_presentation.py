@@ -1303,62 +1303,62 @@ def create_human_1slide_matrix():
     tf_h1.margin_top = Inches(0.1)
     
     p0 = tf_h1.paragraphs[0]
-    p0.text = "Autonomous Multi-Agent Delivery Fleet - System Implementation Status (8 Modules Completed)"
+    p0.text = "Autonomous Multi-Agent Delivery Fleet — Criteria Coverage Matrix (Project Till Now vs. Criteria)"
     p0.font.name = "Calibri"
     p0.font.size = Pt(16.0)
     p0.font.bold = True
     p0.font.color.rgb = COLOR_BLACK
     
     p1 = tf_h1.add_paragraph()
-    p1.text = "Course: CSE3101 Agentic AI | Group 8 | Phase 2 Engineering Deliverables (100% Operational & Tested)"
+    p1.text = "Course: CSE3101 Agentic AI | Group 8 | Milestone Target: 65–70% | Achieved: ~73% Complete (8 Core Criteria 100% Verified | 3 Staged Research Novelties)"
     p1.font.name = "Calibri"
     p1.font.size = Pt(10.5)
     p1.font.color.rgb = COLOR_MUTED
 
     w_card = Inches(6.05)
-    card_h = Inches(1.30)
+    card_h = Inches(1.28)
     gap_y = Inches(0.12)
-    start_y = Inches(1.35)
+    start_y = Inches(1.28)
 
     completed_left = [
-        ("1. Centralized Blackboard Shared State",
-         "src/schemas/blackboard.py & src/blackboard/blackboard_manager.py",
+        ("Criterion 1 (C01): Centralized Blackboard Shared State",
+         "src/schemas/blackboard.py & src/orchestration/blackboard_manager.py",
          "Centralized BlackboardState model with threading.RLock() concurrency protection.",
          "Downstream agents read inputs from Blackboard; verified by 6 concurrency unit tests."),
         
-        ("2. FastMCP Tool Integration (5 Tools)",
+        ("Criterion 2 (C02): FastMCP Tool Integration (5 Tools)",
          "src/mcp/tools/ (5 production FastMCP endpoints)",
          "Driver DB, Routing Engine, ML Delay Predictor, Vector RAG, and Blackboard Update.",
          "Decoupled client-server architecture; all 5 tools operational with zero schema failures."),
         
-        ("3. Pydantic v2 Type-Safe Data Contracts",
+        ("Criterion 3 (C03): Pydantic v2 Type-Safe Data Contracts",
          "src/schemas/ (reports.py, decisions.py, routes.py)",
          "Strict type validation, deterministic JSON serialization, and markdown formatting.",
          "Eliminates unvalidated agent outputs; verified across all inter-agent handoffs."),
         
-        ("4. Comparative Orchestration Patterns",
+        ("Criterion 4 (C04): Comparative Orchestration Patterns",
          "src/orchestration/ (sequential, parallel, and hierarchical)",
          "Evaluated 3 patterns. Hierarchical MAS supervisor uses ThreadPoolExecutor concurrency.",
          "0.450s latency with autonomous mid-route exception recovery, outperforming sequential.")
     ]
     
     completed_right = [
-        ("5. Lifecycle Callbacks & Latency Heatmaps",
+        ("Criterion 5 (C05): Lifecycle Callbacks & Latency Heatmaps",
          "src/observability/callbacks.py (MASCallbackHandler)",
          "Captures lifecycle events (on_agent_start, on_tool_start, on_exception) in real time.",
          "Streams to console, JSONL, and WebSockets; generated 2D density heatmap across 72 runs."),
         
-        ("6. Agent-to-Agent (A2A) Protocol Bridge",
+        ("Criterion 6 (C06): Agent-to-Agent (A2A) Protocol Bridge",
          "src/agents/a2a_bridge.py via HTTP endpoint /api/a2a/route",
          "Standardized JSON-RPC 2.0 inter-agent messaging with live network transport.",
          "Connects CrewAI dispatchers to Google ADK routing agents with circuit-breaker fallback."),
         
-        ("7. Dual Framework Synergy (CrewAI + ADK)",
+        ("Criterion 7 (C07): Dual Framework Synergy (CrewAI + ADK)",
          "src/agents/ (CrewAI dispatch/exception + ADK route agent)",
          "CrewAI handles cognitive dispatch & exception replanning; ADK enforces AgentCard schemas.",
          "Proves multi-paradigm MAS interoperability without vendor or framework lock-in."),
         
-        ("8. Multi-Tier Security & Legal Guardrails",
+        ("Criterion 8 (C08): Multi-Tier Security & Legal Guardrails",
          "src/guardrails/input_guard.py & business_guardrails.py",
          "Tier 1 regex blocks prompt injections in 0.0004s ($0.000015 cost vs $0.00042).",
          "Tier 3 enforces statutory 9.0h driver fatigue limits, deterministically reassigning drivers.")
@@ -1379,19 +1379,19 @@ def create_human_1slide_matrix():
         p = tf.paragraphs[0]
         p.text = f"[COMPLETED] {c_title}"
         p.font.name = "Calibri"
-        p.font.size = Pt(12.0)
+        p.font.size = Pt(11.5)
         p.font.bold = True
         p.font.color.rgb = COLOR_GREEN
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "File: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_CRIMSON
-        r_txt = p.add_run(); r_txt.text = c_file; r_txt.font.name = "Consolas"; r_txt.font.size = Pt(10.0); r_txt.font.color.rgb = COLOR_CHARCOAL
+        r_lbl = p.add_run(); r_lbl.text = "File: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.0); r_lbl.font.color.rgb = COLOR_CRIMSON
+        r_txt = p.add_run(); r_txt.text = c_file; r_txt.font.name = "Consolas"; r_txt.font.size = Pt(9.5); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "Proof: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_MUTED
-        r_txt = p.add_run(); r_txt.text = f"{c_impl} {c_proof}"; r_txt.font.name = "Calibri"; r_txt.font.size = Pt(10.5); r_txt.font.color.rgb = COLOR_CHARCOAL
+        r_lbl = p.add_run(); r_lbl.text = "Proof: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.0); r_lbl.font.color.rgb = COLOR_MUTED
+        r_txt = p.add_run(); r_txt.text = f"{c_impl} {c_proof}"; r_txt.font.name = "Calibri"; r_txt.font.size = Pt(10.0); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(0)
 
     for i, (c_title, c_file, c_impl, c_proof) in enumerate(completed_right):
@@ -1409,20 +1409,36 @@ def create_human_1slide_matrix():
         p = tf.paragraphs[0]
         p.text = f"[COMPLETED] {c_title}"
         p.font.name = "Calibri"
-        p.font.size = Pt(12.0)
+        p.font.size = Pt(11.5)
         p.font.bold = True
         p.font.color.rgb = COLOR_GREEN
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "File: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_CRIMSON
-        r_txt = p.add_run(); r_txt.text = c_file; r_txt.font.name = "Consolas"; r_txt.font.size = Pt(10.0); r_txt.font.color.rgb = COLOR_CHARCOAL
+        r_lbl = p.add_run(); r_lbl.text = "File: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.0); r_lbl.font.color.rgb = COLOR_CRIMSON
+        r_txt = p.add_run(); r_txt.text = c_file; r_txt.font.name = "Consolas"; r_txt.font.size = Pt(9.5); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(2)
         
         p = tf.add_paragraph()
-        r_lbl = p.add_run(); r_lbl.text = "Proof: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.5); r_lbl.font.color.rgb = COLOR_MUTED
-        r_txt = p.add_run(); r_txt.text = f"{c_impl} {c_proof}"; r_txt.font.name = "Calibri"; r_txt.font.size = Pt(10.5); r_txt.font.color.rgb = COLOR_CHARCOAL
+        r_lbl = p.add_run(); r_lbl.text = "Proof: "; r_lbl.font.bold = True; r_lbl.font.size = Pt(10.0); r_lbl.font.color.rgb = COLOR_MUTED
+        r_txt = p.add_run(); r_txt.text = f"{c_impl} {c_proof}"; r_txt.font.name = "Calibri"; r_txt.font.size = Pt(10.0); r_txt.font.color.rgb = COLOR_CHARCOAL
         p.space_after = Pt(0)
+
+    # Slide 1 Bottom Footer Status Banner (Self-Contained 1-Slider Assurance)
+    foot1 = slide1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.5), Inches(6.90), Inches(12.333), Inches(0.42))
+    foot1.fill.solid()
+    foot1.fill.fore_color.rgb = COLOR_CARD_BG
+    foot1.line.color.rgb = COLOR_CARD_BORDER
+    foot1.line.width = Pt(1.0)
+    tf_f1 = foot1.text_frame
+    tf_f1.margin_left = tf_f1.margin_right = Inches(0.2)
+    tf_f1.margin_top = Inches(0.08)
+    p_f1 = tf_f1.paragraphs[0]
+    p_f1.alignment = PP_ALIGN.CENTER
+    r = p_f1.add_run(); r.text = "Milestone Status: "; r.font.name = "Calibri"; r.font.bold = True; r.font.size = Pt(9.5); r.font.color.rgb = COLOR_CRIMSON
+    r = p_f1.add_run(); r.text = "~73% Complete (8 of 11 Minimum Baseline Criteria 100% Operational & Verified | 3 Staged Research Novelties)   |   "; r.font.name = "Calibri"; r.font.bold = True; r.font.size = Pt(9.5); r.font.color.rgb = COLOR_BLACK
+    r = p_f1.add_run(); r.text = "Empirical Proof: "; r.font.name = "Calibri"; r.font.bold = True; r.font.size = Pt(9.5); r.font.color.rgb = COLOR_CRIMSON
+    r = p_f1.add_run(); r.text = "49/49 Pytest Unit Tests (100% Green)  •  13/13 Selenium Browser UI Tests  •  72 Factorial Runs Completed"; r.font.name = "Calibri"; r.font.size = Pt(9.5); r.font.color.rgb = COLOR_CHARCOAL
 
     # -------------------------------------------------------------------------
     # SLIDE 2: Future Scope & Advanced Engineering (Phase 3 Roadmap)
@@ -1441,7 +1457,7 @@ def create_human_1slide_matrix():
     tf_h2.margin_top = Inches(0.1)
     
     p0 = tf_h2.paragraphs[0]
-    p0.text = "Autonomous Multi-Agent Delivery Fleet - Future Scope & Advanced Engineering (Phase 3 Roadmap)"
+    p0.text = "Autonomous Multi-Agent Delivery Fleet — Future Scope & Phase 3 Roadmap (Staged Research Novelties)"
     p0.font.name = "Calibri"
     p0.font.size = Pt(16.0)
     p0.font.bold = True
@@ -1485,15 +1501,15 @@ def create_human_1slide_matrix():
     start2_y = Inches(2.65)
     
     novelties_2 = [
-        ("1. Distributed AI Observability & Tracing",
+        ("Criterion 9 (C09): Distributed AI Observability & Tracing",
          "OpenTelemetry collector exporting microsecond span correlation across distributed agent nodes to live Jaeger and Prometheus dashboards.",
          "Expands single-host JSONL tracing to multi-node network clusters to monitor inter-agent network latency and RPC overhead."),
         
-        ("2. Cloud-Scale Factorial Benchmarks & Pareto Analysis",
+        ("Criterion 10 (C10): Cloud-Scale Factorial Benchmarks & Pareto Analysis",
          "100+ factorial evaluation matrix across 3 architectures with simulated distributed network latency and variable traffic loads.",
          "Plots empirical Pareto frontier of token cost vs dispatch latency on cloud nodes under high concurrent order load."),
         
-        ("3. Production Cloud Container Deployment (AWS / GCP)",
+        ("Criterion 11 (C11): Production Cloud Container Deployment (AWS / GCP)",
          "Multi-stage Docker containerization of MAS backend, FastMCP servers, and web UI for live deployment to AWS EC2 / GCP Compute Engine.",
          "Includes persistent SQLite/ChromaDB volume mounts, health monitoring probes, and Cloudflare Edge SSL proxying.")
     ]
@@ -1513,7 +1529,7 @@ def create_human_1slide_matrix():
         p = tf.paragraphs[0]
         p.text = f"[PHASE 3 ROADMAP] {n_title}"
         p.font.name = "Calibri"
-        p.font.size = Pt(12.5)
+        p.font.size = Pt(12.0)
         p.font.bold = True
         p.font.color.rgb = COLOR_CRIMSON
         p.space_after = Pt(2)
