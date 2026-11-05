@@ -277,27 +277,27 @@ def create_deck():
     add_bullet(tf_c3, "Dynamic Exception Replan:", "Autonomous road blockage and vehicle breakdown recovery within 0.05 seconds.")
 
     # =========================================================================
-    # SLIDE 3: The Real-World Industry Problem
+    # SLIDE 3: Problem Formulation & 4-Agent Justification
     # =========================================================================
     slide3 = prs.slides.add_slide(blank_layout)
-    add_slide_header(slide3, "The Logistics Problem: Why Monolithic LLMs Fail", "Domain Challenges in Urban Last-Mile Logistics", code_ref="Scope: Urban Fleet Logistics")
+    add_slide_header(slide3, "Problem Formulation: 4 Sub-Problems Formally Justify 4 Agents", "Decomposing Urban Logistics into Decoupled Computational Domains", code_ref="Scope: Urban Fleet Logistics Decomposition")
     
-    tf_p_top = add_card(slide3, Inches(0.8), Inches(1.55), Inches(11.733), Inches(1.2), title="The Urban Logistics Environment", subtitle="Domain Complexity: Dynamic Regulations, Freight Routing & Vehicle Breakdowns")
-    add_bullet(tf_p_top, "Operational Complexity:", "Urban delivery operations handle dynamic parcel volumes across volatile municipal regulations, localized traffic congestion, and unexpected vehicle breakdowns.", size=13.0, space_after=0)
+    tf_p_top = add_card(slide3, Inches(0.8), Inches(1.55), Inches(11.733), Inches(1.2), title="Operational Domain Complexity & Faculty Agent Justification Mandate", subtitle="Course Mandate: Zero arbitrary agent proliferation; every agent must resolve an isolated, non-trivial operational bottleneck.")
+    add_bullet(tf_p_top, "The Monolithic Bottleneck:", "Linear solvers fail on qualitative customer notes and dynamic mid-route events; monolithic LLMs suffer from context saturation, floating-point arithmetic errors (R^2 < 0.30), and prompt injection vulnerabilities.", size=12.5, space_after=0)
 
     w3 = Inches(5.7)
     
-    tf_p1 = add_card(slide3, Inches(0.8), Inches(2.9), w3, Inches(4.1), title="Limitations of Single-Agent Systems", subtitle="Failure Analysis: Context Saturation & Zero Perimeter Defense")
-    add_bullet(tf_p1, "Single Point of Failure:", "Monolithic prompts attempting to parse notes, query databases, calculate paths, and predict delays crash if any single step fails.")
-    add_bullet(tf_p1, "Context Saturation:", "Packing vehicle fleets, road coordinates, and regulatory bylaws into one prompt causes hallucinations and high token costs.")
-    add_bullet(tf_p1, "Vulnerability to Injection:", "Untrusted user delivery notes ('ignore previous instructions') hijack dispatch logic when no perimeter defense exists.")
-    add_bullet(tf_p1, "Rigid Failure Modes:", "Corridor blockages or vehicle dropouts cause pipeline crashes requiring manual operator intervention.")
+    tf_p1 = add_card(slide3, Inches(0.8), Inches(2.9), w3, Inches(4.1), title="Sub-Problems 1 & 2: Personnel & Compliance", subtitle="Files: src/agents/crew_dispatch_agent.py & crew_retrieval_agent.py")
+    add_bullet(tf_p1, "Sub-Problem 1 (Multi-Objective Dispatch Conflict):", "Balancing payload limits (20-30kg vs 80-120kg), SLA urgency, and statutory 9.0h driver fatigue limits requires continuous cognitive reasoning.")
+    add_bullet(tf_p1, "Formally Solved By:", "Worker 1 (CrewAI Dispatch Agent) using ReAct loops to interleave candidate database queries with BusinessGuardrails safety bounds.")
+    add_bullet(tf_p1, "Sub-Problem 2 (Zoning Bylaws & Data Sovereignty):", "Municipal Low-Emission Zones (LEZs) change dynamically; sending shift records to cloud LLMs violates enterprise privacy and data sovereignty.")
+    add_bullet(tf_p1, "Formally Solved By:", "Worker 2 (ChromaDB Retrieval Agent) executing local air-gapped Vector RAG in <15ms with zero cloud telemetry egress.")
 
-    tf_p2 = add_card(slide3, Inches(6.833), Inches(2.9), w3, Inches(4.1), title="Modular Multi-Agent Architecture Solution", subtitle="Implementation: src/orchestration/ & src/guardrails/")
-    add_bullet(tf_p2, "Separation of Concerns:", "Four specialized agents partition tasks. The Dispatch Agent handles personnel; the Route Agent resolves spatial paths.")
-    add_bullet(tf_p2, "Shared Blackboard State:", "Agents interact via structured shared memory, keeping individual context windows small and focused.")
-    add_bullet(tf_p2, "Pre-Execution Guardrails:", "Adversarial prompts are intercepted by regex in 0.0004s before the language model is ever invoked.")
-    add_bullet(tf_p2, "Dynamic Mid-Route Recovery:", "The Exception Agent detects road closures and recalculates relief routes and drivers within 50 milliseconds.")
+    tf_p2 = add_card(slide3, Inches(6.833), Inches(2.9), w3, Inches(4.1), title="Sub-Problems 3 & 4: Routing & Contingency", subtitle="Files: src/agents/adk_route_agent.py & crew_exception_agent.py")
+    add_bullet(tf_p2, "Sub-Problem 3 (Spatial Routing & Delay Regression):", "LLMs cannot perform graph Dijkstra or floating-point regression. Calculating non-linear impedance requires dedicated declarative spatial engines.")
+    add_bullet(tf_p2, "Formally Solved By:", "Worker 3 (Google ADK Route Agent) executing Dijkstra corridors and Scikit-Learn Random Forest regression (R^2 = 0.901) over A2A in 0.0008s.")
+    add_bullet(tf_p2, "Sub-Problem 4 (Real-Time Disruption & Deadlock):", "Mid-transit accidents and vehicle breakdowns cause pipeline crashes if dispatches cannot dynamically re-plan on live telemetry signals.")
+    add_bullet(tf_p2, "Formally Solved By:", "Worker 4 (CrewAI Exception Agent) on event-driven standby (0.0ms overhead in normal transit) reallocating relief drivers in <0.05s.")
 
     # =========================================================================
     # SLIDE 4: Multi-Agent Architecture (1 Supervisor + 4 Workers = 5 Agents)
