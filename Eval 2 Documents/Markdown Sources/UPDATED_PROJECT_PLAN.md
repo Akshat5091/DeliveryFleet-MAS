@@ -1,4 +1,4 @@
-# 📅 Updated Project Plan: Multi-Agent Delivery Fleet Coordination System
+# Updated Project Plan: Multi-Agent Delivery Fleet Coordination System
 ## Progress vs. Plan Analysis & Evaluation Phase 2 Deliverable Blueprint
 
 **Course Code:** CSE3101 — Agentic Artificial Intelligence  
@@ -36,17 +36,17 @@ To satisfy the faculty directive against arbitrary agent proliferation (*"Whatev
 
 | # | Prescribed Criterion | Implementation Architecture & Exact File Reference | Student Lead / Owner | Phase 2 Milestone Status |
 | :- | :--- | :--- | :--- | :---: |
-| **C01** | **Blackboard Shared State** | Centralized `BlackboardState` in `src/schemas/blackboard.py`, managed by `src/orchestration/blackboard_manager.py` with `threading.RLock()` concurrency control and FastMCP tool binding. | **Bhumika Yadav** (Schema)<br>**Aadit Bassi** (Store) | **100% VERIFIED ✅** |
-| **C02** | **FastMCP Tool Integration ($\ge 2$)** | FastMCP server (`src/mcp/server.py`) exposing 5 tools: Driver DB, Routing Engine, ML Delay Forecaster, ChromaDB Vector RAG, and Blackboard State. | **Aadit Bassi** | **100% VERIFIED ✅** |
-| **C03** | **Structured Pydantic Outputs** | Strongly typed models (`DispatchDecision`, `RoutePlan`, `ExceptionReplan`, `FinalDeliveryReport`) in `src/schemas/`. Formatted as JSON & Markdown tables. | **Bhumika Yadav** | **100% VERIFIED ✅** |
-| **C04** | **Agentic Design Patterns (Hierarchical MAS)** | Comparative implementation of **Hierarchical Orchestration** (`hierarchical_orchestrator.py`) vs. **Sequential Pipeline** (`sequential_orchestrator.py`) with parallel context gathering. | **Bhumika Yadav** | **100% VERIFIED ✅** |
-| **C05** | **Callbacks & Latency Heatmaps** | `MASCallbackHandler` (`src/observability/callbacks.py`) tracking lifecycle events (`on_agent_start`, `on_tool_start`, `on_agent_end`, `on_exception`). Generated 2D density heatmaps across 72 runs. | **Sahil Mudgil** | **100% VERIFIED ✅** |
-| **C06** | **A2A Interoperability (JSON-RPC 2.0)** | `A2ABridge` (`src/agents/a2a_bridge.py`) routing structured `A2AMessage` envelopes between CrewAI agents and the Google ADK Route Agent via HTTP `/api/a2a/route`. | **Aadit Bassi** | **100% VERIFIED ✅** |
-| **C07** | **CrewAI + Google ADK Dual Framework** | Google ADK powers `adk_route_agent.py`; CrewAI powers `crew_dispatch_agent.py`, `crew_retrieval_agent.py`, `crew_exception_agent.py`, and `hierarchical_orchestrator.py`. | **Aadit Bassi** (ADK)<br>**Bhumika Yadav** (CrewAI) | **100% VERIFIED ✅** |
-| **C08** | **Security & Multi-Tier Guardrails** | Multi-tier defense in `src/guardrails/`: `InputGuard` (regex injection defense in 0.0004s + abusive masking), `ToolValidator`, and `BusinessGuardrails` (hours <= 9.0h). | **Akshat Nagori** (Input)<br>**Sahil Mudgil** (Rules) | **100% VERIFIED ✅** |
-| **C09** | **AI Observability & Tracing** | OpenTelemetry trace tree in `src/observability/tracing.py` linking root order IDs to sub-spans. Multi-host OTel Collector daemon export to Jaeger dashboard staged for End-Term. | **Sahil Mudgil** | **Phase 3 Staged Novelty 🚀** |
-| **C10** | **Cloud-Scale Benchmarks & Pareto Analysis** | Baseline 72 factorial runs completed with boxplots and heatmaps. Cloud-scale 100+ factorial evaluation matrix across 3 architectures with Pareto frontier optimization staged for End-Term. | **Sahil Mudgil**<br>**Akshat Nagori** | **Phase 3 Staged Novelty 🚀** |
-| **C11** | **Cloud Platform Deployment** | Production Dockerfile and docker-compose.yml configured. Live multi-cloud VM deployment (AWS EC2 / GCP) with Cloudflare edge worker bridge staged for End-Term. | **Aadit Bassi** | **Phase 3 Staged Novelty 🚀** |
+| **C01** | **Blackboard Shared State** | Centralized `BlackboardState` in `src/schemas/blackboard.py`, managed by `src/orchestration/blackboard_manager.py` with `threading.RLock()` concurrency control and FastMCP tool binding. | **Bhumika Yadav** (Schema)<br>**Aadit Bassi** (Store) | **100% Verified (Phase 2)** |
+| **C02** | **FastMCP Tool Integration ($\ge 2$)** | FastMCP server (`src/mcp/server.py`) exposing 5 tools: Driver DB, Routing Engine, ML Delay Forecaster, ChromaDB Vector RAG, and Blackboard State. | **Aadit Bassi** | **100% Verified (Phase 2)** |
+| **C03** | **Structured Pydantic Outputs** | Strongly typed models (`DispatchDecision`, `RoutePlan`, `ExceptionReplan`, `FinalDeliveryReport`) in `src/schemas/`. Formatted as JSON & Markdown tables. | **Bhumika Yadav** | **100% Verified (Phase 2)** |
+| **C04** | **Agentic Design Patterns (Hierarchical MAS)** | Comparative implementation of **Hierarchical Orchestration** (`hierarchical_orchestrator.py`) vs. **Sequential Pipeline** (`sequential_orchestrator.py`) with parallel context gathering. | **Bhumika Yadav** | **100% Verified (Phase 2)** |
+| **C05** | **Callbacks & Latency Heatmaps** | `MASCallbackHandler` (`src/observability/callbacks.py`) tracking lifecycle events (`on_agent_start`, `on_tool_start`, `on_agent_end`, `on_exception`). Generated 2D density heatmaps across 72 runs. | **Sahil Mudgil** | **100% Verified (Phase 2)** |
+| **C06** | **A2A Interoperability (JSON-RPC 2.0)** | `A2ABridge` (`src/agents/a2a_bridge.py`) routing structured `A2AMessage` envelopes between CrewAI agents and the Google ADK Route Agent via HTTP `/api/a2a/route`. | **Aadit Bassi** | **100% Verified (Phase 2)** |
+| **C07** | **CrewAI + Google ADK Dual Framework** | Google ADK powers `adk_route_agent.py`; CrewAI powers `crew_dispatch_agent.py`, `crew_retrieval_agent.py`, `crew_exception_agent.py`, and `hierarchical_orchestrator.py`. | **Aadit Bassi** (ADK)<br>**Bhumika Yadav** (CrewAI) | **100% Verified (Phase 2)** |
+| **C08** | **Security & Multi-Tier Guardrails** | Multi-tier defense in `src/guardrails/`: `InputGuard` (regex injection defense in 0.0004s + abusive masking), `ToolValidator`, and `BusinessGuardrails` (hours <= 9.0h). | **Akshat Nagori** (Input)<br>**Sahil Mudgil** (Rules) | **100% Verified (Phase 2)** |
+| **C09** | **AI Observability & Tracing** | OpenTelemetry trace tree in `src/observability/tracing.py` linking root order IDs to sub-spans. Multi-host OTel Collector daemon export to Jaeger dashboard staged for End-Term. | **Sahil Mudgil** | **Staged: Phase 3 Research Novelty** |
+| **C10** | **Cloud-Scale Benchmarks & Pareto Analysis** | Baseline 72 factorial runs completed with boxplots and heatmaps. Cloud-scale 100+ factorial evaluation matrix across 3 architectures with Pareto frontier optimization staged for End-Term. | **Sahil Mudgil**<br>**Akshat Nagori** | **Staged: Phase 3 Research Novelty** |
+| **C11** | **Cloud Platform Deployment** | Production Dockerfile and docker-compose.yml configured. Live multi-cloud VM deployment (AWS EC2 / GCP) with Cloudflare edge worker bridge staged for End-Term. | **Aadit Bassi** | **Staged: Phase 3 Research Novelty** |
 
 **Overall Project Milestone Status:** **~73% Complete** (Exactly 8 of 11 Criteria 100% Verified for Eval-2 | 3 Staged Research Novelties Reserved for End-Term Defense).
 
@@ -68,13 +68,13 @@ PHASE 1: Foundations & Architecture  ──>  PHASE 2: Core Engineering & Proof 
 
 | Window | Milestone / Deliverable | Key Technical Objectives & Artifacts | Status |
 | :--- | :--- | :--- | :---: |
-| **Oct 11 – Oct 18** | **Infrastructure & Schemas** | Pydantic v2 schemas (`BlackboardState`, `A2AMessage`, `FinalDeliveryReport`); FastMCP server; synthetic datasets (`orders.csv`, `drivers.csv`, `traffic.csv`, `delivery_history.csv`). | **DONE ✅** |
-| **Oct 19 – Oct 24** | **Agent Development & A2A** | Implement Google ADK Route Agent; CrewAI Dispatch & Retrieval Agents; A2A communication bridge; Random Forest delay predictor training ($R^2 = 0.901$). | **DONE ✅** |
-| **Oct 25 – Oct 29** | **Guardrails & Orchestration** | `InputGuard` (injection defense + abusive masking); `BusinessGuardrails` (9.0h rule); Hierarchical Manager and Sequential Orchestrators; Exception recovery loop. | **DONE ✅** |
-| **Oct 30 – Oct 31** | **Eval-2 Benchmark & Artifacts** | Run 72-run benchmark matrix; generate publication-quality boxplots and heatmaps; execute pytest suite (49/49 passing); author Eval-2 documentation. | **DONE ✅** |
-| **Nov 01 – Nov 08** | **Production Cloud Containerization** | Docker Compose orchestration; health check endpoints; live cloud VM deployment; latency profiling under cloud network conditions. | **PLANNED ⏳** |
-| **Nov 09 – Nov 15** | **UI Dashboard & Full Report** | Interactive Streamlit operations dashboard; comprehensive Phase 3 project report (approx. 25–30 pages) matching the provided university thesis template. | **PLANNED ⏳** |
-| **Nov 16 – Nov 20** | **Final Defense & Viva Readiness** | Peer cross-examination; code walkthrough rehearsals ensuring every member can modify and defend any component under evaluation. | **PLANNED ⏳** |
+| **Oct 11 – Oct 18** | **Infrastructure & Schemas** | Pydantic v2 schemas (`BlackboardState`, `A2AMessage`, `FinalDeliveryReport`); FastMCP server; synthetic datasets (`orders.csv`, `drivers.csv`, `traffic.csv`, `delivery_history.csv`). | **Completed** |
+| **Oct 19 – Oct 24** | **Agent Development & A2A** | Implement Google ADK Route Agent; CrewAI Dispatch & Retrieval Agents; A2A communication bridge; Random Forest delay predictor training ($R^2 = 0.901$). | **Completed** |
+| **Oct 25 – Oct 29** | **Guardrails & Orchestration** | `InputGuard` (injection defense + abusive masking); `BusinessGuardrails` (9.0h rule); Hierarchical Manager and Sequential Orchestrators; Exception recovery loop. | **Completed** |
+| **Oct 30 – Oct 31** | **Eval-2 Benchmark & Artifacts** | Run 72-run benchmark matrix; generate publication-quality boxplots and heatmaps; execute pytest suite (49/49 passing); author Eval-2 documentation. | **Completed** |
+| **Nov 01 – Nov 08** | **Production Cloud Containerization** | Docker Compose orchestration; health check endpoints; live cloud VM deployment; latency profiling under cloud network conditions. | **Planned** |
+| **Nov 09 – Nov 15** | **UI Dashboard & Full Report** | Interactive Streamlit operations dashboard; comprehensive Phase 3 project report (approx. 25–30 pages) matching the provided university thesis template. | **Planned** |
+| **Nov 16 – Nov 20** | **Final Defense & Viva Readiness** | Peer cross-examination; code walkthrough rehearsals ensuring every member can modify and defend any component under evaluation. | **Planned** |
 
 ***
 

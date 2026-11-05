@@ -9,7 +9,7 @@
 
 ---
 
-> 💡 **HOW TO USE THIS 35-MINUTE STUDY GUIDE:**  
+>  **HOW TO USE THIS 35-MINUTE STUDY GUIDE:**  
 > If you are reading this before your evaluation and feel like you know nothing about the project, DO NOT PANIC. This guide explains everything from ground zero without confusing AI jargon. Read Chapter 1 for the problem. Read Chapter 2 for key terms. Read Chapter 3 for agents. Read Chapter 4 for 'Why no cloud API?'. Read Chapter 5 for datasets. Read Chapter 10 for Phase 1 vs Phase 2 evolution. Read Chapter 11 for Akshat Nagori's individual role and code. Read Chapter 8 for the live demo script, and memorize Chapter 9 for the 25 viva Q&As.
 
 ---
@@ -66,7 +66,7 @@ Our project, **DeliveryFleet-MAS**, replaces static, brittle code with an **Auto
 
 ## Chapter 3: The Complete Cast of Agents (Where They Live & Why They Exist)
 
-> 📌 **Faculty Mandate:** 'Whatever number of agents you decide to use, you must have a clear understanding of the rationale behind each one... do not include agents randomly.'
+>  **Faculty Mandate:** 'Whatever number of agents you decide to use, you must have a clear understanding of the rationale behind each one... do not include agents randomly.'
 
 | Agent Name | Framework | Code File Path | Specific Role & Logistics Justification |
 | :--- | :--- | :--- | :--- |
@@ -139,17 +139,17 @@ Our project, **DeliveryFleet-MAS**, replaces static, brittle code with an **Auto
 
 | # | Prescribed Criterion | Phase 2 Status | Implementation Proof & Exact Lines of Code |
 | :---: | :--- | :---: | :--- |
-| **C01** | Blackboard Shared State | **COVERED (100% ✅)** | src/schemas/blackboard.py:35-55 & blackboard_manager.py:51-65. Thread-safe RLock state, FastMCP tool, read-driven downstream handoffs. |
-| **C02** | MCP Tool Integration (>= 2) | **COVERED (100% ✅)** | src/mcp/server.py:23-45 & client.py:15-40. Exposes 5 production tools via FastMCP with formal client session calls. |
-| **C03** | Pydantic Structured Output | **COVERED (100% ✅)** | src/schemas/reports.py:20-45 & decisions.py:15-45. FinalDeliveryReport with validated JSON and Markdown table outputs. |
-| **C04** | Agentic Design Patterns | **COVERED (100% ✅)** | src/orchestration/hierarchical_orchestrator.py:154-172. Supervised Hierarchical Manager with parallel context gathering vs Sequential. |
-| **C05** | Callbacks & Agent Heatmaps | **PHASE 3 NOVELTY 🚀** | Initial latency logging active. Continuous 24h longitudinal telematics drift heatmaps reserved for End-Term defense novelty. |
-| **C06** | A2A Protocol Communication | **COVERED (100% ✅)** | src/agents/a2a_bridge.py:74-114. Structured A2AMessage envelopes with live network endpoint (POST /api/a2a/route). |
-| **C07** | Dual Framework (CrewAI + ADK) | **COVERED (100% ✅)** | src/agents/adk_route_agent.py (Google ADK) + src/agents/crew_dispatch_agent.py (CrewAI). Genuine dual-framework integration. |
-| **C08** | Security & Multi-Tier Guardrails | **COVERED (100% ✅)** | src/guardrails/input_guard.py:20-45 & business_guardrails.py:18-38. 0.000s injection defense, toxic masking, 9.0h shift limit. |
-| **C09** | AI Observability & Tracing | **PHASE 3 NOVELTY 🚀** | Local JSONL trace spans operational. Multi-host OpenTelemetry Collector export to Jaeger dashboard reserved for End-Term novelty. |
-| **C10** | Benchmark Matrix & Boxplots | **PHASE 3 NOVELTY 🚀** | Baseline comparative runs operational. Full 72+ run factorial matrix across 3 architectures with Pareto frontiers reserved for End-Term. |
-| **C11** | Cloud Platform Deployment | **PHASE 3 NOVELTY 🚀** | Local multi-stage Docker container configured. Live production deployment to AWS EC2 / GCP with Cloudflare edge proxy reserved for End-Term. |
+| **C01** | Blackboard Shared State | **COVERED (100% )** | src/schemas/blackboard.py:35-55 & blackboard_manager.py:51-65. Thread-safe RLock state, FastMCP tool, read-driven downstream handoffs. |
+| **C02** | MCP Tool Integration (>= 2) | **COVERED (100% )** | src/mcp/server.py:23-45 & client.py:15-40. Exposes 5 production tools via FastMCP with formal client session calls. |
+| **C03** | Pydantic Structured Output | **COVERED (100% )** | src/schemas/reports.py:20-45 & decisions.py:15-45. FinalDeliveryReport with validated JSON and Markdown table outputs. |
+| **C04** | Agentic Design Patterns | **COVERED (100% )** | src/orchestration/hierarchical_orchestrator.py:154-172. Supervised Hierarchical Manager with parallel context gathering vs Sequential. |
+| **C05** | Callbacks & Agent Heatmaps | **PHASE 3 NOVELTY ** | Initial latency logging active. Continuous 24h longitudinal telematics drift heatmaps reserved for End-Term defense novelty. |
+| **C06** | A2A Protocol Communication | **COVERED (100% )** | src/agents/a2a_bridge.py:74-114. Structured A2AMessage envelopes with live network endpoint (POST /api/a2a/route). |
+| **C07** | Dual Framework (CrewAI + ADK) | **COVERED (100% )** | src/agents/adk_route_agent.py (Google ADK) + src/agents/crew_dispatch_agent.py (CrewAI). Genuine dual-framework integration. |
+| **C08** | Security & Multi-Tier Guardrails | **COVERED (100% )** | src/guardrails/input_guard.py:20-45 & business_guardrails.py:18-38. 0.000s injection defense, toxic masking, 9.0h shift limit. |
+| **C09** | AI Observability & Tracing | **PHASE 3 NOVELTY ** | Local JSONL trace spans operational. Multi-host OpenTelemetry Collector export to Jaeger dashboard reserved for End-Term novelty. |
+| **C10** | Benchmark Matrix & Boxplots | **PHASE 3 NOVELTY ** | Baseline comparative runs operational. Full 72+ run factorial matrix across 3 architectures with Pareto frontiers reserved for End-Term. |
+| **C11** | Cloud Platform Deployment | **PHASE 3 NOVELTY ** | Local multi-stage Docker container configured. Live production deployment to AWS EC2 / GCP with Cloudflare edge proxy reserved for End-Term. |
 
 ---
 
@@ -295,7 +295,7 @@ Our project, **DeliveryFleet-MAS**, replaces static, brittle code with an **Auto
 
 ### 11.4 Akshat's Personal Ready-to-Speak Viva Defense Scripts
 
-> 💡 **AKSHAT'S ELEVATOR PITCH: 'WHAT WAS YOUR SPECIFIC CONTRIBUTION TO GROUP 8?'**  
+>  **AKSHAT'S ELEVATOR PITCH: 'WHAT WAS YOUR SPECIFIC CONTRIBUTION TO GROUP 8?'**  
 > *Sir, my specific role in Group 8 is the Retrieval, Prompts & Security Lead. I was responsible for three major engineering pillars in this project:*  
 > *1. Multi-Tier Security: I architected the Input Security Guard (`src/guardrails/input_guard.py`), which intercepts prompt injection attacks in 0.000 seconds using compiled regex heuristics from Course LAB-06 and masks toxic customer vocabulary before agent ingestion.*  
 > *2. Local Vector RAG: I built the Local Vector RAG pipeline using ChromaDB and FastMCP (`src/mcp/tools/chroma_rag.py`), which indexes municipal transit bylaws and shift limits, allowing agents to retrieve compliance rules locally in under 15ms without sending private corporate data to external cloud APIs.*  

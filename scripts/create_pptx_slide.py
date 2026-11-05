@@ -22,17 +22,17 @@ COLOR_BORDER = RGBColor(209, 213, 219)   # #D1D5DB Pencil Border
 COLOR_CARD_BG = RGBColor(249, 250, 251)  # #F9FAFB Card Background
 
 CRITERIA_DATA = [
-    ("C01", "Blackboard Shared State", "VERIFIED", "✅ 100% VERIFIED", "Centralized BlackboardState in src/schemas/blackboard.py (lines 35-55) with RLock concurrency synchronization, FastMCP update tool, and read-driven downstream handoffs via bb_manager.get_field (lines 56-63). [WIP Report: Chapter 3.1 & Section 4.3]"),
-    ("C02", "MCP Tool Integration (>= 2)", "VERIFIED", "✅ 100% VERIFIED", "FastMCP server (src/mcp/server.py, lines 23-45) and native MCPClient (src/mcp/client.py, lines 15-40) exposing 5 tools with formal client session calls and schema validation. Exceeds >= 2 requirement by 150%. [WIP Report: Chapter 3.2 & Section 4.4]"),
-    ("C03", "Pydantic Structured Output", "VERIFIED", "✅ 100% VERIFIED", "Pydantic v2 schemas: FinalDeliveryReport (src/schemas/reports.py, lines 20-45) and DispatchDecision / RoutePlan / ExceptionReplan (src/schemas/decisions.py, lines 15-45) with validated JSON export and Markdown tables. [WIP Report: Chapter 3.3]"),
-    ("C04", "Agentic Design Patterns", "VERIFIED", "✅ 100% VERIFIED", "Supervised Hierarchical Manager MAS pattern with parallel context gathering via ThreadPoolExecutor (src/orchestration/hierarchical_orchestrator.py, lines 154-172) benchmarked against Sequential Pipeline. [WIP Report: Chapter 3.4 & Section 4.2]"),
-    ("C05", "Callbacks & Latency Heatmaps", "VERIFIED", "✅ 100% VERIFIED", "MASCallbackHandler in src/observability/callbacks.py capturing real-time lifecycle hooks (on_agent_start/end/exception). Generated 2D density heatmaps across 72 factorial runs. [WIP Report: Chapter 3.5 & Section 4.8]"),
-    ("C06", "A2A Protocol Communication", "VERIFIED", "✅ 100% VERIFIED", "A2ABridge in src/agents/a2a_bridge.py (lines 74-114) routing A2AMessage envelopes with live network JSON-RPC endpoint (POST /api/a2a/route) and in-process fallback circuit breaker. [WIP Report: Chapter 3.6 & Section 4.1]"),
-    ("C07", "Dual Framework (CrewAI + ADK)", "VERIFIED", "✅ 100% VERIFIED", "Google ADK natively powers Route Agent (src/agents/adk_route_agent.py, lines 32-45); CrewAI natively powers Dispatch Agent (src/agents/crew_dispatch_agent.py, lines 40-55), Retrieval, and Exception Agents. [WIP Report: Chapter 3.7 & Section 4.1]"),
-    ("C08", "Security & Multi-Tier Guardrails", "VERIFIED", "✅ 100% VERIFIED", "InputGuard regex injection defense in 0.0004s + toxic term masking (src/guardrails/input_guard.py, lines 20-45) and BusinessGuardrails statutory 9.0h driving limit block (src/guardrails/business_guardrails.py, lines 18-38). [WIP Report: Chapter 3.8 & Section 4.7]"),
-    ("C09", "AI Observability & Tracing", "NOVELTY", "🚀 END-TERM NOVELTY", "Local JSONL trace spans operational. Multi-host OpenTelemetry Collector export to Jaeger/Prometheus distributed tracing dashboard reserved for End-Term Defense novelty. [WIP Report: Chapter 9.1 & Section 4.8]"),
-    ("C10", "Evaluation (Cloud Factorial Matrix)", "NOVELTY", "🚀 END-TERM NOVELTY", "Baseline 72 factorial runs complete locally. Full 100+ factorial cloud evaluation matrix across 3 architectures with Pareto cost-latency frontiers reserved for End-Term Defense novelty. [WIP Report: Chapter 9.2 & Section 5.0]"),
-    ("C11", "Cloud Platform Deployment", "NOVELTY", "🚀 END-TERM NOVELTY", "Local multi-stage Docker container configured. Live production deployment to AWS EC2 / GCP Compute Engine with Cloudflare edge proxy reserved for End-Term Defense novelty. [WIP Report: Chapter 9.3 & Section 9.3]")
+    ("C01", "Blackboard Shared State", "VERIFIED", "100% VERIFIED", "Centralized BlackboardState in src/schemas/blackboard.py (lines 35-55) with RLock concurrency synchronization, FastMCP update tool, and read-driven downstream handoffs via bb_manager.get_field (lines 56-63). [WIP Report: Chapter 3.1 & Section 4.3]"),
+    ("C02", "MCP Tool Integration (>= 2)", "VERIFIED", "100% VERIFIED", "FastMCP server (src/mcp/server.py, lines 23-45) and native MCPClient (src/mcp/client.py, lines 15-40) exposing 5 tools with formal client session calls and schema validation. Exceeds >= 2 requirement by 150%. [WIP Report: Chapter 3.2 & Section 4.4]"),
+    ("C03", "Pydantic Structured Output", "VERIFIED", "100% VERIFIED", "Pydantic v2 schemas: FinalDeliveryReport (src/schemas/reports.py, lines 20-45) and DispatchDecision / RoutePlan / ExceptionReplan (src/schemas/decisions.py, lines 15-45) with validated JSON export and Markdown tables. [WIP Report: Chapter 3.3]"),
+    ("C04", "Agentic Design Patterns", "VERIFIED", "100% VERIFIED", "Supervised Hierarchical Manager MAS pattern with parallel context gathering via ThreadPoolExecutor (src/orchestration/hierarchical_orchestrator.py, lines 154-172) benchmarked against Sequential Pipeline. [WIP Report: Chapter 3.4 & Section 4.2]"),
+    ("C05", "Callbacks & Latency Heatmaps", "VERIFIED", "100% VERIFIED", "MASCallbackHandler in src/observability/callbacks.py capturing real-time lifecycle hooks (on_agent_start/end/exception). Generated 2D density heatmaps across 72 factorial runs. [WIP Report: Chapter 3.5 & Section 4.8]"),
+    ("C06", "A2A Protocol Communication", "VERIFIED", "100% VERIFIED", "A2ABridge in src/agents/a2a_bridge.py (lines 74-114) routing A2AMessage envelopes with live network JSON-RPC endpoint (POST /api/a2a/route) and in-process fallback circuit breaker. [WIP Report: Chapter 3.6 & Section 4.1]"),
+    ("C07", "Dual Framework (CrewAI + ADK)", "VERIFIED", "100% VERIFIED", "Google ADK natively powers Route Agent (src/agents/adk_route_agent.py, lines 32-45); CrewAI natively powers Dispatch Agent (src/agents/crew_dispatch_agent.py, lines 40-55), Retrieval, and Exception Agents. [WIP Report: Chapter 3.7 & Section 4.1]"),
+    ("C08", "Security & Multi-Tier Guardrails", "VERIFIED", "100% VERIFIED", "InputGuard regex injection defense in 0.0004s + toxic term masking (src/guardrails/input_guard.py, lines 20-45) and BusinessGuardrails statutory 9.0h driving limit block (src/guardrails/business_guardrails.py, lines 18-38). [WIP Report: Chapter 3.8 & Section 4.7]"),
+    ("C09", "AI Observability & Tracing", "NOVELTY", "END-TERM NOVELTY", "Local JSONL trace spans operational. Multi-host OpenTelemetry Collector export to Jaeger/Prometheus distributed tracing dashboard reserved for End-Term Defense novelty. [WIP Report: Chapter 9.1 & Section 4.8]"),
+    ("C10", "Evaluation (Cloud Factorial Matrix)", "NOVELTY", "END-TERM NOVELTY", "Baseline 72 factorial runs complete locally. Full 100+ factorial cloud evaluation matrix across 3 architectures with Pareto cost-latency frontiers reserved for End-Term Defense novelty. [WIP Report: Chapter 9.2 & Section 5.0]"),
+    ("C11", "Cloud Platform Deployment", "NOVELTY", "END-TERM NOVELTY", "Local multi-stage Docker container configured. Live production deployment to AWS EC2 / GCP Compute Engine with Cloudflare edge proxy reserved for End-Term Defense novelty. [WIP Report: Chapter 9.3 & Section 9.3]")
 ]
 
 def create_coverage_slide():
@@ -77,7 +77,7 @@ def create_coverage_slide():
     p2 = tf.add_paragraph()
     p2.alignment = PP_ALIGN.LEFT
     r2 = p2.add_run()
-    r2.text = "Milestone Target: 65–70% | Achieved: ~73% Complete  —  [ 8 Core Baseline Criteria 100% Verified ✅  |  3 Advanced Research Criteria Reserved for End-Term Novelty 🚀 ]"
+    r2.text = "Milestone Target: 65–70% | Achieved: ~73% Complete  —  [ 8 Core Baseline Criteria 100% Verified   |  3 Advanced Research Criteria Reserved for End-Term Novelty  ]"
     r2.font.name = "Calibri"
     r2.font.size = Pt(9.0)
     r2.font.bold = True
@@ -97,7 +97,7 @@ def create_coverage_slide():
     p_l = tf_l.paragraphs[0]
     p_l.alignment = PP_ALIGN.CENTER
     r_l = p_l.add_run()
-    r_l.text = "✅ 8 EVAL-2 VERIFIED CRITERIA (100% Complete — 49/49 Pytest & 13/13 Selenium Passing)"
+    r_l.text = " 8 EVAL-2 VERIFIED CRITERIA (100% Complete — 49/49 Pytest & 13/13 Selenium Passing)"
     r_l.font.name = "Calibri"
     r_l.font.size = Pt(8.5)
     r_l.font.bold = True
@@ -116,7 +116,7 @@ def create_coverage_slide():
     p_r = tf_r.paragraphs[0]
     p_r.alignment = PP_ALIGN.CENTER
     r_r = p_r.add_run()
-    r_r.text = "🚀 3 PHASE-3 RESEARCH NOVELTIES (Strategically Staged for End-Term Defense on Nov 20)"
+    r_r.text = " 3 PHASE-3 RESEARCH NOVELTIES (Strategically Staged for End-Term Defense on Nov 20)"
     r_r.font.name = "Calibri"
     r_r.font.size = Pt(8.5)
     r_r.font.bold = True
@@ -160,12 +160,12 @@ def create_coverage_slide():
             row_bg = RGBColor(0xFA, 0xFD, 0xFA) if row_idx % 2 == 1 else RGBColor(0xF0, 0xFD, 0xF4)
             status_bg = RGBColor(0xD1, 0xFA, 0xE5) # Emerald 100
             status_fg = RGBColor(0x06, 0x5F, 0x46) # Emerald 800
-            badge_icon = f"{num} [✅]"
+            badge_icon = f"{num} []"
         else:
             row_bg = RGBColor(0xF8, 0xFA, 0xFC) if row_idx % 2 == 1 else RGBColor(0xF0, 0xF9, 0xFF)
             status_bg = RGBColor(0xDB, 0xEA, 0xFE) # Blue 100
             status_fg = RGBColor(0x1E, 0x40, 0xAF) # Blue 800
-            badge_icon = f"{num} [🚀]"
+            badge_icon = f"{num} []"
 
         # Cell 0: ID & Badge
         c0 = tbl.cell(row_idx, 0)
@@ -255,8 +255,8 @@ def sync_markdown_coverage():
         "---",
         "",
         "### Summary Indicators:",
-        "* **✅ 8 EVAL-2 VERIFIED CRITERIA (100% Complete):** C01, C02, C03, C04, C05, C06, C07, C08 — Supported by 49/49 Pytest unit tests, 13/13 Selenium browser scenarios, and 72/72 factorial benchmark runs.",
-        "* **🚀 3 PHASE-3 RESEARCH NOVELTIES:** C09, C10, C11 — Strategically reserved as advanced research scope for the final End-Term defense on November 20, 2026.",
+        "* ** 8 EVAL-2 VERIFIED CRITERIA (100% Complete):** C01, C02, C03, C04, C05, C06, C07, C08 — Supported by 49/49 Pytest unit tests, 13/13 Selenium browser scenarios, and 72/72 factorial benchmark runs.",
+        "* ** 3 PHASE-3 RESEARCH NOVELTIES:** C09, C10, C11 — Strategically reserved as advanced research scope for the final End-Term defense on November 20, 2026.",
         "",
         "---",
         "",
@@ -266,7 +266,7 @@ def sync_markdown_coverage():
         "| :---: | :--- | :---: | :--- |"
     ]
     for num, name, c_type, status_text, details in CRITERIA_DATA:
-        badge = f"**{num} [{'✅' if c_type == 'VERIFIED' else '🚀'}]**"
+        badge = f"**{num} [{'' if c_type == 'VERIFIED' else ''}]**"
         formatted_details = details.replace("[WIP Report:", "**[WIP Report:").replace("]", "]**")
         lines.append(f"| {badge} | **{name}** | **{status_text}** | {formatted_details} |")
     lines.extend([

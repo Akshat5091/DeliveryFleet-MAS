@@ -262,7 +262,7 @@ def add_callout_box(doc, text, title="ACADEMIC NOTE & EMPIRICAL PROOF", fill_hex
     p.paragraph_format.space_before = Pt(0)
     p.paragraph_format.space_after = Pt(0)
     p.paragraph_format.line_spacing = 1.15
-    r_t = p.add_run(f"📌 {title}: ")
+    r_t = p.add_run(f"{title}: ")
     r_t.font.name = "Calibri"
     r_t.font.size = Pt(9.5)
     r_t.font.bold = True
@@ -356,17 +356,17 @@ def build_problem_charter(out_path):
     add_body_p(doc, "The table below establishes the comprehensive mapping between university evaluation criteria, the operational problem statement, and the Phase 2 implementation:")
     crit_map_headers = ["#", "Prescribed Baseline Criterion", "Problem Addressed", "Phase 2 Implementation Status"]
     crit_map_data = [
-        ["1", "Blackboard Shared State", "Shared context loss, race conditions, token bloat", "100% VERIFIED ✅ (BlackboardState, RLock, provenance log)"],
-        ["2", "MCP Tool Integration (>= 2)", "Tight database coupling, brittle ad-hoc tools", "100% VERIFIED ✅ (5 FastMCP tools operational)"],
-        ["3", "Pydantic Structured Output", "Free-text LLM hallucination, parser breakage", "100% VERIFIED ✅ (Pydantic v2 schemas: Report, Decision, Route)"],
-        ["4", "Agentic Design Patterns", "Monolithic bottlenecks, inflexible execution", "100% VERIFIED ✅ (Hierarchical MAS vs. Sequential benchmarked)"],
-        ["5", "Callbacks & Latency Heatmaps", "Silent failures, opaque execution latency", "100% VERIFIED ✅ (MASCallbackHandler, 2D density heatmap)"],
-        ["6", "A2A Protocol Communication", "Framework silo isolation, proprietary lock-in", "100% VERIFIED ✅ (A2ABridge, JSON-RPC 2.0 over HTTP)"],
-        ["7", "CrewAI + Google ADK Dual", "Single-framework vendor dependency", "100% VERIFIED ✅ (CrewAI ReAct + Google ADK AgentCards)"],
-        ["8", "Security & Multi-Tier Guardrails", "Prompt injections, driver fatigue violations", "100% VERIFIED ✅ (InputGuard in 0.0004s + statutory 9.0h limit)"],
-        ["9", "AI Observability & Tracing", "Multi-host distributed span correlation", "Phase 3 Novelty 🚀 (OpenTelemetry Collector + Jaeger APM)"],
-        ["10", "Cloud Factorial Matrix & Pareto", "Cloud-scale multi-objective trade-off frontiers", "Phase 3 Novelty 🚀 (100+ factorial cloud runs)"],
-        ["11", "Cloud Platform Deployment", "Remote production hosting & SSL termination", "Phase 3 Novelty 🚀 (Docker Compose on AWS EC2 / GCP)"]
+        ["1", "Blackboard Shared State", "Shared context loss, race conditions, token bloat", "100% Verified (Phase 2) (BlackboardState, RLock, provenance log)"],
+        ["2", "MCP Tool Integration (>= 2)", "Tight database coupling, brittle ad-hoc tools", "100% Verified (Phase 2) (5 FastMCP tools operational)"],
+        ["3", "Pydantic Structured Output", "Free-text LLM hallucination, parser breakage", "100% Verified (Phase 2) (Pydantic v2 schemas: Report, Decision, Route)"],
+        ["4", "Agentic Design Patterns", "Monolithic bottlenecks, inflexible execution", "100% Verified (Phase 2) (Hierarchical MAS vs. Sequential benchmarked)"],
+        ["5", "Callbacks & Latency Heatmaps", "Silent failures, opaque execution latency", "100% Verified (Phase 2) (MASCallbackHandler, 2D density heatmap)"],
+        ["6", "A2A Protocol Communication", "Framework silo isolation, proprietary lock-in", "100% Verified (Phase 2) (A2ABridge, JSON-RPC 2.0 over HTTP)"],
+        ["7", "CrewAI + Google ADK Dual", "Single-framework vendor dependency", "100% Verified (Phase 2) (CrewAI ReAct + Google ADK AgentCards)"],
+        ["8", "Security & Multi-Tier Guardrails", "Prompt injections, driver fatigue violations", "100% Verified (Phase 2) (InputGuard in 0.0004s + statutory 9.0h limit)"],
+        ["9", "AI Observability & Tracing", "Multi-host distributed span correlation", "Staged: Phase 3 Novelty (OpenTelemetry Collector + Jaeger APM)"],
+        ["10", "Cloud Factorial Matrix & Pareto", "Cloud-scale multi-objective trade-off frontiers", "Staged: Phase 3 Novelty (100+ factorial cloud runs)"],
+        ["11", "Cloud Platform Deployment", "Remote production hosting & SSL termination", "Staged: Phase 3 Novelty (Docker Compose on AWS EC2 / GCP)"]
     ]
     tbl_crit_map = doc.add_table(rows=1, cols=4)
     format_styled_table(doc, tbl_crit_map, [Inches(0.4), Inches(2.0), Inches(2.4), Inches(2.0)], crit_map_headers, crit_map_data)
@@ -405,17 +405,17 @@ def build_project_plan(out_path):
     add_body_p(doc, "Below is the detailed criteria ownership and source code reference ledger covering all 11 evaluation criteria:")
     crit_headers = ["#", "Prescribed Baseline Criterion", "Implementation Architecture & Module", "Student Lead", "Phase 2 Status"]
     crit_data = [
-        ["1", "Blackboard Architecture", "BlackboardState in src/schemas/blackboard.py (lines 35-55) managed by BlackboardManager (lines 51-65) with RLock synchronization, FastMCP tool, and read-driven downstream handoffs.", "Bhumika Yadav\nAadit Bassi", "100% Completed (Phase 2 Verified ✅)"],
-        ["2", "MCP Tool Integration (>= 2)", "FastMCP server (src/mcp/server.py, lines 23-45) and MCPClient (src/mcp/client.py, lines 15-40) exposing 5 tools with formal client session calls and schema validation.", "Aadit Bassi", "100% Completed (Phase 2 Verified ✅)"],
-        ["3", "Pydantic Structured Output", "Pydantic v2 schemas: FinalDeliveryReport (src/schemas/reports.py, lines 20-45) and DispatchDecision (src/schemas/decisions.py, lines 15-45) with JSON & Markdown export.", "Bhumika Yadav", "100% Completed (Phase 2 Verified ✅)"],
-        ["4", "Agentic Design Patterns", "Supervised Hierarchical Manager MAS pattern with parallel context gathering via ThreadPoolExecutor (src/orchestration/hierarchical_orchestrator.py, lines 154-172) vs Sequential Pipeline.", "Bhumika Yadav", "100% Completed (Phase 2 Verified ✅)"],
-        ["5", "Callbacks & Latency Heatmaps", "MASCallbackHandler (src/observability/callbacks.py) capturing on_agent_start/end/exception in real time. Generated 2D density heatmaps across 72 factorial benchmark runs.", "Sahil Mudgil", "100% Completed (Phase 2 Verified ✅)"],
-        ["6", "A2A Protocol Communication", "A2ABridge in src/agents/a2a_bridge.py (lines 74-114) routing A2AMessage envelopes between CrewAI and Google ADK Route Agent with live network JSON-RPC endpoint.", "Aadit Bassi", "100% Completed (Phase 2 Verified ✅)"],
-        ["7", "CrewAI + Google ADK Dual", "Google ADK powers Route Agent (src/agents/adk_route_agent.py, lines 32-45); CrewAI powers Dispatch (src/agents/crew_dispatch_agent.py, lines 40-55), Retrieval, and Exception Agents.", "Aadit Bassi\nBhumika Yadav", "100% Completed (Phase 2 Verified ✅)"],
-        ["8", "Security & Guardrails", "InputGuard regex injection defense in 0.0004s + toxic masking (src/guardrails/input_guard.py, lines 20-45) and BusinessGuardrails 9.0h driving cap (src/guardrails/business_guardrails.py, lines 18-38).", "Akshat Nagori\nSahil Mudgil", "100% Completed (Phase 2 Verified ✅)"],
-        ["9", "AI Observability & Tracing", "Local JSONL trace spans operational. Multi-host OpenTelemetry Collector export to Jaeger dashboard reserved for End-Term novelty.", "Sahil Mudgil", "Phase 3 Novelty (End-Term Scope 🚀)"],
-        ["10", "Cloud Factorial Matrix & Pareto", "Baseline 72 factorial runs operational. Cloud-scale 100+ factorial evaluation matrix across 3 architectures with Pareto frontier optimization reserved for End-Term novelty.", "Sahil Mudgil\nAkshat Nagori", "Phase 3 Novelty (End-Term Scope 🚀)"],
-        ["11", "Cloud Platform Deployment", "Local multi-stage Docker container configured. Live production deployment to AWS EC2 / GCP Compute Engine with Cloudflare edge worker reserved for End-Term novelty.", "Aadit Bassi", "Phase 3 Novelty (End-Term Scope 🚀)"]
+        ["1", "Blackboard Architecture", "BlackboardState in src/schemas/blackboard.py (lines 35-55) managed by BlackboardManager (lines 51-65) with RLock synchronization, FastMCP tool, and read-driven downstream handoffs.", "Bhumika Yadav\nAadit Bassi", "100% Completed (Phase 2 Verified)"],
+        ["2", "MCP Tool Integration (>= 2)", "FastMCP server (src/mcp/server.py, lines 23-45) and MCPClient (src/mcp/client.py, lines 15-40) exposing 5 tools with formal client session calls and schema validation.", "Aadit Bassi", "100% Completed (Phase 2 Verified)"],
+        ["3", "Pydantic Structured Output", "Pydantic v2 schemas: FinalDeliveryReport (src/schemas/reports.py, lines 20-45) and DispatchDecision (src/schemas/decisions.py, lines 15-45) with JSON & Markdown export.", "Bhumika Yadav", "100% Completed (Phase 2 Verified)"],
+        ["4", "Agentic Design Patterns", "Supervised Hierarchical Manager MAS pattern with parallel context gathering via ThreadPoolExecutor (src/orchestration/hierarchical_orchestrator.py, lines 154-172) vs Sequential Pipeline.", "Bhumika Yadav", "100% Completed (Phase 2 Verified)"],
+        ["5", "Callbacks & Latency Heatmaps", "MASCallbackHandler (src/observability/callbacks.py) capturing on_agent_start/end/exception in real time. Generated 2D density heatmaps across 72 factorial benchmark runs.", "Sahil Mudgil", "100% Completed (Phase 2 Verified)"],
+        ["6", "A2A Protocol Communication", "A2ABridge in src/agents/a2a_bridge.py (lines 74-114) routing A2AMessage envelopes between CrewAI and Google ADK Route Agent with live network JSON-RPC endpoint.", "Aadit Bassi", "100% Completed (Phase 2 Verified)"],
+        ["7", "CrewAI + Google ADK Dual", "Google ADK powers Route Agent (src/agents/adk_route_agent.py, lines 32-45); CrewAI powers Dispatch (src/agents/crew_dispatch_agent.py, lines 40-55), Retrieval, and Exception Agents.", "Aadit Bassi\nBhumika Yadav", "100% Completed (Phase 2 Verified)"],
+        ["8", "Security & Guardrails", "InputGuard regex injection defense in 0.0004s + toxic masking (src/guardrails/input_guard.py, lines 20-45) and BusinessGuardrails 9.0h driving cap (src/guardrails/business_guardrails.py, lines 18-38).", "Akshat Nagori\nSahil Mudgil", "100% Completed (Phase 2 Verified)"],
+        ["9", "AI Observability & Tracing", "Local JSONL trace spans operational. Multi-host OpenTelemetry Collector export to Jaeger dashboard reserved for End-Term novelty.", "Sahil Mudgil", "Staged: Phase 3 Research Novelty"],
+        ["10", "Cloud Factorial Matrix & Pareto", "Baseline 72 factorial runs operational. Cloud-scale 100+ factorial evaluation matrix across 3 architectures with Pareto frontier optimization reserved for End-Term novelty.", "Sahil Mudgil\nAkshat Nagori", "Staged: Phase 3 Research Novelty"],
+        ["11", "Cloud Platform Deployment", "Local multi-stage Docker container configured. Live production deployment to AWS EC2 / GCP Compute Engine with Cloudflare edge worker reserved for End-Term novelty.", "Aadit Bassi", "Staged: Phase 3 Research Novelty"]
     ]
     tbl_crit = doc.add_table(rows=1, cols=5)
     format_styled_table(doc, tbl_crit, [Inches(0.4), Inches(1.5), Inches(2.6), Inches(1.1), Inches(1.2)], crit_headers, crit_data)
@@ -434,13 +434,13 @@ def build_project_plan(out_path):
     add_body_p(doc, "To ensure structured execution across the semester, development was tracked through seven distinct bi-weekly sprint windows:")
     sprint_headers = ["Sprint Window", "Milestone & Technical Objectives", "Deliverables & Artifacts", "Sprint Status"]
     sprint_data = [
-        ["Oct 11 – Oct 18", "Infrastructure & Schemas", "Pydantic v2 schemas (BlackboardState, A2AMessage, FinalDeliveryReport); FastMCP server; synthetic datasets (orders.csv, drivers.csv, traffic.csv, delivery_history.csv).", "DONE ✅"],
-        ["Oct 19 – Oct 24", "Agent Development & A2A", "Implement Google ADK Route Agent; CrewAI Dispatch & Retrieval Agents; A2A communication bridge; Random Forest delay predictor training (R^2 = 0.901).", "DONE ✅"],
-        ["Oct 25 – Oct 29", "Guardrails & Orchestration", "InputGuard (injection defense + abusive masking); BusinessGuardrails (9.0h rule); Hierarchical Manager and Sequential Orchestrators; Exception recovery loop.", "DONE ✅"],
-        ["Oct 30 – Oct 31", "Eval-2 Benchmark & Artifacts", "Execute 72-run factorial benchmark matrix; generate publication-quality boxplots and heatmaps; execute pytest suite (49/49 passing); author Eval-2 documentation.", "DONE ✅"],
-        ["Nov 01 – Nov 08", "Production Cloud Containerization", "Docker Compose orchestration; health check endpoints; live cloud VM deployment; latency profiling under cloud network conditions.", "PLANNED ⏳"],
-        ["Nov 09 – Nov 15", "UI Dashboard & Full Report", "Interactive Streamlit operations dashboard; comprehensive Phase 3 project report (approx. 25–30 pages) matching university thesis template.", "PLANNED ⏳"],
-        ["Nov 16 – Nov 20", "Final Defense & Viva Readiness", "Peer cross-examination; code walkthrough rehearsals ensuring every member can modify and defend any component under evaluation.", "PLANNED ⏳"]
+        ["Oct 11 – Oct 18", "Infrastructure & Schemas", "Pydantic v2 schemas (BlackboardState, A2AMessage, FinalDeliveryReport); FastMCP server; synthetic datasets (orders.csv, drivers.csv, traffic.csv, delivery_history.csv).", "Completed"],
+        ["Oct 19 – Oct 24", "Agent Development & A2A", "Implement Google ADK Route Agent; CrewAI Dispatch & Retrieval Agents; A2A communication bridge; Random Forest delay predictor training (R^2 = 0.901).", "Completed"],
+        ["Oct 25 – Oct 29", "Guardrails & Orchestration", "InputGuard (injection defense + abusive masking); BusinessGuardrails (9.0h rule); Hierarchical Manager and Sequential Orchestrators; Exception recovery loop.", "Completed"],
+        ["Oct 30 – Oct 31", "Eval-2 Benchmark & Artifacts", "Execute 72-run factorial benchmark matrix; generate publication-quality boxplots and heatmaps; execute pytest suite (49/49 passing); author Eval-2 documentation.", "Completed"],
+        ["Nov 01 – Nov 08", "Production Cloud Containerization", "Docker Compose orchestration; health check endpoints; live cloud VM deployment; latency profiling under cloud network conditions.", "Planned"],
+        ["Nov 09 – Nov 15", "UI Dashboard & Full Report", "Interactive Streamlit operations dashboard; comprehensive Phase 3 project report (approx. 25–30 pages) matching university thesis template.", "Planned"],
+        ["Nov 16 – Nov 20", "Final Defense & Viva Readiness", "Peer cross-examination; code walkthrough rehearsals ensuring every member can modify and defend any component under evaluation.", "Planned"]
     ]
     tbl_sprint = doc.add_table(rows=1, cols=4)
     format_styled_table(doc, tbl_sprint, [Inches(1.3), Inches(1.8), Inches(2.7), Inches(1.0)], sprint_headers, sprint_data)

@@ -181,7 +181,7 @@ def add_callout_box(doc, text, title="ACADEMIC NOTE & EMPIRICAL PROOF", fill_hex
     p.paragraph_format.space_before = Pt(0)
     p.paragraph_format.space_after = Pt(0)
     p.paragraph_format.line_spacing = 1.15
-    r_t = p.add_run(f"📌 {title}: ")
+    r_t = p.add_run(f"{title}: ")
     r_t.font.name = "Calibri"
     r_t.font.size = Pt(9.5)
     r_t.font.bold = True
@@ -359,17 +359,17 @@ def generate_enhanced_wip_report():
     
     crit_headers = ["#", "Prescribed Baseline Criterion", "Architecture & Exact File Reference", "Student Lead", "Phase 2 Status"]
     crit_data = [
-        ["1", "Blackboard Architecture", "src/schemas/blackboard.py & src/orchestration/blackboard_manager.py\nCentralized BlackboardState with RLock concurrency protection.", "Bhumika Yadav\nAadit Bassi", "100% Operational (Phase 2 Verified ✅)"],
-        ["2", "FastMCP Tool Integration", "src/mcp/server.py & src/mcp/tools/\n5 production MCP tools: Driver DB, Routing Engine, Delay Model, Vector RAG, State Tool.", "Aadit Bassi", "100% Operational (Phase 2 Verified ✅)"],
-        ["3", "Pydantic Structured Output", "src/schemas/reports.py & src/schemas/decisions.py\nType-safe models: FinalDeliveryReport, DispatchDecision, RoutePlan, ExceptionReplan.", "Bhumika Yadav", "100% Operational (Phase 2 Verified ✅)"],
-        ["4", "Agentic Design Patterns", "src/orchestration/hierarchical_orchestrator.py\nSupervised Hierarchical MAS supervisor with ThreadPoolExecutor parallel context gathering.", "Bhumika Yadav", "100% Operational (Phase 2 Verified ✅)"],
-        ["5", "Callbacks & Latency Heatmaps", "src/observability/callbacks.py & run_logger.py\nReal-time MASCallbackHandler lifecycle hooks; 2D density heatmaps across 72 runs.", "Sahil Mudgil", "100% Operational (Phase 2 Verified ✅)"],
-        ["6", "A2A Protocol Communication", "src/agents/a2a_bridge.py (/api/a2a/route)\nStandardized JSON-RPC 2.0 network messaging with circuit-breaker fallback.", "Aadit Bassi", "100% Operational (Phase 2 Verified ✅)"],
-        ["7", "CrewAI + Google ADK Dual", "src/agents/adk_route_agent.py & crew_dispatch_agent.py\nGoogle ADK declarative AgentCards + CrewAI ReAct cognitive reasoning.", "Aadit Bassi\nBhumika Yadav", "100% Operational (Phase 2 Verified ✅)"],
-        ["8", "Security & Legal Guardrails", "src/guardrails/input_guard.py & business_guardrails.py\nTier 1 regex injection defense (0.0004s) + Tier 3 statutory 9.0h driver fatigue limits.", "Akshat Nagori\nSahil Mudgil", "100% Operational (Phase 2 Verified ✅)"],
-        ["9", "AI Observability & Tracing", "src/observability/tracing.py & logs/run_events.jsonl\nLocal trace spans operational; multi-host OpenTelemetry Collector export staged.", "Sahil Mudgil", "Phase 3 Novelty (End-Term Scope 🚀)"],
-        ["10", "Cloud Factorial Matrix & Pareto", "src/evaluation/benchmark_runner.py & visualizer.py\nBaseline 72 runs complete; cloud-scale 100+ factorial evaluation matrix staged.", "Sahil Mudgil\nAkshat Nagori", "Phase 3 Novelty (End-Term Scope 🚀)"],
-        ["11", "Cloud Platform Deployment", "Dockerfile & docker-compose.yml\nLocal multi-stage Docker operational; live VM deployment on AWS/GCP staged.", "Aadit Bassi", "Phase 3 Novelty (End-Term Scope 🚀)"]
+        ["1", "Blackboard Architecture", "src/schemas/blackboard.py & src/orchestration/blackboard_manager.py\nCentralized BlackboardState with RLock concurrency protection.", "Bhumika Yadav\nAadit Bassi", "100% Operational (Phase 2 Verified)"],
+        ["2", "FastMCP Tool Integration", "src/mcp/server.py & src/mcp/tools/\n5 production MCP tools: Driver DB, Routing Engine, Delay Model, Vector RAG, State Tool.", "Aadit Bassi", "100% Operational (Phase 2 Verified)"],
+        ["3", "Pydantic Structured Output", "src/schemas/reports.py & src/schemas/decisions.py\nType-safe models: FinalDeliveryReport, DispatchDecision, RoutePlan, ExceptionReplan.", "Bhumika Yadav", "100% Operational (Phase 2 Verified)"],
+        ["4", "Agentic Design Patterns", "src/orchestration/hierarchical_orchestrator.py\nSupervised Hierarchical MAS supervisor with ThreadPoolExecutor parallel context gathering.", "Bhumika Yadav", "100% Operational (Phase 2 Verified)"],
+        ["5", "Callbacks & Latency Heatmaps", "src/observability/callbacks.py & run_logger.py\nReal-time MASCallbackHandler lifecycle hooks; 2D density heatmaps across 72 runs.", "Sahil Mudgil", "100% Operational (Phase 2 Verified)"],
+        ["6", "A2A Protocol Communication", "src/agents/a2a_bridge.py (/api/a2a/route)\nStandardized JSON-RPC 2.0 network messaging with circuit-breaker fallback.", "Aadit Bassi", "100% Operational (Phase 2 Verified)"],
+        ["7", "CrewAI + Google ADK Dual", "src/agents/adk_route_agent.py & crew_dispatch_agent.py\nGoogle ADK declarative AgentCards + CrewAI ReAct cognitive reasoning.", "Aadit Bassi\nBhumika Yadav", "100% Operational (Phase 2 Verified)"],
+        ["8", "Security & Legal Guardrails", "src/guardrails/input_guard.py & business_guardrails.py\nTier 1 regex injection defense (0.0004s) + Tier 3 statutory 9.0h driver fatigue limits.", "Akshat Nagori\nSahil Mudgil", "100% Operational (Phase 2 Verified)"],
+        ["9", "AI Observability & Tracing", "src/observability/tracing.py & logs/run_events.jsonl\nLocal trace spans operational; multi-host OpenTelemetry Collector export staged.", "Sahil Mudgil", "Staged: Phase 3 Research Novelty"],
+        ["10", "Cloud Factorial Matrix & Pareto", "src/evaluation/benchmark_runner.py & visualizer.py\nBaseline 72 runs complete; cloud-scale 100+ factorial evaluation matrix staged.", "Sahil Mudgil\nAkshat Nagori", "Staged: Phase 3 Research Novelty"],
+        ["11", "Cloud Platform Deployment", "Dockerfile & docker-compose.yml\nLocal multi-stage Docker operational; live VM deployment on AWS/GCP staged.", "Aadit Bassi", "Staged: Phase 3 Research Novelty"]
     ]
     tbl_crit = doc.add_table(rows=1, cols=5)
     format_styled_table(doc, tbl_crit, [Inches(0.4), Inches(1.5), Inches(2.6), Inches(1.1), Inches(1.2)], crit_headers, crit_data)
@@ -417,7 +417,7 @@ def generate_enhanced_wip_report():
     add_body_p(doc, "Below is the architectural documentation, exact file paths, and actual source code extracts demonstrating how Group 8 has implemented and empirically verified the 8 completed Phase 2 criteria in the codebase.")
 
     # 3.1 Criterion 1
-    add_styled_heading(doc, "3.1 Context Sharing & Blackboard Architecture (Criterion 1 — Phase 2 Covered ✅)", level=2)
+    add_styled_heading(doc, "3.1 Context Sharing & Blackboard Architecture (Criterion 1 — Phase 2 Verified)", level=2)
     add_body_p(doc, "File Reference: src/schemas/blackboard.py (lines 35-55) & src/orchestration/blackboard_manager.py (lines 51-65)", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: A centralized BlackboardState carries candidate drivers, retrieved zoning bylaws, ML delay estimates, dispatch decisions, and emergency route plans. A thread-safe BlackboardManager synchronizes all mutations under a reentrant lock (threading.RLock()), preventing race conditions during concurrent agent writes. Crucially, downstream agents read their inputs directly from the Blackboard (via bb_manager.get_field), eliminating conversational prompt bloating. Every state mutation automatically appends an audit trail record (BlackboardEntry) capturing the agent ID, field updated, timestamp, and rationale.")
     add_code_snippet(doc, """# File: src/schemas/blackboard.py (Lines 35-55)
@@ -452,7 +452,7 @@ class BlackboardManager:
             state.provenance_log.append(entry)""")
 
     # 3.2 Criterion 2
-    add_styled_heading(doc, "3.2 Tool Integration using FastMCP (Criterion 2 — Phase 2 Covered ✅)", level=2)
+    add_styled_heading(doc, "3.2 Tool Integration using FastMCP (Criterion 2 — Phase 2 Verified)", level=2)
     add_body_p(doc, "File Reference: src/mcp/server.py (lines 23-45) & src/mcp/client.py (lines 15-40)", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: Built a formal FastMCP server exposing 5 tools, exceeding the requirement of at least 2 tools: (1) driver_db_lookup queries active driver payloads and hours; (2) routing_engine_calculate computes Dijkstra transit corridors; (3) delay_predictor_forecast executes Scikit-Learn regression; (4) policy_rag_search performs ChromaDB semantic retrieval; and (5) blackboard_update writes verified decisions to shared state. Tools run in a decoupled client-server architecture with strict Pydantic parameter schemas and runtime ToolValidator enforcement.")
     add_code_snippet(doc, """# File: src/mcp/server.py (FastMCP Server Tool Registration)
@@ -480,7 +480,7 @@ def blackboard_update(order_id: str, agent_id: str, key: str, value: Any, ration
     return BlackboardTool().update_state(order_id, agent_id, key, value, rationale)""")
 
     # 3.3 Criterion 3
-    add_styled_heading(doc, "3.3 Structured Output using Pydantic v2 (Criterion 3 — Phase 2 Covered ✅)", level=2)
+    add_styled_heading(doc, "3.3 Structured Output using Pydantic v2 (Criterion 3 — Phase 2 Verified)", level=2)
     add_body_p(doc, "File Reference: src/schemas/reports.py (lines 20-55) & src/schemas/decisions.py (lines 15-45)", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: Standardized all agent decisions and final delivery reports into Pydantic v2 algebraic data models with field-level validators (@field_validator). Free-text LLM outputs are categorically barred. Outputs export cleanly to typed JSON dictionaries and formatted Markdown tables, guaranteeing zero schema drift across agent handoffs.")
     add_code_snippet(doc, """# File: src/schemas/reports.py (Structured Output Model)
@@ -511,7 +511,7 @@ class FinalDeliveryReport(BaseModel):
                 f"| **Outcome** | **`{self.delivery_outcome}`** | Fulfillment state |")""")
 
     # 3.4 Criterion 4
-    add_styled_heading(doc, "3.4 Agentic Design Patterns: Hierarchical vs Sequential (Criterion 4 — Phase 2 Covered ✅)", level=2)
+    add_styled_heading(doc, "3.4 Agentic Design Patterns: Hierarchical vs Sequential (Criterion 4 — Phase 2 Verified)", level=2)
     add_body_p(doc, "File Reference: src/orchestration/hierarchical_orchestrator.py (lines 154-180)", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: Evaluated two distinct agentic coordination patterns: (1) Sequential Pipeline where agents execute in linear waterfall sequence; and (2) Supervised Hierarchical MAS where a supervisory orchestrator executes parallel context gathering via ThreadPoolExecutor(max_workers=2), synchronizes the Blackboard, invokes the Dispatch Agent, dispatches the ADK Route Agent, and intercepts mid-route disruptions via an event-driven exception loop. The Hierarchical architecture cuts mean latency from 0.875s to 0.450s (a 48.6% speedup).")
     add_code_snippet(doc, """# File: src/orchestration/hierarchical_orchestrator.py (Parallel Context Gathering)
@@ -533,7 +533,7 @@ self.bb_manager.update_field(order_id, "retrieval_agent", "retrieved_rules", [ru
 self.bb_manager.update_field(order_id, "driver_db_tool", "candidate_drivers", candidate_drivers, "Concurrent Driver DB")""")
 
     # 3.5 Criterion 5
-    add_styled_heading(doc, "3.5 Lifecycle Callbacks & Latency Heatmaps (Criterion 5 — Phase 2 Covered ✅)", level=2)
+    add_styled_heading(doc, "3.5 Lifecycle Callbacks & Latency Heatmaps (Criterion 5 — Phase 2 Verified)", level=2)
     add_body_p(doc, "File Reference: src/observability/callbacks.py (lines 20-65) & src/observability/run_logger.py", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: Engineered MASCallbackHandler providing programmatic hooks: on_agent_start, on_tool_start, on_agent_end, on_tool_end, and on_exception. Hooks capture microsecond execution timestamps, token consumption, and error states without adding LLM supervision overhead. Events stream synchronously to console, persist as structured JSONL in logs/run_events.jsonl, and broadcast over WebSockets to the web dashboard. Using this operational telemetry, our visualizer generated the 2D execution latency density heatmap across all 72 factorial benchmark runs shown in Figure 2.")
     add_code_snippet(doc, """# File: src/observability/callbacks.py (MAS Lifecycle Callback Hooks)
@@ -562,7 +562,7 @@ class MASCallbackHandler:
     )
 
     # 3.6 Criterion 6
-    add_styled_heading(doc, "3.6 Agent-to-Agent (A2A) Protocol Communication (Criterion 6 — Phase 2 Covered ✅)", level=2)
+    add_styled_heading(doc, "3.6 Agent-to-Agent (A2A) Protocol Communication (Criterion 6 — Phase 2 Verified)", level=2)
     add_body_p(doc, "File Reference: src/agents/a2a_bridge.py (lines 74-114) via HTTP endpoint /api/a2a/route", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: Engineered A2ABridge connecting CrewAI agents and the Google ADK Route Agent using standardized JSON-RPC 2.0 messages (A2ARequest and A2AResponse). The bridge supports live network transport via an asynchronous HTTP endpoint with circuit-breaker protection, logging every envelope to Blackboard provenance. If network calls timeout, the bridge gracefully falls back to local in-process graph calculation, guaranteeing uninterrupted operations.")
     add_code_snippet(doc, """# File: src/agents/a2a_bridge.py (A2A Protocol Envelope Dispatch)
@@ -583,7 +583,7 @@ def send_routing_request(self, from_agent: str, task_id: str, request: A2AReques
         return self._local_circuit_breaker_fallback(request)""")
 
     # 3.7 Criterion 7
-    add_styled_heading(doc, "3.7 Dual Framework Architecture: CrewAI + Google ADK (Criterion 7 — Phase 2 Covered ✅)", level=2)
+    add_styled_heading(doc, "3.7 Dual Framework Architecture: CrewAI + Google ADK (Criterion 7 — Phase 2 Verified)", level=2)
     add_body_p(doc, "File Reference: src/agents/adk_route_agent.py & src/agents/crew_dispatch_agent.py", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: The platform strictly enforces dual-framework synergy: Google ADK powers the spatial Route Optimization Agent using declarative AgentCard contracts; CrewAI powers the Fleet Orchestrator, Dispatch Agent, Retrieval Agent, and Exception Agent using ReAct reasoning loops. This multi-paradigm approach proves framework interoperability without vendor lock-in.")
     add_code_snippet(doc, """# File: src/agents/adk_route_agent.py (Google ADK Declarative AgentCard)
@@ -607,7 +607,7 @@ dispatch_agent = Agent(
 )""")
 
     # 3.8 Criterion 8
-    add_styled_heading(doc, "3.8 Multi-Tier Security Guardrails & Persona Variances (Criterion 8 — Phase 2 Covered ✅)", level=2)
+    add_styled_heading(doc, "3.8 Multi-Tier Security Guardrails & Persona Variances (Criterion 8 — Phase 2 Verified)", level=2)
     add_body_p(doc, "File Reference: src/guardrails/input_guard.py (lines 20-45) & src/guardrails/business_guardrails.py (lines 18-38)", bold_prefix="• ")
     add_body_p(doc, "Technical Implementation: Deployed a defense-in-depth security perimeter: Tier 1 InputGuard scans customer special instructions for prompt injection attacks using compiled regex patterns from LAB-06 and masks toxic tone into [REDACTED_HOSTILE]; Tier 2 ToolValidator validates all MCP parameters against Pydantic schemas; Tier 3 BusinessGuardrails arithmetically enforces statutory 9.0h driver fatigue limits, blocking over-shift drivers deterministically.")
     add_code_snippet(doc, r"""# File: src/guardrails/input_guard.py (Pre-Execution Regex Screening)
@@ -756,15 +756,15 @@ class BusinessGuardrails:
 
     test_headers = ["Test Suite File", "Component Under Test", "Tests", "Core Assertions & Verification Scope", "Status"]
     test_data = [
-        ["test_concurrency_blackboard.py", "BlackboardState & Concurrency", "6", "RLock thread safety, concurrent read/write isolation, provenance audit logging.", "PASS (100% Green) ✅"],
-        ["test_mcp_tools.py", "FastMCP Server & 5 Tools", "5", "Schema validation, client session initialization, error propagation on malformed inputs.", "PASS (100% Green) ✅"],
-        ["test_guardrails.py", "Security & Legal Guardrails", "5", "Tier 1 regex injection defense, abusive masking, Tier 3 9.0h fatigue cap arithmetic.", "PASS (100% Green) ✅"],
-        ["test_end_to_end_pipeline.py", "Hierarchical MAS Orchestration", "5", "Full execution lifecycle, parallel context gathering, Blackboard state propagation.", "PASS (100% Green) ✅"],
-        ["test_protocol_compliance.py", "A2A Protocol & Schemas", "5", "JSON-RPC 2.0 serialization, HTTP transport, circuit-breaker fallback under timeout.", "PASS (100% Green) ✅"],
-        ["test_academic_metrics_and_resilience.py", "Evaluation & Entropy Metrics", "6", "Shannon entropy H(X) formula, Pareto frontier validation, delay model R^2 score.", "PASS (100% Green) ✅"],
-        ["test_math_and_float_boundaries.py", "Numerical & Boundary Edge Cases", "6", "Zero distance, negative weights, floating-point rounding, boundary tolerances.", "PASS (100% Green) ✅"],
-        ["test_edge_case_dispatch.py", "Fleet Edge Scenarios", "7", "Overweight payloads (>500kg), zero driver pool availability, extreme rain degradation.", "PASS (100% Green) ✅"],
-        ["test_production_security_and_telematics.py", "Production Infrastructure", "4", "Token budget guardrails, rate limiting, structured JSONL audit stream format.", "PASS (100% Green) ✅"]
+        ["test_concurrency_blackboard.py", "BlackboardState & Concurrency", "6", "RLock thread safety, concurrent read/write isolation, provenance audit logging.", "PASS (100% Green) "],
+        ["test_mcp_tools.py", "FastMCP Server & 5 Tools", "5", "Schema validation, client session initialization, error propagation on malformed inputs.", "PASS (100% Green) "],
+        ["test_guardrails.py", "Security & Legal Guardrails", "5", "Tier 1 regex injection defense, abusive masking, Tier 3 9.0h fatigue cap arithmetic.", "PASS (100% Green) "],
+        ["test_end_to_end_pipeline.py", "Hierarchical MAS Orchestration", "5", "Full execution lifecycle, parallel context gathering, Blackboard state propagation.", "PASS (100% Green) "],
+        ["test_protocol_compliance.py", "A2A Protocol & Schemas", "5", "JSON-RPC 2.0 serialization, HTTP transport, circuit-breaker fallback under timeout.", "PASS (100% Green) "],
+        ["test_academic_metrics_and_resilience.py", "Evaluation & Entropy Metrics", "6", "Shannon entropy H(X) formula, Pareto frontier validation, delay model R^2 score.", "PASS (100% Green) "],
+        ["test_math_and_float_boundaries.py", "Numerical & Boundary Edge Cases", "6", "Zero distance, negative weights, floating-point rounding, boundary tolerances.", "PASS (100% Green) "],
+        ["test_edge_case_dispatch.py", "Fleet Edge Scenarios", "7", "Overweight payloads (>500kg), zero driver pool availability, extreme rain degradation.", "PASS (100% Green) "],
+        ["test_production_security_and_telematics.py", "Production Infrastructure", "4", "Token budget guardrails, rate limiting, structured JSONL audit stream format.", "PASS (100% Green) "]
     ]
     tbl_test = doc.add_table(rows=1, cols=5)
     format_styled_table(doc, tbl_test, [Inches(1.8), Inches(1.5), Inches(0.5), Inches(2.2), Inches(0.8)], test_headers, test_data)
