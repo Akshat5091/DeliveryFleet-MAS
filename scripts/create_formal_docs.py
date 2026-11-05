@@ -474,16 +474,12 @@ def build_project_plan(out_path):
 # MAIN EXECUTION
 # ==============================================================================
 if __name__ == "__main__":
-    import shutil
     out_dir = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents")
     out_dir.mkdir(parents=True, exist_ok=True)
     
-    p1 = out_dir / "Updated_Problem_Statement.docx"
-    p2 = out_dir / "Updated_Project_Plan.docx"
+    p1 = out_dir / "CSE-IV_Group-8_Updated_Problem_Statement.docx"
+    p2 = out_dir / "CSE-IV_Group-8_Updated_Project_Plan.docx"
     build_problem_charter(p1)
     build_project_plan(p2)
     
-    shutil.copy2(p1, out_dir / f"CSE-IV_Group-8_{p1.name}")
-    shutil.copy2(p2, out_dir / f"CSE-IV_Group-8_{p2.name}")
-    
-    print("\n[SUCCESS] Updated_Problem_Statement.docx & Updated_Project_Plan.docx successfully generated with CSE-IV_Group-8_ copies!")
+    print("\n[SUCCESS] CSE-IV_Group-8_Updated_Problem_Statement.docx & CSE-IV_Group-8_Updated_Project_Plan.docx generated cleanly!")

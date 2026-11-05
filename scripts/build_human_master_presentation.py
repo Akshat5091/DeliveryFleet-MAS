@@ -24,8 +24,8 @@ from pptx.enum.shapes import MSO_SHAPE
 
 REPO_DIR = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS")
 OUT_DIR = REPO_DIR / "Eval 2 Documents"
-OUT_PPTX = OUT_DIR / "DeliveryFleet_MAS_Evaluation2_Master_Presentation.pptx"
-OUT_1SLIDE = OUT_DIR / "1_Slide_Coverage_Matrix_Group8.pptx"
+OUT_PPTX = OUT_DIR / "CSE-IV_Group-8_DeliveryFleet_MAS_Evaluation2_Master_Presentation.pptx"
+OUT_1SLIDE = OUT_DIR / "CSE-IV_Group-8_1_Slide_Coverage_Matrix_Group8.pptx"
 
 # Color Palette (Human Academic: Pitch Black, Deep Crimson & Neutral Pencil Gray - Zero Blue)
 COLOR_WHITE = RGBColor(255, 255, 255)       # #FFFFFF Pure White Slide Background
@@ -1277,10 +1277,7 @@ if projected_hours > 9.0:
     # Save Presentation
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     prs.save(str(OUT_PPTX))
-    import shutil
-    shutil.copy2(OUT_PPTX, OUT_DIR / f"CSE-IV_Group-8_{OUT_PPTX.name}")
-    print(f"[DONE] Successfully generated Master Presentation with 24 slides: {OUT_PPTX}")
-    print(f"       Created submission copy: CSE-IV_Group-8_{OUT_PPTX.name}")
+    print(f"[DONE] Successfully generated Master Presentation with 24 slides: {OUT_PPTX.name}")
 
 def create_human_1slide_matrix():
     """Generate 1_Slide_Coverage_Matrix_Group8.pptx in clean human style split across two readable slides."""
@@ -1581,10 +1578,7 @@ def create_human_1slide_matrix():
         r_txt = p.add_run(); r_txt.text = b_txt; r_txt.font.size = Pt(11.0); r_txt.font.color.rgb = COLOR_CHARCOAL
 
     prs.save(str(OUT_1SLIDE))
-    import shutil
-    shutil.copy2(OUT_1SLIDE, OUT_DIR / f"CSE-IV_Group-8_{OUT_1SLIDE.name}")
-    print(f"[DONE] Successfully regenerated clean human-style 2-slide matrix: {OUT_1SLIDE}")
-    print(f"       Created submission copy: CSE-IV_Group-8_{OUT_1SLIDE.name}")
+    print(f"[DONE] Successfully regenerated clean human-style 2-slide matrix: {OUT_1SLIDE.name}")
 
 def update_archives():
     """Update both Eval 2 Documents.zip and DeliveryFleet_MAS_Group8_Eval2.zip."""

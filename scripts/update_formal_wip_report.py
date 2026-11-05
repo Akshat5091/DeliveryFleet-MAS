@@ -325,7 +325,7 @@ def add_figure(doc, img_path, caption_num, caption_title, caption_desc=None, wid
 # MAIN WIP REPORT BUILD FUNCTION
 # ==============================================================================
 def generate_enhanced_wip_report():
-    out_path = OUT_DIR / "Work_In_Progress_Report.docx"
+    out_path = OUT_DIR / "CSE-IV_Group-8_Work_In_Progress_Report.docx"
     doc = docx.Document()
     
     # Page setup: Standard margins
@@ -822,11 +822,7 @@ class BusinessGuardrails:
     add_body_p(doc, "Conclusion: Group 8 has delivered a rigorous, reproducible, and verifiable Multi-Agent System prototype for Evaluation Phase 2. All 8 core modules are functional, passing 49 unit tests and 13 browser scenarios with empirical latency and cost advantages proven across 72 factorial runs. The codebase is well-structured, fully documented, and ready for advanced cloud scaling in Phase 3.")
 
     doc.save(str(out_path))
-    import shutil
-    prefixed_path = OUT_DIR / f"CSE-IV_Group-8_{out_path.name}"
-    shutil.copy2(out_path, prefixed_path)
-    print(f"[DONE] Successfully generated Enhanced WIP Report: {out_path}")
-    print(f"       Created submission copy: {prefixed_path.name}")
+    print(f"[DONE] Successfully generated Enhanced WIP Report: {out_path.name}")
     print(f"       File size: {round(os.path.getsize(str(out_path))/(1024*1024), 2)} MB")
 
 if __name__ == "__main__":

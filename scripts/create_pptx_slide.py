@@ -10,8 +10,8 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 
-OUT_PPTX = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents\1_Slide_Coverage_Matrix_Group8.pptx")
-OUT_MD = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents\EVAL2_1_SLIDE_COVERAGE_MATRIX.md")
+OUT_PPTX = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents\CSE-IV_Group-8_1_Slide_Coverage_Matrix_Group8.pptx")
+OUT_MD = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents\Markdown Sources\EVAL2_1_SLIDE_COVERAGE_MATRIX.md")
 
 COLOR_CRIMSON = RGBColor(153, 27, 27)    # #991B1B Academic Crimson
 COLOR_BLACK = RGBColor(17, 24, 39)       # #111827 Pitch Black
@@ -241,11 +241,7 @@ def create_coverage_slide():
     r_foot.font.color.rgb = RGBColor(0x47, 0x55, 0x69)
 
     prs.save(str(OUT_PPTX))
-    import shutil
-    prefixed_pptx = OUT_PPTX.parent / f"CSE-IV_Group-8_{OUT_PPTX.name}"
-    shutil.copy2(OUT_PPTX, prefixed_pptx)
-    print(f"[DONE] Created 1-Slide Presentation: {OUT_PPTX}")
-    print(f"       Created submission copy: {prefixed_pptx.name}")
+    print(f"[DONE] Created 1-Slide Presentation: {OUT_PPTX.name}")
 
 def sync_markdown_coverage():
     lines = [

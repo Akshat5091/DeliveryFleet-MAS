@@ -30,6 +30,21 @@ def run_step(script_name: str):
         print("STDERR: " + res.stderr)
         sys.exit(res.returncode)
 
+def export_presentation_pdf():
+    print("\n[EXPORT] Exporting Presentation to PDF...")
+    try:
+        import win32com.client
+        pptx_path = SCRIPTS_DIR.parent / "Eval 2 Documents" / "CSE-IV_Group-8_DeliveryFleet_MAS_Evaluation2_Master_Presentation.pptx"
+        pdf_path = SCRIPTS_DIR.parent / "Eval 2 Documents" / "CSE-IV_Group-8_DeliveryFleet_MAS_Evaluation2_Master_Presentation.pdf"
+        powerpoint = win32com.client.Dispatch("Powerpoint.Application")
+        deck = powerpoint.Presentations.Open(str(pptx_path), WithWindow=False)
+        deck.SaveAs(str(pdf_path), 32)
+        deck.Close()
+        powerpoint.Quit()
+        print(f"[OK] Exported PDF: {pdf_path.name} ({round(pdf_path.stat().st_size / (1024*1024), 2)} MB)")
+    except Exception as e:
+        print(f"[WARN] PDF export skipped: {e}")
+
 def main():
     print("=" * 80)
     print("[BUILD] BUILDING ALL EVALUATION PHASE 2 DELIVERABLES")
@@ -41,6 +56,7 @@ def main():
     run_step("sync_markdown_report.py")
     run_step("create_pptx_slide.py")
     run_step("build_human_master_presentation.py")
+    export_presentation_pdf()
     run_step("package_submission_zip.py")
     
     print("\n" + "=" * 80)

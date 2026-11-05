@@ -1,7 +1,7 @@
 """Script to synchronize EVAL2_WORK_IN_PROGRESS_REPORT.md with the enhanced docx report."""
 from pathlib import Path
 
-OUT_FILE = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents\EVAL2_WORK_IN_PROGRESS_REPORT.md")
+OUT_FILE = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\Eval 2 Documents\Markdown Sources\EVAL2_WORK_IN_PROGRESS_REPORT.md")
 ROOT_MD_FILE = Path(r"D:\AKSHAT\DOCS\BTech CSE\Sem 7\Agentic AI\DeliveryFleet-MAS\EVAL2_WORK_IN_PROGRESS_REPORT.md")
 
 md_content = """# Autonomous Multi-Agent Delivery Fleet Coordination & Dispatch System
