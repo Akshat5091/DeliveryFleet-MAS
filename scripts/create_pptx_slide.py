@@ -241,7 +241,11 @@ def create_coverage_slide():
     r_foot.font.color.rgb = RGBColor(0x47, 0x55, 0x69)
 
     prs.save(str(OUT_PPTX))
+    import shutil
+    prefixed_pptx = OUT_PPTX.parent / f"CSE-IV_Group-8_{OUT_PPTX.name}"
+    shutil.copy2(OUT_PPTX, prefixed_pptx)
     print(f"[DONE] Created 1-Slide Presentation: {OUT_PPTX}")
+    print(f"       Created submission copy: {prefixed_pptx.name}")
 
 def sync_markdown_coverage():
     lines = [
